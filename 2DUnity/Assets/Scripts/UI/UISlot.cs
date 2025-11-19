@@ -56,7 +56,7 @@ public class UISlot : MonoBehaviour
         if (count <= 1)
             countText.text = "";          // 1마리일 땐 숫자 숨김
         else
-            countText.text = "x" + count.ToString(); // x2, x3 ...
+            countText.text = "" + count.ToString(); // x2, x3 ...
     }
 
     // 슬롯 비우기 (나중에 쓸 일 있으면 사용)

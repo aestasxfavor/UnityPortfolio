@@ -25,7 +25,7 @@ public class FishSpawner : MonoBehaviour
 
             Vector2 randomPos = new Vector2(transform.position.x + Random.Range(-fishSpawnX, fishSpawnX), transform.position.y + Random.Range(-fishSpawnY, fishSpawnY));
 
-            Instantiate(randomFish, randomPos, Quaternion.identity);
+            Instantiate(randomFish, randomPos, randomFish.transform.rotation);
         }
     }
 }
