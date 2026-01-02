@@ -27,13 +27,5 @@ public class TitleTextUI : MonoBehaviour
                 yield return null;
             }
         }
-
-        //while (true)
-        //{
-        //    targetImage.gameObject.SetActive(false);
-        //    yield return new WaitForSeconds(0.5f);
-        //    targetImage.gameObject.SetActive(true);
-        //    yield return new WaitForSeconds(0.5f);
-        //}
     }
 }
