@@ -59,6 +59,7 @@ public class GameManager : MonoBehaviour
     }
 
     // Ocean Scene 세팅
+    // TODO: SceneFlow / SceneInstaller 분리 대상
     private IEnumerator SetupOceanScene()
     {
         Debug.Log("[GameManager] Ocean 씬 세팅 시작");
@@ -177,7 +178,7 @@ public class GameManager : MonoBehaviour
 
     public void GoToFadeScene()
     {
-        Debug.Log("[GameManager] 산소 0 → 페이드씬 전환 요청");
+        Debug.Log("페이드씬 전환 요청");
 
         var sceneryManager = FindObjectOfType<SceneryManager>();
         if (sceneryManager != null)
