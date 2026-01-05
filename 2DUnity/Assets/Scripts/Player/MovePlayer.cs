@@ -69,7 +69,7 @@ public class MovePlayer : MonoBehaviour
 
 
         Vector2 moveDir = playerControls.Player.Move.ReadValue<Vector2>();
-        Debug.Log($"moveDir {moveDir}");
+       // Debug.Log($"moveDir {moveDir}");
         rigidbody2D.linearVelocity = moveDir * speed;
         inputDirection = moveDir;
 

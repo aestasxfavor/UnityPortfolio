@@ -20,31 +20,38 @@ public class SceneFlowManager : MonoBehaviour
 
     public void OnOxygenDepleted()
     {
-        if (isRunning) return;
-        isRunning = true;
-        StartCoroutine(OxygenDepleteRoutine());
+
+        ChangeScene(SceneType.Land);
     }
 
-    private IEnumerator OxygenDepleteRoutine()
+    void CloseAllOceanUI()
     {
-        Debug.Log("[SceneFlow] Oxygen Deplete Start");
+        foreach (var ui in FindObjectsOfType<MonoBehaviour>(true))
+        {
+            if(ui is UIClosable closable)
+            {
+                Debug.Log($"[SceneFlow] Close UI: {ui.name}");
+                closable.Close();
+            }
+        }
+    }
 
-        // TODO: Ocean UI 종료 (임시 처리, UI Manager로 이전 예정)
+   public void ChangeScene(SceneType type)
+    {
+        if (isRunning) return;
+        isRunning = true;
 
-        var oceanUI = GameObject.Find("InventoryCanvas(Clone)");
-        if(oceanUI != null) Destroy(oceanUI);
+        StartCoroutine(ChangeSceneRoutine(type));
+    }
 
-        var oxygenUI = GameObject.Find("OxygenUI(Clone)");
-        if(oxygenUI != null) Destroy(oxygenUI);
+    private IEnumerator ChangeSceneRoutine(SceneType type)
+    {
+        // 바다씬 UI 종료
+        CloseAllOceanUI();
+        yield return null;
 
-        yield return new WaitForSeconds(0.2f);
+        GameManager.Instance.GoToFadeScene(type);
 
-        // TODO: Inventory Sea → Land 처리
-        yield return new WaitForSeconds(0.5f);
-
-        // TODO: Fade 연출
-        yield return new WaitForSeconds(0.5f);
-
-        GameManager.Instance.GoToFadeScene();
+        isRunning = false;
     }
 }

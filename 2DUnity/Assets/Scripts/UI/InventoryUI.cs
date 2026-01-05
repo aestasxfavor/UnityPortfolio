@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class InventoryUI : MonoBehaviour
+public class InventoryUI : MonoBehaviour, UIClosable
 {
     [SerializeField] public FishInventoryData sharedInventoryData;
 
@@ -159,5 +159,10 @@ public class InventoryUI : MonoBehaviour
         }
 
         Debug.Log($"[InventoryUI] UI 새로고침 완료 ({sharedInventoryData.caughtFishList.Count}종)");
+    }
+
+    public void Close()
+    {
+        transform.root.gameObject.SetActive(false);
     }
 }

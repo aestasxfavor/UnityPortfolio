@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     public GameObject fishSpawnerPrefab;
     public GameObject oxygenUIPrefab;
     public GameObject inventoryUIPrefab;
-    public GameObject warningUIPrefab;
     public GameObject fishDataLoaderPrefab;
     public GameObject storageUICanvasPrefab;
     public GameObject buttonCanvasPrefab;
@@ -86,10 +85,6 @@ public class GameManager : MonoBehaviour
         InventoryUI inventoryUI = null;
         if (inventoryUIPrefab != null)
             inventoryUI = Instantiate(inventoryUIPrefab).GetComponentInChildren<InventoryUI>(true);
-
-        // 경고 UI
-        if (warningUIPrefab != null)
-            Instantiate(warningUIPrefab);
 
         // 데이터 로더
         if (fishDataLoaderPrefab != null)
@@ -176,14 +171,17 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene("Land");
     }
 
-    public void GoToFadeScene()
+    public void GoToFadeScene(SceneType targetScene)
     {
-        Debug.Log("페이드씬 전환 요청");
+        Debug.Log($"[GameManager] 페이드 씬 전환 요청 → {targetScene}");
+
+        string sceneName = targetScene.ToString();
 
         var sceneryManager = FindObjectOfType<SceneryManager>();
         if (sceneryManager != null)
-            sceneryManager.LoadScene("Land");
+            sceneryManager.LoadScene(sceneName);
         else
-            SceneManager.LoadScene("Land");
+            SceneManager.LoadScene(sceneName);
     }
+
 }
