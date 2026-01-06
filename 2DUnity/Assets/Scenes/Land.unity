@@ -318,6 +318,50 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &782135492
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 782135494}
+  - component: {fileID: 782135493}
+  m_Layer: 0
+  m_Name: FishInventoryService
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &782135493
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782135492}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d71b75d691f589b449272ac2b25cc310, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!4 &782135494
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 782135492}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &835180218
 GameObject:
   m_ObjectHideFlags: 0
@@ -489,7 +533,6 @@ MonoBehaviour:
   fishSpawnerPrefab: {fileID: 1143922786552182546, guid: 57946a55ea8160c47b71f2228b47b6d2, type: 3}
   oxygenUIPrefab: {fileID: 861281122793370087, guid: f96b0be0222b77146a46229767704d53, type: 3}
   inventoryUIPrefab: {fileID: 3679155371573781950, guid: a671c6e704cfca549916707cc4029ea3, type: 3}
-  warningUIPrefab: {fileID: 189827198567176179, guid: b36d047030dd1f74d846a1bbc6bf97db, type: 3}
   fishDataLoaderPrefab: {fileID: 89068995838689660, guid: 26365a06b0292aa47a09bba381dc7bbe, type: 3}
   storageUICanvasPrefab: {fileID: 1451193942501412059, guid: 4ecb0faf3d35c454abeb7bbf9a68c1d2, type: 3}
   buttonCanvasPrefab: {fileID: 2024945792890945542, guid: db70d20ce8f85eb4ca15e2d26bb8ea8c, type: 3}
@@ -1248,3 +1291,4 @@ SceneRoots:
   - {fileID: 514681609}
   - {fileID: 377667863}
   - {fileID: 241144072}
+  - {fileID: 782135494}

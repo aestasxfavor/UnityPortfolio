@@ -39,53 +39,39 @@ public class HarpoonTip : MonoBehaviour
         if (col != null) col.enabled = true;
     }
 
+    /// <summary>
+    /// 2차 리팩토링할 때 할 것
+    /// Tag가 아닌 LayCast, OverlapCircle 사용하기
+    /// </summary>
+    /// <param name="collision"></param>
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (!gameObject.activeInHierarchy || pool == null) return;
 
-        if (collision.CompareTag("Fish"))
-        {
-            Fish fish = collision.GetComponent<Fish>();
-            if (fish == null) return;
-            if (fish.isCaught) return;
-
-            fish.isCaught = true;
-            string fishName = fish.fishType.ToString();
-
-            SpriteRenderer sr = collision.GetComponent<SpriteRenderer>();
-            Sprite fishSprite = sr != null ? sr.sprite : null;
-
-            Debug.Log($"[HarpoonTip] {fishName} 잡음");
-
-            OceanManager oceanManager = FindObjectOfType<OceanManager>();
-            if (oceanManager != null)
-            {
-                try
-                {
-                    oceanManager.AddCaughtFish(fishName);
-                }
-                catch (System.Exception e)
-                {
-                    Debug.LogError($"[HarpoonTip] AddCaughtFish 실패: {e.Message}");
-                }
-            }
-            else
-            {
-                Debug.LogWarning("[HarpoonTip] OceanManager를 찾을 수 없음");
-            }
-
-            fish.OnHitByHarpoon();
-
-            Collider2D col = GetComponent<Collider2D>();
-            if (col != null) col.enabled = false;
-
-            Invoke(nameof(ReturnToPool), 0.1f);
-        }
-        else
+        if (!collision.CompareTag("Fish"))
         {
             pool?.ReturnHarpoon(gameObject);
+            return;
         }
+
+        Fish fish = collision.GetComponent<Fish>();
+        if (fish == null || fish.isCaught) return;
+
+        fish.isCaught = true;
+
+        Debug.Log($"[HarpoonTip] {fish.fishType} 잡음");
+
+        // 단일 진입점
+        FishInventoryService.Instance.AddFish(fish.fishType);
+
+        fish.OnHitByHarpoon();
+
+        Collider2D col = GetComponent<Collider2D>();
+        if (col != null) col.enabled = false;
+
+        Invoke(nameof(ReturnToPool), 0.1f);
     }
+
 
     private void ReturnToPool()
     {

@@ -8,7 +8,7 @@ public class FishDataLoader : MonoBehaviour
     [System.Serializable]
     public class FishInfo
     {
-        public string fishName;
+        public FishType fishType;
         public string worldSpritePath;
         public string description;
     }
@@ -16,23 +16,22 @@ public class FishDataLoader : MonoBehaviour
     [System.Serializable]
     public class FishList
     {
-        public List<FishInfo> fishList = new List<FishInfo>();
+        public List<FishInfo> fishList = new();
     }
 
     private FishList fishList;
+    private Dictionary<FishType, FishInfo> fishInfoDict;
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-            LoadFishData();
-        }
-        else
+        if (Instance != null)
         {
             Destroy(gameObject);
+            return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+        LoadFishData();
     }
 
     /// <summary>
@@ -47,30 +46,31 @@ public class FishDataLoader : MonoBehaviour
             return;
         }
 
-        fishList = JsonUtility.FromJson<FishList>(jsonFile.text);
-        Debug.Log($"[FishDataLoader] 물고기 데이터 {fishList.fishList.Count}개 로드 완료");
+        FishList loadedList = JsonUtility.FromJson<FishList>(jsonFile.text);
+
+        fishInfoDict = new Dictionary<FishType, FishInfo>(loadedList.fishList.Count);
+
+        foreach (var info in loadedList.fishList)
+        {
+            fishInfoDict[info.fishType] = info;
+        }
+        //Debug.Log($"[FishDataLoader] 물고기 데이터 {fishList.fishList.Count}개 로드 완료");
     }
 
     /// <summary>
     /// 이름으로 물고기 데이터 검색
     /// </summary>
-    public FishInfo GetFishInfo(string fishName)
+    public FishInfo GetFishInfo(FishType fishType)
     {
-        if (fishList == null || fishList.fishList.Count == 0)
+        if (fishInfoDict == null)
         {
-            Debug.LogWarning("[FishDataLoader] 데이터가 로드되지 않았습니다.");
+            Debug.LogWarning("[FishDataLoader] 데이터가 로드되지 않음");
             return null;
         }
 
-        // 띄어쓰기 제거해서 비교 (Blue 1 == Blue1 도 동일 취급)
-        string normalized = fishName.Replace(" ", "");
-        foreach (var f in fishList.fishList)
-        {
-            if (f.fishName.Replace(" ", "") == normalized)
-                return f;
-        }
+        if (fishInfoDict.TryGetValue(fishType, out FishInfo info))
+            return info;
 
-        Debug.LogWarning($"[FishDataLoader] {fishName} 정보를 찾을 수 없습니다.");
         return null;
     }
 

@@ -14,6 +14,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
     [Header("슬롯 프리팹")]
     [SerializeField] private GameObject slotPrefab;
 
+    // Todo: 2차리팩토링 때 SO로 분리하기
     [Header("슬롯 개수")]
     [SerializeField] private int quickbarSize = 9;
     [SerializeField] private int inventorySize = 27;
@@ -37,6 +38,14 @@ public class InventoryUI : MonoBehaviour, UIClosable
         playerCtrls = new PlayerCtrls();
         playerCtrls.Player.Inventory.performed += _ => ToggleInventory();
         playerCtrls.Enable();
+    }
+
+    private void OnEnable()
+    {
+        if(FishInventoryService.Instance != null)
+        {
+            FishInventoryService.Instance.SetInventoryUI(this);
+        }
     }
 
     private void OnDisable()
@@ -88,10 +97,6 @@ public class InventoryUI : MonoBehaviour, UIClosable
             Debug.LogWarning($"[InventoryUI] {fish} 아이콘이 null");
             return;
         }
-
-        // 데이터에 반영
-        sharedInventoryData?.AddFish(fish, fishIcon);
-        //CaughtFishManager.AddFish(fish.ToString());
 
         // 퀵바 먼저 채우기
         foreach (UISlot slot in quickbarSlots)
