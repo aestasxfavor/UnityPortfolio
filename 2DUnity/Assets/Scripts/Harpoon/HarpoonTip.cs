@@ -2,6 +2,7 @@
 
 public class HarpoonTip : MonoBehaviour
 {
+    // Todo: 2차 리팩토링 때 SO로 뺄 예정
     private Vector3 startPos;
     [SerializeField] private float speed = 5f;
     [SerializeField] private float maxDistance = 6f;

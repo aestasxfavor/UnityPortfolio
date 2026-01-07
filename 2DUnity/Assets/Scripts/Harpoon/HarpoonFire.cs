@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class HarpoonFire : MonoBehaviour
 {
-
+    // Todo: 2Â÷ ¸®ÆÑÅä¸µ ¶§ SO·Î »¬ ¿¹Á¤
     [SerializeField] private HarpoonPool harpoonPool;
     [SerializeField] private Transform firePoint;
     [SerializeField] private float harpoonSpeed = 10f;

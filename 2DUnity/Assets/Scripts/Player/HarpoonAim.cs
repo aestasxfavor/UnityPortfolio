@@ -1,40 +1,36 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class HarpoonAim : MonoBehaviour
 {
     [SerializeField] private Animator animator;
     [SerializeField] private SpriteRenderer playerRenderer;
     [SerializeField] private Transform harpoon;
+    [SerializeField] private MovePlayer movePlayer;
 
-    private bool isAiming = false;
+    public Vector2 HarpoonDirection { get; private set; }
 
-    // Update is called once per frame
-    void Update()
+    /// <summary>
+    /// 외부(PlayerAim 등)에서 호출
+    /// </summary>
+    public void UpdateAim(Vector2 aimDir)
     {
-        if (!isAiming) return;
+        HarpoonDirection = aimDir.normalized;
 
-        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        Vector2 dir = (mousePos - (Vector2)transform.position).normalized;
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg;
+        float angle = Mathf.Atan2(aimDir.y, aimDir.x) * Mathf.Rad2Deg;
 
-        // Animator에 전달
         animator.SetFloat("HarpoonAngle", angle);
 
-        // 좌우판정
-        bool isLeft = angle > 90 || angle < -90;
+        bool isLeft = aimDir.x < 0f;
         playerRenderer.flipX = isLeft;
 
-        // 작살 회전 (좌우에 따라 보정)
         if (!isLeft)
-            harpoon.rotation = Quaternion.Euler(0, 0, angle);
+            harpoon.localRotation = Quaternion.Euler(0, 0, angle);
         else
-            harpoon.rotation = Quaternion.Euler(0, 180, -angle);
+            harpoon.localRotation = Quaternion.Euler(0, 180, -angle);
     }
 
-    public void SetAim(bool aiming)
+    public void SetAimVisual(bool aiming)
     {
-        isAiming = aiming;
         animator.SetBool("IsHoldingHarpoon", aiming);
         harpoon.gameObject.SetActive(aiming);
     }

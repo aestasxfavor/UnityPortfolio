@@ -6,143 +6,97 @@ using UnityEngine.UIElements;
 
 public class MovePlayer : MonoBehaviour
 {
-    Rigidbody2D rigidbody2D;
-    Animator animator;
-    PlayerCtrls playerControls;
-    SpriteRenderer spriteRenderer;
+    Rigidbody2D rb;
+    PlayerCtrls ctrls;
 
-    public bool IsHarpoonReady { get; private set; } = false; // HarpoonFire.cs에서 접근용
+    [SerializeField] private SpriteRenderer playerSR;
+    [SerializeField] private Transform playerVisual;
 
-    [SerializeField] private GameObject harpoon;
+    // Todo: 2차 리팩때 SO로 분리하기
     [SerializeField] private float speed = 5f;
 
+    public Vector2 LastMoveDir => lastMoveDir;
+    public Vector2 InputDirection => inputDirection;
     private Vector2 lastMoveDir = Vector2.right;  // 최근 방향 기억용
     private Vector2 inputDirection;
 
-    private Vector2 harpoonDirection;
+    public bool IsHarpoonReady { get; set; }
 
-    /// <summary>
-    /// 초기화 처리
-    /// </summary>
     private void Awake()
     {
-        playerControls = new PlayerCtrls();
-        rigidbody2D = GetComponent<Rigidbody2D>();
-        animator = GetComponent<Animator>();
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        harpoon.SetActive(false);
+        ctrls = new PlayerCtrls();
+        rb = GetComponent<Rigidbody2D>();
+
     }
 
-    private void OnEnable()
-    {
-        playerControls.Enable();
-        playerControls.Player.Hold.performed += OnHarpoonToggle;
-        playerControls.Player.Hold.canceled += OnHarpoonRelease;
-    }
+    private void OnEnable() => ctrls.Enable();
 
 
-    private void OnDisable()
-    {
-        playerControls.Disable();
-        playerControls.Player.Hold.performed -= OnHarpoonToggle;
-        playerControls.Player.Hold.canceled -= OnHarpoonRelease;
-    }
+
+    private void OnDisable() => ctrls.Disable();
+
 
     private void FixedUpdate()
     {
-        Move();
-
-    }
-
-    /// <summary>
-    /// 플레이어 이동 처리
-    /// </summary>
-    private void Move()
-    {
-        if (IsHarpoonReady) // 작살 장전 중엔 이동하지 않음
+        if (IsHarpoonReady)
         {
-            rigidbody2D.linearVelocity = Vector2.zero;
-            animator.speed = 0.5f;
-            SoundManager.Instance.StopSwimSFX();
+            rb.linearVelocity = Vector2.zero;
             return;
         }
 
+        inputDirection = ctrls.Player.Move.ReadValue<Vector2>();
+        rb.linearVelocity = inputDirection * speed;
 
-        Vector2 moveDir = playerControls.Player.Move.ReadValue<Vector2>();
-       // Debug.Log($"moveDir {moveDir}");
-        rigidbody2D.linearVelocity = moveDir * speed;
-        inputDirection = moveDir;
-
-        bool isHorizontalOnly = Mathf.Abs(moveDir.x) > 0.01f && Mathf.Abs(moveDir.y) <= 0.01f;
-
-        if (!IsHarpoonReady)
+        if (Mathf.Abs(inputDirection.x) > 0.01f)
         {
-            if (moveDir.x > 0.01f)
-            {
-                spriteRenderer.flipX = false;
-                spriteRenderer.flipY = false;
-                transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-                lastMoveDir = Vector2.right;
-            }
-            else if (moveDir.x < -0.01f)
-            {
-                spriteRenderer.flipX = false;
-                spriteRenderer.flipY = true;
-                transform.rotation = Quaternion.Euler(0f, 0f, -90f);
-                lastMoveDir = Vector2.left;
-            }
-            else if (Mathf.Abs(moveDir.y) > 0.01f)
-            {
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-            }
-            else // 멈췄을 때
-            {
-                transform.rotation = Quaternion.Euler(0, 0, 0);
-                spriteRenderer.flipY = false;
-
-                // idle 상태에서 방향 유지
-                spriteRenderer.flipX = (lastMoveDir == Vector2.left);
-            }
-
-            if (moveDir == Vector2.zero)
-            {
-                animator.speed = 0.5f;  // Idle 상태: 천천히 흔들
-                SoundManager.Instance.StopSwimSFX();
-            }
-            else
-            {
-                animator.speed = 1.5f;  // 이동 중: 빠르게 수영
-                SoundManager.Instance.PlaySwimSFX();
-            } 
+            lastMoveDir = new Vector2(Mathf.Sign(inputDirection.x), 0f);
         }
+
     }
 
-    /// <summary>
-    /// 작살 활성화 처리
-    /// </summary>
-    /// <param name="context"></param>
-    private void OnHarpoonToggle(InputAction.CallbackContext context)
+    private void LateUpdate()
     {
-        animator.SetInteger("AimDir", 0);
-        harpoon.transform.localPosition = new Vector3(0.14f, 0.03f, 0f);
-        harpoon.transform.localRotation = Quaternion.Euler(0, 0, 0f);
-
-        harpoon.SetActive(true);
-        animator.SetBool("IsHoldingHarpoon", true);
-        IsHarpoonReady = true;
+        if (IsHarpoonReady) return;
+        VisualDirection();
     }
 
-    private void OnHarpoonRelease(InputAction.CallbackContext context)
+    private void VisualDirection()
     {
-        harpoon.SetActive(false);
-        animator.SetBool("IsHoldingHarpoon", false);
-        IsHarpoonReady = false;
-        
-    }
+        // 기본 Idle 상태
+        if (inputDirection == Vector2.zero)
+        {
+            playerVisual.rotation = Quaternion.identity;
+            playerSR.flipY = false;
 
-    public Vector2 GetHarpoonDirection()
-    {
-        return harpoonDirection.normalized;
+            playerSR.flipX = (lastMoveDir.x < 0f);
+            return;
+        }
+
+        // 오른쪽 이동
+        if (inputDirection.x > 0.01f)
+        {
+            playerVisual.rotation = Quaternion.Euler(0, 0, -90f);
+            playerSR.flipX = false;
+            playerSR.flipY = false;
+            return;
+        }
+
+        // 왼쪽 이동
+        if (inputDirection.x < -0.01f)
+        {
+            playerVisual.rotation = Quaternion.Euler(0, 0, 90f);
+            playerSR.flipX = true;
+            playerSR.flipY = false;
+            return;
+        }
+
+        // 상하 이동
+        if (Mathf.Abs(inputDirection.y) > 0.01f)
+        {
+            playerVisual.rotation = Quaternion.identity;
+            playerSR.flipX = (lastMoveDir.x < 0f);
+            playerSR.flipY = false;
+        }
     }
 
 }

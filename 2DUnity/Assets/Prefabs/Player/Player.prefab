@@ -346,7 +346,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01379a14ef36b484d86c29fb78fb269e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  harpoon: {fileID: 2808003809515234217}
+  playerSR: {fileID: 790718844569204687}
+  playerVisual: {fileID: 6632347065502971290}
   speed: 4
 --- !u!114 &651324597514422601
 MonoBehaviour:
@@ -361,9 +362,39 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 965315443245370644}
-  harpoon: {fileID: 2808003809515234217}
+  harpoon: {fileID: 5683153217022304453}
   movePlayer: {fileID: 1270206896838704956}
   harpoonFire: {fileID: 5583847281278182246}
+  rightFront:
+    localPos: {x: 0.14, y: 0.03, z: 0}
+    rotationZ: 0
+    flipX: 0
+    direction: {x: 1, y: 0}
+  rightUp:
+    localPos: {x: 0.11, y: 0.09, z: 0}
+    rotationZ: 40
+    flipX: 0
+    direction: {x: 1, y: 1}
+  rightDown:
+    localPos: {x: 0.14, y: -0.03, z: 0}
+    rotationZ: -30
+    flipX: 0
+    direction: {x: 1, y: -1}
+  leftFront:
+    localPos: {x: -0.14, y: 0.03, z: 0}
+    rotationZ: 0
+    flipX: 1
+    direction: {x: -1, y: 0}
+  leftUp:
+    localPos: {x: -0.11, y: 0.09, z: 0}
+    rotationZ: -40
+    flipX: 1
+    direction: {x: -1, y: 1}
+  leftDown:
+    localPos: {x: -0.14, y: -0.03, z: 0}
+    rotationZ: 30
+    flipX: 1
+    direction: {x: -1, y: -1}
 --- !u!114 &-890209178008201469
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -6,22 +6,22 @@
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 4,
+            "fishType": 3,
             "worldSpritePath": "Fish/Green",
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 6,
+            "fishType": 5,
             "worldSpritePath": "Fish/Grey",
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 7,
+            "fishType": 6,
             "worldSpritePath": "Fish/JellyFish",
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 8,
+            "fishType": 7,
             "worldSpritePath": "Fish/Octopus",
             "description": "자동 생성된 물고기입니다."
         },
@@ -36,32 +36,32 @@
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 9,
+            "fishType": 11,
             "worldSpritePath": "Fish/SawShark",
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 10,
+            "fishType": 12,
             "worldSpritePath": "Fish/SeaAngler",
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 5,
+            "fishType": 4,
             "worldSpritePath": "Fish/Shark",
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 11,
+            "fishType": 8,
             "worldSpritePath": "Fish/Shrimp",
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 13,
+            "fishType": 10,
             "worldSpritePath": "Fish/Squid",
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 12,
+            "fishType": 9,
             "worldSpritePath": "Fish/SwordFish",
             "description": "자동 생성된 물고기입니다."
         }

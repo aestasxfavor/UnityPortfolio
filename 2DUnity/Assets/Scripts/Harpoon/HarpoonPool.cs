@@ -3,10 +3,12 @@ using UnityEngine;
 
 public class HarpoonPool : MonoBehaviour
 {
+    // Todo: 2차 리팩토링 때 SO로 뺄 예정
     [Header("풀 설정")]
     [SerializeField] private int poolSize = 5;
     [SerializeField] private GameObject harpoonTipPrefab;
 
+    // 2차 리팩토링 때 상황보고 Stack이나 List로 바꿀 예정
     private readonly Queue<GameObject> pool = new Queue<GameObject>();
 
     void Start()
