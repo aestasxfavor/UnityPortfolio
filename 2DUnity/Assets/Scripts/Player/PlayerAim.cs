@@ -18,8 +18,13 @@ public class PlayerAim : MonoBehaviour
     private PlayerCtrls ctrls;
     private SpriteRenderer harpoonSR;
 
-    public bool IsHarpoonReady { get; private set; }
     public Vector2 HarpoonDirection { get; private set; }
+
+    private AimState lastAimState = AimState.Front;
+    private Vector2 lastAimInput = Vector2.right;
+
+    public bool IsHarpoonReady { get; private set; }
+    private bool wantToFire;
 
     #region Visual Data
     [System.Serializable]
@@ -65,14 +70,23 @@ public class PlayerAim : MonoBehaviour
     private void OnHold(InputAction.CallbackContext _)
     {
         IsHarpoonReady = true;
+        movePlayer.IsHarpoonReady = true;
         harpoon.gameObject.SetActive(true);
+
+        wantToFire = false;
+
+        animator.SetBool("IsHoldingHarpoon", true);
     }
 
     private void OnRelease(InputAction.CallbackContext _)
     {
         IsHarpoonReady = false;
+        movePlayer.IsHarpoonReady = false;
         animator.SetInteger("AimDir", 0);
         harpoon.gameObject.SetActive(false);
+        wantToFire = false;
+
+        animator.SetBool("IsHoldingHarpoon", false);
     }
 
     private void Update()
@@ -80,35 +94,66 @@ public class PlayerAim : MonoBehaviour
         if (!IsHarpoonReady)
             return;
 
-        Vector2 input = ctrls.Player.Move.ReadValue<Vector2>();
-        AimState state = GetAimState(input);
+        Vector2 rawInput = ctrls.Player.Move.ReadValue<Vector2>();
 
-        UpdateAimVisual(state);
+        // 유효 입력일 때만 조준 상태 갱신
+        if (rawInput.sqrMagnitude > 0.01f)
+        {
+            lastAimInput = rawInput.normalized;
+            lastAimState = GetAimState(lastAimInput);
+        }
+
+        // 입력 없어도 마지막 조준 유지
+        UpdateAimVisual(lastAimState);
 
         if (Keyboard.current.shiftKey.wasPressedThisFrame)
         {
-            harpoonFire.FireHarpoon(HarpoonDirection);
+            wantToFire = true;
         }
+    }
+
+
+
+    public void OnHarpoonFire()
+    {
+        if (!wantToFire) return;
+        harpoonFire.FireHarpoon(HarpoonDirection);
+        wantToFire = false;
+
+        //Debug.Log("OnHarpoonFire CALLED on " + gameObject.name);
     }
 
     private AimState GetAimState(Vector2 input)
     {
-        if (input.y > 0.5f) return AimState.Up;
-        if (input.y < -0.5f) return AimState.Down;
+        if (Mathf.Abs(input.x) < 0.5f)
+        {
+            return AimState.Front;
+        }
+
+        if (input.y > 0.5f)
+        {
+            return AimState.Up;
+        }
+
+        if (input.y < -0.5f)
+        {
+            return AimState.Down;
+        }
+
         return AimState.Front;
     }
 
     private void UpdateAimVisual(AimState state)
     {
-        Vector2 baseDir = movePlayer.LastMoveDir;
-        bool facingRight = baseDir.x >= 0f;
+
+        bool facingRight = movePlayer.LastMoveDir.x >= 0f;
 
         animator.SetInteger("AimDir",
             state == AimState.Up ? 1 :
             state == AimState.Down ? 2 : 0);
 
         HarpoonVisual visual = GetVisual(state, facingRight);
-        
+
         ApplyVisual(visual);
 
     }
@@ -134,6 +179,16 @@ public class PlayerAim : MonoBehaviour
         harpoon.localPosition = visual.localPos;
         harpoon.localRotation = Quaternion.Euler(0, 0, visual.rotationZ);
         harpoonSR.flipX = visual.flipX;
+
+        bool facingRight = movePlayer.LastMoveDir.x >= 0f;
+        Vector2 dir = facingRight ? Vector2.right : Vector2.left;
+
+        if (lastAimState == AimState.Up)
+            dir += Vector2.up;
+
+        else if (lastAimState == AimState.Down)
+            dir += Vector2.down;
+
         HarpoonDirection = visual.direction.normalized;
     }
 }
