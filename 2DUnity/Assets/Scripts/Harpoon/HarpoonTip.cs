@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using UnityEditor.Build.Content;
+using UnityEngine;
 
 public class HarpoonTip : MonoBehaviour
 {
@@ -62,6 +63,7 @@ public class HarpoonTip : MonoBehaviour
 
         Debug.Log($"[HarpoonTip] {fish.fishType} 잡음");
 
+        Debug.Log($"[HarpoonTip] 잡은 fishType = {fish.fishType}");
         // 단일 진입점
         FishInventoryService.Instance.AddFish(fish.fishType);
 

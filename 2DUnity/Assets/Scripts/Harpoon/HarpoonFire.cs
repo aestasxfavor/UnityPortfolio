@@ -27,7 +27,9 @@ public class HarpoonFire : MonoBehaviour
         if (sr != null)
             sr.flipX = direction.x < 0;
 
-        SoundManager.Instance.PlayHarpoonFireSFX();
+        if (SoundManager.Instance != null)
+            SoundManager.Instance.PlayHarpoonFireSFX();
+
 
         // 작살 방향 넘겨주기
         HarpoonTip tip = harpoon.GetComponent<HarpoonTip>();

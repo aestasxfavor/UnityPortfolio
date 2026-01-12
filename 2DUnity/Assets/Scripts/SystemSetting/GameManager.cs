@@ -16,13 +16,25 @@ public class GameManager : MonoBehaviour
     public GameObject storageUICanvasPrefab;
     public GameObject buttonCanvasPrefab;
 
+    // Ocean 생성물 캐시
     private GameObject playerInstance;
     private GameObject oceanMapInstance;
+    private FishSpawner spawnerInstance;
+    private OxygenManager oxygenMgrInstance;
+    private InventoryUI inventoryUIInstance;
+    private GameObject fishDataLoaderInstance;
+
+    // Land 생성물 캐시
+    private GameObject storageUICanvasInstance;
+    private StorageUI storageUIInstance;
     private GameObject buttonCanvasInstance;
 
     [Header("공용 인벤토리 데이터 (씬 공통 사용)")]
-    [SerializeField] private FishInventoryData fishInventoryData;
-    public FishInventoryData GetSharedInventoryData() => fishInventoryData;
+    [SerializeField] private FishInventoryData storageInventoryData;
+    [SerializeField] private FishInventoryData seaInventoryData;
+
+    public FishInventoryData GetStorageInventoryData() => storageInventoryData;
+    public FishInventoryData GetSeaInventoryData() => seaInventoryData;
 
     private void Awake()
     {
@@ -34,12 +46,19 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void Start()
     {
-        Debug.Log($"[GameManager] 초기화 완료 — fishInventoryData 해시: {fishInventoryData?.GetHashCode()}");
+        Debug.Log($"[GameManager] 초기화 완료 — storageInventoryData: {(storageInventoryData != null ? storageInventoryData.name : "NULL")}");
+        Debug.Log($"[GameManager] 초기화 완료 — seaInventoryData: {(seaInventoryData != null ? seaInventoryData.name : "NULL")}");
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -57,11 +76,28 @@ public class GameManager : MonoBehaviour
             SetupLandScene();
     }
 
+    // -------------------------
     // Ocean Scene 세팅
-    // TODO: SceneFlow / SceneInstaller 분리 대상
+    // -------------------------
     private IEnumerator SetupOceanScene()
     {
+        CleanupOceanObjects();
+
         Debug.Log("[GameManager] Ocean 씬 세팅 시작");
+
+        // 바다 데이터 비우고 서비스가 바다 데이터 물게 하기
+        var seaData = GetSeaInventoryData();
+        if (seaData == null)
+        {
+            Debug.LogError("[GameManager] seaInventoryData가 null입니다 (Inspector 연결 확인)");
+            yield break;
+        }
+        seaData.Clear();
+
+        if (FishInventoryService.Instance != null)
+            FishInventoryService.Instance.SetInventoryData(seaData);
+        else
+            Debug.LogWarning("[GameManager] FishInventoryService.Instance == null");
 
         // 플레이어 생성
         if (playerPrefab != null)
@@ -72,23 +108,22 @@ public class GameManager : MonoBehaviour
             oceanMapInstance = Instantiate(oceanMapPrefab);
 
         // 물고기 스포너
-        FishSpawner spawner = null;
         if (fishSpawnerPrefab != null)
-            spawner = Instantiate(fishSpawnerPrefab).GetComponent<FishSpawner>();
+            spawnerInstance = Instantiate(fishSpawnerPrefab).GetComponent<FishSpawner>();
 
         // 산소 UI
-        OxygenManager oxygenMgr = null;
         if (oxygenUIPrefab != null)
-            oxygenMgr = Instantiate(oxygenUIPrefab).GetComponent<OxygenManager>();
+            oxygenMgrInstance = Instantiate(oxygenUIPrefab).GetComponent<OxygenManager>();
 
         // 인벤토리 UI
-        InventoryUI inventoryUI = null;
         if (inventoryUIPrefab != null)
-            inventoryUI = Instantiate(inventoryUIPrefab).GetComponentInChildren<InventoryUI>(true);
+            inventoryUIInstance = Instantiate(inventoryUIPrefab).GetComponentInChildren<InventoryUI>(true);
+
+        inventoryUIInstance?.SetInventoryData(seaData);
 
         // 데이터 로더
         if (fishDataLoaderPrefab != null)
-            Instantiate(fishDataLoaderPrefab);
+            fishDataLoaderInstance = Instantiate(fishDataLoaderPrefab);
 
         yield return null; // 한 프레임 더 대기 (카메라와 오브젝트 로딩 기다림)
 
@@ -108,7 +143,7 @@ public class GameManager : MonoBehaviour
         var oceanManager = FindObjectOfType<OceanManager>();
         if (oceanManager != null)
         {
-            oceanManager.Initialize(spawner, oxygenMgr, inventoryUI);
+            oceanManager.Initialize(spawnerInstance, oxygenMgrInstance, inventoryUIInstance);
             Debug.Log("[GameManager] OceanManager 초기화 완료");
         }
         else
@@ -116,33 +151,91 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("[GameManager] OceanManager를 찾을 수 없습니다");
         }
 
-        SoundManager.Instance.PlaySFX(SoundManager.Instance.waterSplashSFX);
+        if (SoundManager.Instance != null)
+        {
+            SoundManager.Instance.PlaySFX(SoundManager.Instance.waterSplashSFX);
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] SoundManager.Instance == null");
+        }
 
         Debug.Log("[GameManager] Ocean 씬 세팅 완료");
     }
 
+    private void CleanupOceanObjects()
+    {
+        if (playerInstance != null) Destroy(playerInstance);
+        if (oceanMapInstance != null) Destroy(oceanMapInstance);
+
+        if (spawnerInstance != null) Destroy(spawnerInstance.gameObject);
+        if (oxygenMgrInstance != null) Destroy(oxygenMgrInstance.gameObject);
+
+        if (inventoryUIInstance != null) Destroy(inventoryUIInstance.transform.root.gameObject);
+        if (fishDataLoaderInstance != null) Destroy(fishDataLoaderInstance);
+
+        playerInstance = null;
+        oceanMapInstance = null;
+        spawnerInstance = null;
+        oxygenMgrInstance = null;
+        inventoryUIInstance = null;
+        fishDataLoaderInstance = null;
+    }
+
+    // -------------------------
     // Land Scene 세팅
+    // -------------------------
     private void SetupLandScene()
     {
         Debug.Log("[GameManager] Land 씬 세팅 시작");
 
-        GameObject storageUIObj = Instantiate(storageUICanvasPrefab);
-        var storageUI = storageUIObj.GetComponentInChildren<StorageUI>(true);
-        if (storageUI != null)
+        if (seaInventoryData == null || storageInventoryData == null)
         {
-            storageUI.SetInventoryData(fishInventoryData);
-            Debug.Log("[GameManager] StorageUI 생성 및 데이터 연결 완료");
+            Debug.LogError("[GameManager] sea/storage InventoryData가 null입니다 (Inspector 연결 확인)");
+            return;
         }
 
-        if (buttonCanvasPrefab != null)
+        // 바다 인벤 → 보관함 누적
+        seaInventoryData.TransferTo(storageInventoryData);
+
+        if(SaveManager.Instance != null)
+            SaveManager.Instance.Save();
+
+        // 서비스가 storage 물게 하기
+        if (FishInventoryService.Instance != null)
+            FishInventoryService.Instance.SetInventoryData(storageInventoryData);
+
+        // Storage UI (중복 생성 방지)
+        if (storageUICanvasInstance == null && storageUICanvasPrefab != null)
         {
-            buttonCanvasInstance = Instantiate(buttonCanvasPrefab); // 저장
-            buttonCanvasInstance.SetActive(true); // 기본 활성화
+            storageUICanvasInstance = Instantiate(storageUICanvasPrefab);
+            storageUIInstance = storageUICanvasInstance.GetComponentInChildren<StorageUI>(true);
+        }
+
+        if (storageUIInstance != null)
+        {
+            storageUIInstance.SetInventoryData(storageInventoryData);
+            Debug.Log("[GameManager] StorageUI 데이터 연결 완료");
+        }
+        else
+        {
+            Debug.LogWarning("[GameManager] StorageUI를 찾을 수 없습니다");
+        }
+
+        // 버튼 캔버스 (중복 생성 방지)
+        if (buttonCanvasInstance == null && buttonCanvasPrefab != null)
+        {
+            buttonCanvasInstance = Instantiate(buttonCanvasPrefab);
+        }
+
+        if (buttonCanvasInstance != null)
+        {
+            buttonCanvasInstance.SetActive(true);
 
             var storageButton = buttonCanvasInstance.GetComponentInChildren<StorageButton>(true);
-            if (storageButton != null && storageUI != null)
+            if (storageButton != null && storageUIInstance != null)
             {
-                storageButton.SetTargetStorage(storageUI);
+                storageButton.SetTargetStorage(storageUIInstance);
                 Debug.Log("[GameManager] StorageButton ↔ StorageUI 연결 완료");
             }
         }
@@ -155,6 +248,9 @@ public class GameManager : MonoBehaviour
         return buttonCanvasInstance;
     }
 
+    // -------------------------
+    // 씬 이동
+    // -------------------------
     public void GoToOcean()
     {
         if (SceneryManager.Instance != null)
@@ -183,5 +279,4 @@ public class GameManager : MonoBehaviour
         else
             SceneManager.LoadScene(sceneName);
     }
-
 }

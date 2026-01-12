@@ -5,7 +5,7 @@ public class SaveManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public static SaveManager Instance { get; private set; }
-   [SerializeField] private FishInventoryData fishInventoryData;
+   [SerializeField] private FishInventoryData storageInventoryData;
 
     private string savePath;
     void Awake()
@@ -27,19 +27,26 @@ public class SaveManager : MonoBehaviour
     // Update is called once per frame
     void Start()
     {
+        if(GameManager.Instance != null)
+        {
+            storageInventoryData = GameManager.Instance.GetStorageInventoryData();
+        }
+
+        if (storageInventoryData == null) return;
+            
         Load();
     }
 
    public void Save()
     {
-        if(fishInventoryData == null)
+        if(storageInventoryData == null)
         {
             return;
         }
 
         SaveData saveData = new SaveData();
 
-        foreach (var fish in fishInventoryData.caughtFishList)
+        foreach (var fish in storageInventoryData.caughtFishList)
         {
             saveData.caughtFishList.Add(new FishSaveSlot { fishType = fish.fishType.ToString(), count = fish.count });
         }
@@ -66,11 +73,12 @@ public class SaveManager : MonoBehaviour
             return;
         }
 
-        fishInventoryData.caughtFishList.Clear();
+            storageInventoryData.caughtFishList.
+            Clear();
 
         foreach (var slot in loadedData.caughtFishList)
         {
-            fishInventoryData.AddFishSave(slot.fishType, slot.count);
+            storageInventoryData.AddFishSave(slot.fishType, slot.count);
         }
     }
 }

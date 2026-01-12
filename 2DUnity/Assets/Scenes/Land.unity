@@ -192,7 +192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 67e3da3367f6a1140b91ee146efe6078, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishInventoryData: {fileID: 11400000, guid: fb120184e94b6014b9ed4c1eea48b740, type: 2}
+  storageInventoryData: {fileID: 11400000, guid: fcdcd6419bdbcdb4ebed48837b8bcca3, type: 2}
 --- !u!4 &377667863
 Transform:
   m_ObjectHideFlags: 0
@@ -536,7 +536,8 @@ MonoBehaviour:
   fishDataLoaderPrefab: {fileID: 89068995838689660, guid: 26365a06b0292aa47a09bba381dc7bbe, type: 3}
   storageUICanvasPrefab: {fileID: 1451193942501412059, guid: 4ecb0faf3d35c454abeb7bbf9a68c1d2, type: 3}
   buttonCanvasPrefab: {fileID: 2024945792890945542, guid: db70d20ce8f85eb4ca15e2d26bb8ea8c, type: 3}
-  fishInventoryData: {fileID: 11400000, guid: fb120184e94b6014b9ed4c1eea48b740, type: 2}
+  storageInventoryData: {fileID: 11400000, guid: fcdcd6419bdbcdb4ebed48837b8bcca3, type: 2}
+  seaInventoryData: {fileID: 11400000, guid: dc37067d07ac2fc4c85fa47ca3eac3c9, type: 2}
 --- !u!4 &1121589079
 Transform:
   m_ObjectHideFlags: 0

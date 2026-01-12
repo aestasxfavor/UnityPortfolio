@@ -24,7 +24,6 @@ public class FishInventoryData : ScriptableObject
         {
             existing.count++;
 
-            SaveManager.Instance.Save();
             return;
         }
 

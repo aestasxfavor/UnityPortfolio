@@ -5,7 +5,7 @@ public enum BGMType { Title, Sea, Land }
 
 public class SoundManager : MonoBehaviour
 {
-    public static SoundManager Instance;
+    public static SoundManager Instance { get; private set; }
 
     [Header("BGM")]
     public AudioSource bgmSource;
@@ -21,29 +21,30 @@ public class SoundManager : MonoBehaviour
     public AudioClip UnLockButtonSFX;
     public AudioClip waterSplashSFX;
 
-
     private AudioSource loopSFXSource;
-
-
 
     private void Awake()
     {
-        if (Instance == null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
     private void Start()
     {
         PlayBGMByScene(SceneManager.GetActiveScene().name);
         SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDestroy()
+    {
+        if (Instance == this)
+            SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -55,35 +56,27 @@ public class SoundManager : MonoBehaviour
     {
         switch (sceneName)
         {
-            case "Title":
-                PlayBGM(BGMType.Title);
-                break;
-            case "Ocean":
-                PlayBGM(BGMType.Sea);
-                break;
-            case "Land":
-                PlayBGM(BGMType.Land);
-                break;
+            case "Title": PlayBGM(BGMType.Title); break;
+            case "Ocean": PlayBGM(BGMType.Sea); break;
+            case "Land": PlayBGM(BGMType.Land); break;
         }
     }
 
     public void PlayBGM(BGMType type)
     {
+        if (bgmSource == null) return;
+
         if (bgmSource.isPlaying)
             bgmSource.Stop();
 
         switch (type)
         {
-            case BGMType.Title:
-                bgmSource.clip = titleBGM;
-                break;
-            case BGMType.Sea:
-                bgmSource.clip = seaBGM;
-                break;
-            case BGMType.Land:
-                bgmSource.clip = landBGM;
-                break;
+            case BGMType.Title: bgmSource.clip = titleBGM; break;
+            case BGMType.Sea: bgmSource.clip = seaBGM; break;
+            case BGMType.Land: bgmSource.clip = landBGM; break;
         }
+
+        if (bgmSource.clip == null) return;
 
         bgmSource.loop = true;
         bgmSource.Play();
@@ -91,8 +84,8 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySFX(AudioClip clip)
     {
-        if (clip != null)
-            sfxSource.PlayOneShot(clip);
+        if (clip == null || sfxSource == null) return;
+        sfxSource.PlayOneShot(clip);
     }
 
     public void PlayHarpoonFireSFX()
@@ -102,6 +95,8 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySwimSFX()
     {
+        if (swimSFX == null) return;
+
         if (loopSFXSource == null)
         {
             loopSFXSource = gameObject.AddComponent<AudioSource>();
@@ -119,9 +114,6 @@ public class SoundManager : MonoBehaviour
     public void StopSwimSFX()
     {
         if (loopSFXSource != null && loopSFXSource.isPlaying)
-        {
             loopSFXSource.Stop();
-        }
     }
-
 }

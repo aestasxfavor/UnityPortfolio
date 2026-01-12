@@ -1,12 +1,13 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FishInventoryService : MonoBehaviour
 {
     public static FishInventoryService Instance;
-
+    public event Action OnInventoryChanged;
     private FishInventoryData inventoryData;
-    private InventoryUI inventoryUI;
+
 
     private Dictionary<FishType, Sprite> fishSpriteCache = new();
     private void Awake()
@@ -23,17 +24,13 @@ public class FishInventoryService : MonoBehaviour
 
     private void Start()
     {
-        inventoryData = GameManager.Instance.GetSharedInventoryData();
+        inventoryData = GameManager.Instance.GetStorageInventoryData();
 
-        inventoryUI = FindObjectOfType<InventoryUI>();
     }
 
-    public void SetInventoryUI(InventoryUI ui)
-    {
-        inventoryUI = ui;
-    }
     public void AddFish(FishType fishType)
     {
+        Debug.Log($"[AddFish] µé¾î¿Â fishType = {fishType}");
         if (!fishSpriteCache.TryGetValue(fishType, out Sprite sprite))
         {
             sprite = LoadFishSprite(fishType);
@@ -42,19 +39,20 @@ public class FishInventoryService : MonoBehaviour
             fishSpriteCache.Add(fishType, sprite);
 
         }
-        inventoryData.AddFish(fishType, sprite);
 
-        inventoryUI?.AddItemToUI(fishType, sprite);
 
-        if(inventoryData ==null)
+        if (inventoryData == null)
         {
-            inventoryData = GameManager.Instance?.GetSharedInventoryData();
-            if(inventoryData ==null)
+            inventoryData = GameManager.Instance?.GetStorageInventoryData();
+            if (inventoryData == null)
             {
                 Debug.LogError("inventoryData is Null");
                 return;
             }
         }
+        inventoryData.AddFish(fishType, sprite);
+
+        OnInventoryChanged?.Invoke();
     }
 
     private Sprite LoadFishSprite(FishType fishType)
@@ -65,5 +63,9 @@ public class FishInventoryService : MonoBehaviour
         return Resources.Load<Sprite>(info.worldSpritePath);
     }
 
-
+    public void SetInventoryData(FishInventoryData data)
+    {
+        inventoryData = data;
+        OnInventoryChanged?.Invoke();
+    }
 }

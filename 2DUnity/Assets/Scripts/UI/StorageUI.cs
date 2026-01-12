@@ -31,17 +31,46 @@ public class StorageUI : MonoBehaviour
             inventoryPanelRoot.SetActive(false); // 시작 시 닫힘 상태
     }
 
+    private void OnEnable()
+    {
+        if(FishInventoryService.Instance != null)
+        {
+            FishInventoryService.Instance.OnInventoryChanged += OnInventoryChanged;
+        }
+    }
+
+    private void OnDisable()
+    {
+        if(FishInventoryService.Instance != null)
+        {
+            FishInventoryService.Instance.OnInventoryChanged -= OnInventoryChanged;
+        }
+    }
+
+    private void OnInventoryChanged()
+    {
+        if(inventoryPanelRoot != null && inventoryPanelRoot.activeSelf)
+        {
+            LoadFishData();
+        }
+    }
+
     // GameManager에서 데이터 주입받기
     public void SetInventoryData(FishInventoryData data)
     {
         sharedInventoryData = data;
-        Debug.Log($"[StorageUI] fishInventoryData 주입 완료 ({data?.name})");
+        Debug.Log($"[StorageUI] storageInventoryData 주입 완료 ({data?.name})");
         LoadFishData();
     }
 
     // 슬롯 생성
     private void CreateSlots()
     {
+        if(slotFishOrder == null)
+        {
+            slotFishOrder = new List<FishType>();
+
+        }
         if (inventoryParent == null || slotPrefab == null)
         {
             Debug.LogError("[StorageUI] 슬롯 생성 실패 (부모나 프리팹이 비어 있음)");
@@ -98,8 +127,8 @@ public class StorageUI : MonoBehaviour
 
             if (slotMap.TryGetValue(fish.fishType, out UISlot slot))
             {
-                slot.SetItem(icon, fish.fishType);
-                slot.SetCount(fish.count);
+                slot.SetItem(icon, fish.fishType, fish.count);
+                //slot.SetCount(fish.count);
                 Debug.Log($"[StorageUI] {fish.fishType} → 지정 슬롯 표시");
             }
             else
@@ -107,8 +136,8 @@ public class StorageUI : MonoBehaviour
                 UISlot emptySlot = allSlots.Find(s => s.IsEmpty && !slotMap.ContainsValue(s));
                 if (emptySlot != null)
                 {
-                    emptySlot.SetItem(icon, fish.fishType);
-                    emptySlot.SetCount(fish.count);
+                    emptySlot.SetItem(icon, fish.fishType, fish.count);
+                   //emptySlot.SetCount(fish.count);
                     Debug.Log($"[StorageUI] {fish.fishType} → 여분 슬롯 표시");
                 }
             }

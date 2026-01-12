@@ -21,11 +21,10 @@ public class UISlot : MonoBehaviour
     }
 
     // 새 물고기 들어올 때 (첫 입장)
-    public void SetItem(Sprite icon, FishType type)
+    public void SetItem(Sprite icon, FishType type, int newCount)
     {
         fishType = type;
         isEmpty = false;
-        count = 1;
 
         if (itemIcon != null)
         {
@@ -34,20 +33,20 @@ public class UISlot : MonoBehaviour
             Debug.Log($"[UISlot] {type} 슬롯 아이콘 적용됨 {(icon != null ? icon.name : "NULL")}"); 
         }
 
-        var rt = itemIcon.rectTransform;
-        Debug.Log($"[UISlot] {type} 슬롯 아이콘 적용됨 {(icon != null ? icon.name : "NULL")} / 크기={rt.sizeDelta} / 활성={itemIcon.enabled}");
+        count = Mathf.Max(1, newCount);
+        //Debug.Log($"[UISlot] {type} 슬롯 아이콘 적용됨 {(icon != null ? icon.name : "NULL")} / 크기={rt.sizeDelta} / 활성={itemIcon.enabled}");
 
         UpdateCountText();
     }
 
     // 같은 물고기 또 잡았을 때
-    public void AddCount()
-    {
-        if (isEmpty) return;   // 안전장치
+    //public void AddCount()
+    //{
+    //    if (isEmpty) return;   // 안전장치
 
-        count++;
-        UpdateCountText();
-    }
+    //    count++;
+    //    UpdateCountText();
+    //}
 
     private void UpdateCountText()
     {
@@ -76,10 +75,10 @@ public class UISlot : MonoBehaviour
             countText.text = "";
     }
 
-    public void SetCount(int newCount)
-    {
-        count = newCount;
-        isEmpty = count <= 0;
-        UpdateCountText();
-    }
+    //public void SetCount(int newCount)
+    //{
+    //    count = newCount;
+    //    isEmpty = count <= 0;
+    //    UpdateCountText();
+    //}
 }
