@@ -28,14 +28,15 @@ public class UISlot : MonoBehaviour
 
         if (itemIcon != null)
         {
-            itemIcon.enabled = true;
             itemIcon.sprite = icon;
-            Debug.Log($"[UISlot] {type} 슬롯 아이콘 적용됨 {(icon != null ? icon.name : "NULL")}"); 
+            itemIcon.enabled = icon != null;
+
+#if UNITY_EDITOR
+            Debug.Log($"[UISlot] {type} 아이콘 적용 {(icon != null ? icon.name : "NULL")}");
+#endif
         }
 
         count = Mathf.Max(1, newCount);
-        //Debug.Log($"[UISlot] {type} 슬롯 아이콘 적용됨 {(icon != null ? icon.name : "NULL")} / 크기={rt.sizeDelta} / 활성={itemIcon.enabled}");
-
         UpdateCountText();
     }
 
@@ -55,7 +56,7 @@ public class UISlot : MonoBehaviour
         if (count <= 1)
             countText.text = "";          // 1마리일 땐 숫자 숨김
         else
-            countText.text = "" + count.ToString(); // x2, x3 ...
+            countText.text = count.ToString(); // x2, x3 ...
     }
 
     // 슬롯 비우기 (나중에 쓸 일 있으면 사용)

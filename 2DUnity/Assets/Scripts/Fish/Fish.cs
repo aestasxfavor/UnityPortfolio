@@ -4,7 +4,7 @@ using UnityEngine;
 public enum FishType
 {
     Blue, Orange, Red, Green, Shark, Grey,
-    JellyFish, Octopus, Shrimp, SwordFish, Squid, SawShark, SeaAngler   // 심해어 2종은 2차 리팩하고 상점이랑 도감 만들때 하지뭐
+    JellyFish, Octopus, Shrimp, SwordFish, Squid  // 심해어 2종은 2차 리팩하고 상점이랑 도감 만들때 하지뭐
 }
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]
@@ -44,6 +44,7 @@ public class Fish : MonoBehaviour
     {
         isCaught = false;
         startPos = transform.position;
+        //Debug.Log($"[Fish Spawn] name={gameObject.name} fishType={fishType}");
     }
 
     private void FixedUpdate()

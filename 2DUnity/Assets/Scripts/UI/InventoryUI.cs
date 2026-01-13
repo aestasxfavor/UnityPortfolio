@@ -79,7 +79,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
 
         isSlotsCreated = true;
 
-        if(sharedInventoryData == null && GameManager.Instance!=null)
+        if (sharedInventoryData == null && GameManager.Instance != null)
         {
             sharedInventoryData = GameManager.Instance.GetStorageInventoryData();
             Debug.Log($"[InventoryUI] Start에서 sharedInventoryData 자동 주입 완료{sharedInventoryData?.name}");
@@ -132,7 +132,11 @@ public class InventoryUI : MonoBehaviour, UIClosable
         {
             if (fish == null) continue;
 
-            Sprite icon = fish.fishIcon ?? Resources.Load<Sprite>($"Sprites/Fish/{fish.fishType}");
+            Sprite icon = FishInventoryService.Instance != null
+            ? FishInventoryService.Instance.GetFishSprite(fish.fishType) : null;
+
+            if (icon == null) continue;
+
 
             if (index < quickbarSlots.Count)
             {

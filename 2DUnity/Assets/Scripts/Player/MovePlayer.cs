@@ -22,6 +22,7 @@ public class MovePlayer : MonoBehaviour
 
     public bool IsHarpoonReady { get; set; }
 
+    private bool isSwimming = false;
     private void Awake()
     {
         ctrls = new PlayerCtrls();
@@ -41,6 +42,12 @@ public class MovePlayer : MonoBehaviour
         if (IsHarpoonReady)
         {
             rb.linearVelocity = Vector2.zero;
+
+            if(isSwimming)
+            {
+                SoundManager.Instance?.PlaySwimSFX();
+                isSwimming = false;
+            }
             return;
         }
 
@@ -50,6 +57,19 @@ public class MovePlayer : MonoBehaviour
         if (Mathf.Abs(inputDirection.x) > 0.01f)
         {
             lastMoveDir = new Vector2(Mathf.Sign(inputDirection.x), 0f);
+        }
+
+        bool moving = inputDirection != Vector2.zero;
+
+        if (moving && !isSwimming)
+        {
+            SoundManager.Instance?.PlaySwimSFX();
+            isSwimming = true;
+        }
+        else if (!moving && isSwimming)
+        {
+            SoundManager.Instance?.StopSwimSFX();
+            isSwimming = false;
         }
 
     }

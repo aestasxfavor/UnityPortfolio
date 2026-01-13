@@ -10,6 +10,7 @@ public class FishDataLoader : MonoBehaviour
     {
         public FishType fishType;
         public string worldSpritePath;
+        public string iconSpriteName;   // 추가: 대표 아이콘 sprite 이름
         public string description;
     }
 
@@ -19,7 +20,6 @@ public class FishDataLoader : MonoBehaviour
         public List<FishInfo> fishList = new();
     }
 
-    private FishList fishList;
     private Dictionary<FishType, FishInfo> fishInfoDict;
 
     private void Awake()
@@ -31,12 +31,10 @@ public class FishDataLoader : MonoBehaviour
         }
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
         LoadFishData();
     }
 
-    /// <summary>
-    /// fish_data.json을 Resources 폴더에서 불러옴
-    /// </summary>
     private void LoadFishData()
     {
         TextAsset jsonFile = Resources.Load<TextAsset>("fish_data");
@@ -48,18 +46,29 @@ public class FishDataLoader : MonoBehaviour
 
         FishList loadedList = JsonUtility.FromJson<FishList>(jsonFile.text);
 
+        if (loadedList == null || loadedList.fishList == null)
+        {
+            Debug.LogError("[FishDataLoader] fish_data.json 파싱 실패 또는 fishList null");
+            return;
+        }
+
         fishInfoDict = new Dictionary<FishType, FishInfo>(loadedList.fishList.Count);
 
         foreach (var info in loadedList.fishList)
         {
             fishInfoDict[info.fishType] = info;
         }
-        //Debug.Log($"[FishDataLoader] 물고기 데이터 {fishList.fishList.Count}개 로드 완료");
+
+        // 누락 검증
+        foreach (FishType type in System.Enum.GetValues(typeof(FishType)))
+        {
+            if (!fishInfoDict.ContainsKey(type))
+                Debug.LogError($"[FishDataLoader] JSON 데이터 누락: {type} ({(int)type})");
+        }
+
+        Debug.Log($"[FishDataLoader] 로드 완료 ({fishInfoDict.Count}종)");
     }
 
-    /// <summary>
-    /// 이름으로 물고기 데이터 검색
-    /// </summary>
     public FishInfo GetFishInfo(FishType fishType)
     {
         if (fishInfoDict == null)
@@ -73,5 +82,4 @@ public class FishDataLoader : MonoBehaviour
 
         return null;
     }
-
 }

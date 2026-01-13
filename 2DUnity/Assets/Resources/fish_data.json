@@ -36,16 +36,6 @@
             "description": "자동 생성된 물고기입니다."
         },
         {
-            "fishType": 11,
-            "worldSpritePath": "Fish/SawShark",
-            "description": "자동 생성된 물고기입니다."
-        },
-        {
-            "fishType": 12,
-            "worldSpritePath": "Fish/SeaAngler",
-            "description": "자동 생성된 물고기입니다."
-        },
-        {
             "fishType": 4,
             "worldSpritePath": "Fish/Shark",
             "description": "자동 생성된 물고기입니다."

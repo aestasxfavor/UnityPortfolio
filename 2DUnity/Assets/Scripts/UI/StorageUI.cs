@@ -111,25 +111,19 @@ public class StorageUI : MonoBehaviour
 
         ClearSlots();
 
-        Debug.Log($"[StorageUI] 불러오기 시작 ({sharedInventoryData.caughtFishList.Count}종)");
-
         foreach (var fish in sharedInventoryData.caughtFishList)
         {
             if (fish == null) continue;
 
-            Sprite icon = fish.fishIcon;
-            if (icon == null)
-            {
-                string path = $"Sprites/Fish/{fish.fishType}";
-                Sprite[] sprites = Resources.LoadAll<Sprite>(path);
-                icon = sprites.Length > 0 ? sprites[0] : Resources.Load<Sprite>(path);
-            }
+            Sprite icon = FishInventoryService.Instance != null
+                ? FishInventoryService.Instance.GetFishSprite(fish.fishType)
+                : null;
+
+            if (icon == null) continue;
 
             if (slotMap.TryGetValue(fish.fishType, out UISlot slot))
             {
                 slot.SetItem(icon, fish.fishType, fish.count);
-                //slot.SetCount(fish.count);
-                Debug.Log($"[StorageUI] {fish.fishType} → 지정 슬롯 표시");
             }
             else
             {
@@ -137,8 +131,6 @@ public class StorageUI : MonoBehaviour
                 if (emptySlot != null)
                 {
                     emptySlot.SetItem(icon, fish.fishType, fish.count);
-                   //emptySlot.SetCount(fish.count);
-                    Debug.Log($"[StorageUI] {fish.fishType} → 여분 슬롯 표시");
                 }
             }
         }
@@ -146,6 +138,7 @@ public class StorageUI : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryParent.GetComponent<RectTransform>());
         Debug.Log("[StorageUI] 보관함 UI 갱신 완료");
     }
+
 
     // 버튼에서 호출할 UI 토글 함수
     public void ToggleInventoryUI()

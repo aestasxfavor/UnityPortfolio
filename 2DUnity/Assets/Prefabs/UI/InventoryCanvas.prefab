@@ -48,6 +48,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8d758e68bdf3f4a4ba007a8a58bbd620, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  sharedInventoryData: {fileID: 0}
   inventoryPanelRoot: {fileID: 6898422343562088689}
   quickbarParent: {fileID: 649175494222210658}
   inventoryParent: {fileID: 2333374903010740619}
@@ -126,7 +127,6 @@ GameObject:
   - component: {fileID: 6073124917648347149}
   - component: {fileID: 8515149779126805280}
   - component: {fileID: 8526100137536519321}
-  - component: {fileID: 5250049350032328265}
   m_Layer: 5
   m_Name: InventoryCanvas
   m_TagString: Untagged
@@ -219,19 +219,6 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
---- !u!114 &5250049350032328265
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3679155371573781950}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 81d590f81fadb704a86932e1b0420177, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryUI: {fileID: 1722529110985575121}
 --- !u!1 &5850265111250085202
 GameObject:
   m_ObjectHideFlags: 0

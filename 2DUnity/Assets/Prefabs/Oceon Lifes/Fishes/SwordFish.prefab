@@ -125,7 +125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bc78f64a43cd5c448145b508cd75f1b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishType: 12
+  fishType: 9
   fishName: "\uCCAD\uC0C8\uCE58"
   moveSpeed: 3
   moveDistance: 7

@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,6 +5,7 @@ using UnityEngine;
 public class FishSpawner : MonoBehaviour
 {
     [SerializeField] private List<GameObject> fishPrefabs;
+    // 2Â÷ ¸®ÆÑÇÒ¶§ SO·Î »¬ ¿¹Á¤
     [SerializeField] private float fishInterval = 2f;
     [SerializeField] private float fishSpawnX = 5f;
     [SerializeField] private float fishSpawnY = -10f;

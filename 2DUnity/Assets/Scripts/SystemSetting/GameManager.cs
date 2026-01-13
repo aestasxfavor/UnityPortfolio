@@ -38,6 +38,7 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
+     
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -46,6 +47,8 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        EnsureFishDataLoader();
 
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
@@ -59,6 +62,21 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log($"[GameManager] 초기화 완료 — storageInventoryData: {(storageInventoryData != null ? storageInventoryData.name : "NULL")}");
         Debug.Log($"[GameManager] 초기화 완료 — seaInventoryData: {(seaInventoryData != null ? seaInventoryData.name : "NULL")}");
+    }
+
+    private void EnsureFishDataLoader()
+    {
+        if (FishDataLoader.Instance != null) return;
+
+        if(fishDataLoaderPrefab == null)
+        {
+            return;
+        }
+
+        if(fishDataLoaderInstance == null)
+        {
+            fishDataLoaderInstance = Instantiate(fishDataLoaderPrefab);
+        }
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
@@ -121,9 +139,9 @@ public class GameManager : MonoBehaviour
 
         inventoryUIInstance?.SetInventoryData(seaData);
 
-        // 데이터 로더
-        if (fishDataLoaderPrefab != null)
-            fishDataLoaderInstance = Instantiate(fishDataLoaderPrefab);
+        //// 데이터 로더
+        //if (fishDataLoaderPrefab != null)
+        //    fishDataLoaderInstance = Instantiate(fishDataLoaderPrefab);
 
         yield return null; // 한 프레임 더 대기 (카메라와 오브젝트 로딩 기다림)
 
@@ -172,14 +190,14 @@ public class GameManager : MonoBehaviour
         if (oxygenMgrInstance != null) Destroy(oxygenMgrInstance.gameObject);
 
         if (inventoryUIInstance != null) Destroy(inventoryUIInstance.transform.root.gameObject);
-        if (fishDataLoaderInstance != null) Destroy(fishDataLoaderInstance);
+        //if (fishDataLoaderInstance != null) Destroy(fishDataLoaderInstance);
 
         playerInstance = null;
         oceanMapInstance = null;
         spawnerInstance = null;
         oxygenMgrInstance = null;
         inventoryUIInstance = null;
-        fishDataLoaderInstance = null;
+        //fishDataLoaderInstance = null;
     }
 
     // -------------------------

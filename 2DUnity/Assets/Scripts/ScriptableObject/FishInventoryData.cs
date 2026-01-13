@@ -8,7 +8,7 @@ public class FishInventoryData : ScriptableObject
     public class FishSlot
     {
         public FishType fishType;
-        public Sprite fishIcon;
+        //public Sprite fishIcon;
         public int count;
     }
 
@@ -17,7 +17,7 @@ public class FishInventoryData : ScriptableObject
     /// <summary>
     /// 새로운 물고기 추가 (공용 인벤토리 반영)
     /// </summary>
-    public void AddFish(FishType type, Sprite icon)
+    public void AddFish(FishType type)
     {
         var existing = caughtFishList.Find(f => f.fishType == type);
         if (existing != null)
@@ -26,34 +26,12 @@ public class FishInventoryData : ScriptableObject
 
             return;
         }
-
-        // 반드시 Resources에서 다시 로드 시도
-        Sprite sprite = icon;
-        if (sprite == null)
+        else
         {
-            string path = $"Fish/{type}";
-            Sprite[] loadedSprites = Resources.LoadAll<Sprite>(path);
-            if (loadedSprites.Length > 0)
-            {
-                sprite = loadedSprites[0];
-                Debug.Log($"[FishInventoryData] {path} 첫 스프라이트 로드 성공");
-            }
-            else
-            {
-                sprite = Resources.Load<Sprite>(path);
-                Debug.LogWarning($"[FishInventoryData] {path} 로드 실패");
-            }
+            caughtFishList.Add(new FishSlot { fishType = type, count = 1 });
         }
 
-        caughtFishList.Add(new FishSlot
-        {
-            fishType = type,
-            fishIcon = sprite,   // 아이콘 null 방지
-            count = 1
-        });
-
-        Debug.Log($"[FishInventoryData] {type} 추가 완료 아이콘={(sprite != null)}");
-
+        Debug.Log($"FishInventoryData: {type} ");
         SaveManager.Instance.Save();
     }
 
@@ -91,21 +69,8 @@ public class FishInventoryData : ScriptableObject
             }
             else
             {
-                // 아이콘 누락 시 재로드
-                Sprite sprite = fish.fishIcon;
-                if (sprite == null)
-                {
-                    string path = $"Sprites/Fish/{fish.fishType}";
-                    sprite = Resources.Load<Sprite>(path);
-                    Debug.Log($"[FishInventoryData] {fish.fishType} 전송 중 아이콘 재로드됨");
-                }
-
-                targetInventory.caughtFishList.Add(new FishSlot
-                {
-                    fishType = fish.fishType,
-                    fishIcon = sprite,
-                    count = fish.count
-                });
+                targetInventory.caughtFishList.Add(new FishSlot 
+                { fishType = fish.fishType, count = fish.count });
             }
 
             movedCount++;
@@ -122,34 +87,15 @@ public class FishInventoryData : ScriptableObject
             return;
         }
 
-        string path = $"Fish/{type}";
-        Sprite sprite = null;
-
-        Sprite[] loaded = Resources.LoadAll<Sprite>(path);
-        if (loaded.Length > 0)
-        {
-            sprite = loaded[0];
-        }
-        else
-        {
-            sprite = Resources.Load<Sprite>(path);
-        }
-
         var exisiting = caughtFishList.Find(f => f.fishType == type);
 
         if (exisiting != null)
         {
             exisiting.count = count;
-
-            if (exisiting.fishIcon == null)
-            {
-                exisiting.fishIcon = sprite;
-            }
-
             return;
         }
 
-        caughtFishList.Add(new FishSlot { fishIcon = sprite, fishType = type, count = count });
+        caughtFishList.Add(new FishSlot {fishType = type, count = count });
 
     }
 }
