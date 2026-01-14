@@ -127,8 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishType: 10
   fishName: "\uC624\uC9D5\uC5B4"
-  moveSpeed: 0.8
-  moveDistance: 3
+  fishConfig: {fileID: 11400000, guid: e5b715c822ec8eb4ea3c79c10103714d, type: 2}
   isCaught: 0
 --- !u!58 &2028754477633941816
 CircleCollider2D:

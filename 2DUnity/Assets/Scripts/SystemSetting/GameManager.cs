@@ -60,8 +60,8 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log($"[GameManager] 초기화 완료 — storageInventoryData: {(storageInventoryData != null ? storageInventoryData.name : "NULL")}");
-        Debug.Log($"[GameManager] 초기화 완료 — seaInventoryData: {(seaInventoryData != null ? seaInventoryData.name : "NULL")}");
+        //Debug.Log($"[GameManager] 초기화 완료 — storageInventoryData: {(storageInventoryData != null ? storageInventoryData.name : "NULL")}");
+        //Debug.Log($"[GameManager] 초기화 완료 — seaInventoryData: {(seaInventoryData != null ? seaInventoryData.name : "NULL")}");
     }
 
     private void EnsureFishDataLoader()
@@ -101,13 +101,13 @@ public class GameManager : MonoBehaviour
     {
         CleanupOceanObjects();
 
-        Debug.Log("[GameManager] Ocean 씬 세팅 시작");
+       // Debug.Log("[GameManager] Ocean 씬 세팅 시작");
 
         // 바다 데이터 비우고 서비스가 바다 데이터 물게 하기
         var seaData = GetSeaInventoryData();
         if (seaData == null)
         {
-            Debug.LogError("[GameManager] seaInventoryData가 null입니다 (Inspector 연결 확인)");
+           // Debug.LogError("[GameManager] seaInventoryData가 null입니다 (Inspector 연결 확인)");
             yield break;
         }
         seaData.Clear();
@@ -150,11 +150,11 @@ public class GameManager : MonoBehaviour
         if (cam != null && playerInstance != null)
         {
             cam.SetTarget(playerInstance.transform);
-            Debug.Log("[GameManager] CameraBound 플레이어 연결 완료");
+            //Debug.Log("[GameManager] CameraBound 플레이어 연결 완료");
         }
         else
         {
-            Debug.LogWarning("[GameManager] CameraBound 또는 Player를 찾을 수 없습니다");
+            //Debug.LogWarning("[GameManager] CameraBound 또는 Player를 찾을 수 없습니다");
         }
 
         // OceanManager 연결
@@ -162,11 +162,11 @@ public class GameManager : MonoBehaviour
         if (oceanManager != null)
         {
             oceanManager.Initialize(spawnerInstance, oxygenMgrInstance, inventoryUIInstance);
-            Debug.Log("[GameManager] OceanManager 초기화 완료");
+           // Debug.Log("[GameManager] OceanManager 초기화 완료");
         }
         else
         {
-            Debug.LogWarning("[GameManager] OceanManager를 찾을 수 없습니다");
+           // Debug.LogWarning("[GameManager] OceanManager를 찾을 수 없습니다");
         }
 
         if (SoundManager.Instance != null)
@@ -175,7 +175,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[GameManager] SoundManager.Instance == null");
+           // Debug.LogWarning("[GameManager] SoundManager.Instance == null");
         }
 
         Debug.Log("[GameManager] Ocean 씬 세팅 완료");
@@ -205,11 +205,11 @@ public class GameManager : MonoBehaviour
     // -------------------------
     private void SetupLandScene()
     {
-        Debug.Log("[GameManager] Land 씬 세팅 시작");
+       // Debug.Log("[GameManager] Land 씬 세팅 시작");
 
         if (seaInventoryData == null || storageInventoryData == null)
         {
-            Debug.LogError("[GameManager] sea/storage InventoryData가 null입니다 (Inspector 연결 확인)");
+           // Debug.LogError("[GameManager] sea/storage InventoryData가 null입니다 (Inspector 연결 확인)");
             return;
         }
 
@@ -233,11 +233,11 @@ public class GameManager : MonoBehaviour
         if (storageUIInstance != null)
         {
             storageUIInstance.SetInventoryData(storageInventoryData);
-            Debug.Log("[GameManager] StorageUI 데이터 연결 완료");
+            //Debug.Log("[GameManager] StorageUI 데이터 연결 완료");
         }
         else
         {
-            Debug.LogWarning("[GameManager] StorageUI를 찾을 수 없습니다");
+           // Debug.LogWarning("[GameManager] StorageUI를 찾을 수 없습니다");
         }
 
         // 버튼 캔버스 (중복 생성 방지)
@@ -254,7 +254,7 @@ public class GameManager : MonoBehaviour
             if (storageButton != null && storageUIInstance != null)
             {
                 storageButton.SetTargetStorage(storageUIInstance);
-                Debug.Log("[GameManager] StorageButton ↔ StorageUI 연결 완료");
+               // Debug.Log("[GameManager] StorageButton ↔ StorageUI 연결 완료");
             }
         }
 

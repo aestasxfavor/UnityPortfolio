@@ -40,7 +40,7 @@ public class FishDataLoader : MonoBehaviour
         TextAsset jsonFile = Resources.Load<TextAsset>("fish_data");
         if (jsonFile == null)
         {
-            Debug.LogError("[FishDataLoader] fish_data.json을 Resources 폴더에서 찾을 수 없습니다!");
+            Debug.LogError("[FishDataLoader] fish_data.json을 Resources 폴더에서 찾을 수 없음");
             return;
         }
 

@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class InventoryUI : MonoBehaviour, UIClosable
 {
-    [SerializeField] public FishInventoryData sharedInventoryData;
+    private FishInventoryData sharedInventoryData;
 
     [Header("슬롯 부모 오브젝트")]
     [SerializeField] private GameObject inventoryPanelRoot;
@@ -16,8 +16,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
     [SerializeField] private GameObject slotPrefab;
 
     [Header("슬롯 개수")]
-    [SerializeField] private int quickbarSize = 9;
-    [SerializeField] private int inventorySize = 27;
+    [SerializeField] private InventoryConfigSO inventoryConfig;
 
     private readonly List<UISlot> quickbarSlots = new();
     private readonly List<UISlot> inventorySlots = new();
@@ -30,7 +29,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
     public void SetInventoryData(FishInventoryData data)
     {
         sharedInventoryData = data;
-        Debug.Log($"[InventoryUI] storageInventoryData 주입 완료 ({data?.name})");
+       // Debug.Log($"[InventoryUI] storageInventoryData 주입 완료 ({data?.name})");
 
         // 슬롯이 아직 생성 전이면 Start에서 Refresh 할 거라 여기선 리턴
         if (!isSlotsCreated) return;
@@ -72,8 +71,8 @@ public class InventoryUI : MonoBehaviour, UIClosable
     {
         inventoryPanelRoot.SetActive(true);
 
-        CreateSlots(quickbarParent, quickbarSlots, quickbarSize);
-        CreateSlots(inventoryParent, inventorySlots, inventorySize);
+        CreateSlots(quickbarParent, quickbarSlots, inventoryConfig.quickbarSize);
+        CreateSlots(inventoryParent, inventorySlots, inventoryConfig.inventorySize);
 
         inventoryPanelRoot.SetActive(false);
 
@@ -82,7 +81,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
         if (sharedInventoryData == null && GameManager.Instance != null)
         {
             sharedInventoryData = GameManager.Instance.GetStorageInventoryData();
-            Debug.Log($"[InventoryUI] Start에서 sharedInventoryData 자동 주입 완료{sharedInventoryData?.name}");
+          //  Debug.Log($"[InventoryUI] Start에서 sharedInventoryData 자동 주입 완료{sharedInventoryData?.name}");
         }
 
         // 슬롯 생성 끝났으니 여기서 갱신
@@ -99,7 +98,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
     {
         if (slotPrefab == null || parent == null)
         {
-            Debug.LogError("[InventoryUI] 슬롯 생성 실패 (prefab 또는 parent 없음)");
+          //  Debug.LogError("[InventoryUI] 슬롯 생성 실패 (prefab 또는 parent 없음)");
             return;
         }
 
@@ -119,7 +118,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
 
         if (sharedInventoryData == null)
         {
-            Debug.LogWarning("[InventoryUI] Refresh 실패 - storageInventoryData 없음");
+           // Debug.LogWarning("[InventoryUI] Refresh 실패 - storageInventoryData 없음");
             return;
         }
 
@@ -153,7 +152,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
             index++;
         }
 
-        Debug.Log($"[InventoryUI] UI 새로고침 완료 ({sharedInventoryData.caughtFishList.Count}종)");
+       // Debug.Log($"[InventoryUI] UI 새로고침 완료 ({sharedInventoryData.caughtFishList.Count}종)");
     }
 
     public void Close()

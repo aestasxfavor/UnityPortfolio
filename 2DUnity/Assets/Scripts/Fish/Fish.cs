@@ -16,8 +16,8 @@ public class Fish : MonoBehaviour
     [Tooltip("JSON에 등록된 이름 (FishType과 동일)")]
     [SerializeField] private string fishName;
 
-    [SerializeField] protected float moveSpeed = 1.5f;   // 이동 속도
-    [SerializeField] protected float moveDistance = 2.5f; // 좌우 이동 범위
+    [SerializeField] protected FishConfigSO fishConfig;
+
 
     [HideInInspector] public bool isCaught = false;
 
@@ -38,6 +38,8 @@ public class Fish : MonoBehaviour
         // fishName 자동 지정 (enum 이름과 일치시킴)
         if (string.IsNullOrEmpty(fishName))
             fishName = fishType.ToString();
+
+        if (fishConfig == null) return;
     }
 
     private void OnEnable()
@@ -52,11 +54,11 @@ public class Fish : MonoBehaviour
         if (isCaught) return; // 잡힌 상태면 움직이지 않게
 
         float moveDir = isMovingRight ? 1f : -1f;
-        rigid.linearVelocity = new Vector2(moveDir * moveSpeed, rigid.linearVelocity.y);
+        rigid.linearVelocity = new Vector2(moveDir * fishConfig.moveSpeed, rigid.linearVelocity.y);
 
         float distanceMoved = transform.position.x - startPos.x;
 
-        if (Mathf.Abs(distanceMoved) >= moveDistance)
+        if (Mathf.Abs(distanceMoved) >= fishConfig.moveDistance)
         {
             isMovingRight = !isMovingRight;
             startPos = transform.position;
@@ -72,7 +74,7 @@ public class Fish : MonoBehaviour
         isCaught = true;
         rigid.linearVelocity = Vector2.zero;
         StartCoroutine(Vanish());
-        Debug.Log($"[Fish] {fishName} 잡힘 → 비활성화 예정");
+        //Debug.Log($"[Fish] {fishName} 잡힘 → 비활성화 예정");
     }
 
     /// <summary>

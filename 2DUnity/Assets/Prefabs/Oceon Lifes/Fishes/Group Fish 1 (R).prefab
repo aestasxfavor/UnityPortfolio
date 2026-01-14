@@ -49,9 +49,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 0.6
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!212 &4899550508627736837
 SpriteRenderer:
@@ -242,9 +241,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 0.6
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!212 &1170054936629193224
 SpriteRenderer:
@@ -435,9 +433,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 0.6
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!212 &3004692656217838129
 SpriteRenderer:
@@ -628,9 +625,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 0.6
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!212 &1367858346118990742
 SpriteRenderer:
@@ -821,9 +817,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 0.6
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!212 &1390499016680753704
 SpriteRenderer:
@@ -1014,9 +1009,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 0.6
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!212 &4593179424049677517
 SpriteRenderer:

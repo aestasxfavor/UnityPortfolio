@@ -50,8 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishType: 0
   fishName: "\uCC38\uB3D4"
-  moveSpeed: 3
-  moveDistance: 5
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!212 &3038249428087114652
 SpriteRenderer:

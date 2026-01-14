@@ -125,9 +125,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &3292681458414985846
 Rigidbody2D:
@@ -281,9 +280,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &5613502956394569732
 Rigidbody2D:
@@ -437,9 +435,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &2741782207291227499
 Rigidbody2D:
@@ -593,9 +590,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &974302235583510949
 Rigidbody2D:
@@ -749,9 +745,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &7392758378020333607
 Rigidbody2D:
@@ -1001,9 +996,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 0
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &146280213772153730
 Rigidbody2D:
@@ -1157,9 +1151,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &8828969298315600579
 Rigidbody2D:
@@ -1313,9 +1306,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &761061176706428096
 Rigidbody2D:
@@ -1469,9 +1461,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!50 &8628793125053649933
 Rigidbody2D:

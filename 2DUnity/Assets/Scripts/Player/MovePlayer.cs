@@ -12,8 +12,7 @@ public class MovePlayer : MonoBehaviour
     [SerializeField] private SpriteRenderer playerSR;
     [SerializeField] private Transform playerVisual;
 
-    // Todo: 2차 리팩때 SO로 분리하기
-    [SerializeField] private float speed = 5f;
+    [SerializeField] private PlayerConfigSO playerConfig;
 
     public Vector2 LastMoveDir => lastMoveDir;
     public Vector2 InputDirection => inputDirection;
@@ -52,7 +51,7 @@ public class MovePlayer : MonoBehaviour
         }
 
         inputDirection = ctrls.Player.Move.ReadValue<Vector2>();
-        rb.linearVelocity = inputDirection * speed;
+        rb.linearVelocity = inputDirection * playerConfig.speed;
 
         if (Mathf.Abs(inputDirection.x) > 0.01f)
         {

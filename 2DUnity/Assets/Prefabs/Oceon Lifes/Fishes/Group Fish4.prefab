@@ -189,9 +189,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 2
-  fishName: "\uB3CC\uB3D4"
-  moveSpeed: 1.5
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!1 &1922304126600433895
 GameObject:
@@ -382,9 +381,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 2
-  fishName: "\uB3CC\uB3D4"
-  moveSpeed: 1.5
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!1 &1989189282582554563
 GameObject:
@@ -575,9 +573,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 2
-  fishName: "\uB3CC\uB3D4"
-  moveSpeed: 1.5
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!1 &3174441322669220546
 GameObject:
@@ -768,9 +765,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 2
-  fishName: "\uB3CC\uB3D4"
-  moveSpeed: 1.5
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!1 &4601649756657567637
 GameObject:
@@ -1000,9 +996,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 2
-  fishName: "\uB3CC\uB3D4"
-  moveSpeed: 1.5
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!1 &7843285160303616423
 GameObject:
@@ -1193,9 +1188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 2
-  fishName: "\uB3CC\uB3D4"
-  moveSpeed: 1.5
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!1 &8175663140368697149
 GameObject:
@@ -1386,9 +1380,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 2
-  fishName: "\uB3CC\uB3D4"
-  moveSpeed: 1.5
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!1 &8942572954725973057
 GameObject:
@@ -1579,7 +1572,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 2
-  fishName: "\uB3CC\uB3D4"
-  moveSpeed: 1.5
-  moveDistance: 2.5
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0

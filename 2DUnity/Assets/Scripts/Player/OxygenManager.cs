@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public class OxygenManager : MonoBehaviour, UIClosable
 {
-    // SO로 나중에 빼기
-    [SerializeField] private float maxOxygen = 99f;
+    [SerializeField] private OxygenConfigSO oxygenConfig;
+
     [SerializeField] private float currentOxygen;
     [SerializeField] private Slider oxygenSlider;
 
@@ -12,8 +12,8 @@ public class OxygenManager : MonoBehaviour, UIClosable
 
     void Start()
     {
-        currentOxygen = maxOxygen;
-        oxygenSlider.maxValue = maxOxygen;
+        currentOxygen = oxygenConfig.maxOxygen;
+        oxygenSlider.maxValue = oxygenConfig.maxOxygen;
         oxygenSlider.value = currentOxygen;
     }
 
@@ -29,15 +29,15 @@ public class OxygenManager : MonoBehaviour, UIClosable
             currentOxygen = 0;
             isActive = false;
 
-            Debug.Log("[OxygenManager] Oxygen Depleted");
+           // Debug.Log("[OxygenManager] Oxygen Depleted");
 
             if (SceneFlowManager.Instance == null)
             {
-                Debug.LogError("[OxygenManager] SceneFlowManager.Instance == null");
+               // Debug.LogError("[OxygenManager] SceneFlowManager.Instance == null");
             }
             else
             {
-                Debug.Log("[OxygenManager] ChangeScene(Land) 호출");
+               // Debug.Log("[OxygenManager] ChangeScene(Land) 호출");
                 SceneFlowManager.Instance.ChangeScene(SceneType.Land);
             }
 
@@ -48,7 +48,7 @@ public class OxygenManager : MonoBehaviour, UIClosable
 
     public void ResetOxygen()
     {
-        currentOxygen = maxOxygen;
+        currentOxygen = oxygenConfig.maxOxygen;
         oxygenSlider.value = currentOxygen;
         isActive = true;
     }

@@ -95,7 +95,7 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySwimSFX()
     {
-        Debug.Log("[Sound] PlaySwimSFX called");
+       // Debug.Log("[Sound] PlaySwimSFX called");
         if (swimSFX == null) return;
 
         if (loopSFXSource == null)

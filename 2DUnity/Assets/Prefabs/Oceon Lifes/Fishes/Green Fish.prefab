@@ -190,6 +190,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishType: 3
   fishName: "\uCD08\uB85D\uBB3C\uACE0\uAE30"
-  moveSpeed: 2.5
-  moveDistance: 6
+  fishConfig: {fileID: 11400000, guid: f8e3b265f5140de49bfb53b3f10be995, type: 2}
   isCaught: 0

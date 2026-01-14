@@ -40,15 +40,6 @@ public class UISlot : MonoBehaviour
         UpdateCountText();
     }
 
-    // 같은 물고기 또 잡았을 때
-    //public void AddCount()
-    //{
-    //    if (isEmpty) return;   // 안전장치
-
-    //    count++;
-    //    UpdateCountText();
-    //}
-
     private void UpdateCountText()
     {
         if (countText == null) return;
@@ -75,11 +66,4 @@ public class UISlot : MonoBehaviour
         if (countText != null)
             countText.text = "";
     }
-
-    //public void SetCount(int newCount)
-    //{
-    //    count = newCount;
-    //    isEmpty = count <= 0;
-    //    UpdateCountText();
-    //}
 }

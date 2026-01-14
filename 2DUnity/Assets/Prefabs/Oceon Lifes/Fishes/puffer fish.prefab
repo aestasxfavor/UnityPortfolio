@@ -127,8 +127,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fishType: 1
   fishName: "\uBCF5\uC5B4"
-  moveSpeed: 2.5
-  moveDistance: 5
+  fishConfig: {fileID: 11400000, guid: 1fcbef15464be724086224865a05319a, type: 2}
   isCaught: 0
 --- !u!50 &6398302137542508811
 Rigidbody2D:

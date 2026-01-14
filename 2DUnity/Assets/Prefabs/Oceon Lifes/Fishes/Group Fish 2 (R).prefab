@@ -153,9 +153,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!58 &5467226222290216401
 CircleCollider2D:
@@ -380,9 +379,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!58 &2670042733620090336
 CircleCollider2D:
@@ -573,9 +571,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fishType: 0
-  fishName: 
-  moveSpeed: 1
-  moveDistance: 2
+  fishName: "\uC7A5\uC2DD\uC6A9"
+  fishConfig: {fileID: 11400000, guid: 75e08fd996ff25d47aedeb4891fc538e, type: 2}
   isCaught: 0
 --- !u!58 &561327303209278721
 CircleCollider2D:

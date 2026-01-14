@@ -351,6 +351,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76be81c9e6586144bb66f252058430fa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  oxygenConfig: {fileID: 11400000, guid: 18a9c17353016b944a31c2c2a5e177dd, type: 2}
   maxOxygen: 60
   currentOxygen: 0
   oxygenSlider: {fileID: 9022820529538604186}

@@ -53,8 +53,7 @@ MonoBehaviour:
   quickbarParent: {fileID: 649175494222210658}
   inventoryParent: {fileID: 2333374903010740619}
   slotPrefab: {fileID: 5781296773945941349, guid: 1e33842ac7b19a44cb14cc374350ccb5, type: 3}
-  quickbarSize: 9
-  inventorySize: 27
+  inventoryConfig: {fileID: 11400000, guid: ac324b92a0d0cf9488e626e5def8af24, type: 2}
 --- !u!1 &1806290704993934638
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,13 +5,13 @@ using UnityEngine.UI;
 public class StorageUI : MonoBehaviour
 {
     [Header("공용 인벤토리 데이터")]
-    [SerializeField] private FishInventoryData sharedInventoryData;
+    private FishInventoryData sharedInventoryData;
 
     [Header("슬롯 관련 설정")]
     [SerializeField] private Transform inventoryParent;
     [SerializeField] private GameObject slotPrefab;
-    [SerializeField] private List<FishType> slotFishOrder;
-    [SerializeField] private int totalSlots = 27;
+
+    [SerializeField] private StorageConfigSO storageConfig;
 
     [Header("UI 활성화 루트 (Inventory Bar 연결)")]
     [SerializeField] private GameObject inventoryPanelRoot;
@@ -59,38 +59,44 @@ public class StorageUI : MonoBehaviour
     public void SetInventoryData(FishInventoryData data)
     {
         sharedInventoryData = data;
-        Debug.Log($"[StorageUI] storageInventoryData 주입 완료 ({data?.name})");
+       // Debug.Log($"[StorageUI] storageInventoryData 주입 완료 ({data?.name})");
         LoadFishData();
     }
 
     // 슬롯 생성
     private void CreateSlots()
     {
-        if(slotFishOrder == null)
+        if (storageConfig == null)
         {
-            slotFishOrder = new List<FishType>();
+            Debug.LogError("[StorageUI] storageConfig가 비어 있음");
+            return;
+        }
+
+        if (storageConfig.slotFishOrder == null)
+        {
+            storageConfig.slotFishOrder = new List<FishType>();
 
         }
         if (inventoryParent == null || slotPrefab == null)
         {
-            Debug.LogError("[StorageUI] 슬롯 생성 실패 (부모나 프리팹이 비어 있음)");
+           // Debug.LogError("[StorageUI] 슬롯 생성 실패 (부모나 프리팹이 비어 있음)");
             return;
         }
 
-        for (int i = 0; i < totalSlots; i++)
+        for (int i = 0; i < storageConfig.totalSlots; i++)
         {
             GameObject newSlot = Instantiate(slotPrefab, inventoryParent);
             UISlot slot = newSlot.GetComponent<UISlot>();
             allSlots.Add(slot);
         }
 
-        for (int i = 0; i < slotFishOrder.Count && i < allSlots.Count; i++)
+        for (int i = 0; i < storageConfig.slotFishOrder.Count && i < allSlots.Count; i++)
         {
-            slotMap[slotFishOrder[i]] = allSlots[i];
-            Debug.Log($"[StorageUI] {slotFishOrder[i]} → {i + 1}번 슬롯 매핑 완료");
+            slotMap[storageConfig.slotFishOrder[i]] = allSlots[i];
+           // Debug.Log($"[StorageUI] {storageConfig.slotFishOrder[i]} → {i + 1}번 슬롯 매핑 완료");
         }
 
-        Debug.Log($"[StorageUI] 총 {slotMap.Count}/{totalSlots} 슬롯 매핑 완료");
+        Debug.Log($"[StorageUI] 총 {slotMap.Count}/{storageConfig.totalSlots} 슬롯 매핑 완료");
     }
 
     // 슬롯 초기화
@@ -136,7 +142,7 @@ public class StorageUI : MonoBehaviour
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryParent.GetComponent<RectTransform>());
-        Debug.Log("[StorageUI] 보관함 UI 갱신 완료");
+       // Debug.Log("[StorageUI] 보관함 UI 갱신 완료");
     }
 
 
@@ -155,11 +161,11 @@ public class StorageUI : MonoBehaviour
         if (newState)
         {
             LoadFishData();
-            Debug.Log("[StorageUI] 보관함 열림");
+          //  Debug.Log("[StorageUI] 보관함 열림");
         }
-        else
-        {
-            Debug.Log("[StorageUI] 보관함 닫힘");
-        }
+        //else
+        //{
+        //    Debug.Log("[StorageUI] 보관함 닫힘");
+        //}
     }
 }

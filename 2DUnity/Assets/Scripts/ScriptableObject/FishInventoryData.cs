@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FishInventoryData", menuName = "Game/Fish Inventory Data")]
-public class FishInventoryData : ScriptableObject
+public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정
 {
     [System.Serializable]
     public class FishSlot
@@ -31,7 +31,7 @@ public class FishInventoryData : ScriptableObject
             caughtFishList.Add(new FishSlot { fishType = type, count = 1 });
         }
 
-        Debug.Log($"FishInventoryData: {type} ");
+       // Debug.Log($"FishInventoryData: {type} ");
         SaveManager.Instance.Save();
     }
 
@@ -42,7 +42,7 @@ public class FishInventoryData : ScriptableObject
     public void Clear()
     {
         caughtFishList.Clear();
-        Debug.Log("[FishInventoryData] 전체 데이터 초기화 완료");
+       // Debug.Log("[FishInventoryData] 전체 데이터 초기화 완료");
     }
 
     /// <summary>
@@ -52,7 +52,7 @@ public class FishInventoryData : ScriptableObject
     {
         if (targetInventory == null)
         {
-            Debug.LogWarning("[FishInventoryData] TransferTo 실패 - targetInventory 없음");
+           // Debug.LogWarning("[FishInventoryData] TransferTo 실패 - targetInventory 없음");
             return;
         }
 
@@ -76,7 +76,7 @@ public class FishInventoryData : ScriptableObject
             movedCount++;
         }
 
-        Debug.Log($"[FishInventoryData] {targetInventory.name}으로 {movedCount}종 이동 완료");
+       // Debug.Log($"[FishInventoryData] {targetInventory.name}으로 {movedCount}종 이동 완료");
         Clear(); // 이동 후 초기화
     }
 

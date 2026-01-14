@@ -13,7 +13,7 @@ public class OceanManager : MonoBehaviour
         fishSpawner = spawner;
         oxygenManager = oxygen;
         inventoryUI = inv;
-        Debug.Log("[OceanManager] Initialize 완료");
+       // Debug.Log("[OceanManager] Initialize 완료");
     }
 
     private void Start() => StartCoroutine(LateStart());

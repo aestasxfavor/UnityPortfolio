@@ -30,7 +30,7 @@ public class SceneFlowManager : MonoBehaviour
         {
             if(ui is UIClosable closable)
             {
-                Debug.Log($"[SceneFlow] Close UI: {ui.name}");
+               // Debug.Log($"[SceneFlow] Close UI: {ui.name}");
                 closable.Close();
             }
         }

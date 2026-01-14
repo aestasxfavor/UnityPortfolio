@@ -104,7 +104,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   harpoonPool: {fileID: -890209178008201469}
   firePoint: {fileID: 6040259063038685400}
-  harpoonSpeed: 6
+  fireConfig: {fileID: 11400000, guid: 68a05bcf8444e584f98fcc1c5fa9ae47, type: 2}
 --- !u!1 &7501918749133149369
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,7 +348,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerSR: {fileID: 790718844569204687}
   playerVisual: {fileID: 6632347065502971290}
-  speed: 4
+  playerConfig: {fileID: 11400000, guid: 06e8f927e59365544b36c111aa9269ca, type: 2}
 --- !u!114 &651324597514422601
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -407,7 +407,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: be0bbbbf9eeacdd459e7c29eda969897, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  poolSize: 6
+  poolConfig: {fileID: 11400000, guid: bbc2fdeb43906064292c77c88bcbcd71, type: 2}
   harpoonTipPrefab: {fileID: 8912733466234892814}
 --- !u!1 &8912733466234892814
 GameObject:
@@ -538,8 +538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8c6628318ba87054f82177bb82af20e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 6
-  maxDistance: 10
+  tipConfig: {fileID: 11400000, guid: 6dd32bd60cf0a8f4e8b5ecee6a34593b, type: 2}
 --- !u!60 &4245281831473872445
 PolygonCollider2D:
   m_ObjectHideFlags: 0

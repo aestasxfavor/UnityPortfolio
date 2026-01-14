@@ -3,9 +3,8 @@ using UnityEngine;
 
 public class HarpoonPool : MonoBehaviour
 {
-    // Todo: 2차 리팩토링 때 SO로 뺄 예정
     [Header("풀 설정")]
-    [SerializeField] private int poolSize = 5;
+    [SerializeField] private HarpoonPoolingConfig poolConfig;
     [SerializeField] private GameObject harpoonTipPrefab;
 
     // 2차 리팩토링 때 상황보고 Stack이나 List로 바꿀 예정
@@ -15,19 +14,19 @@ public class HarpoonPool : MonoBehaviour
     {
         if (harpoonTipPrefab == null)
         {
-            Debug.LogError("[HarpoonPool] harpoonTipPrefab이 비어있습니다!");
+           // Debug.LogError("[HarpoonPool] harpoonTipPrefab이 비어있음");
             return;
         }
 
         // 최초 풀 생성
-        for (int i = 0; i < poolSize; i++)
+        for (int i = 0; i < poolConfig.poolSize; i++)
         {
             GameObject obj = CreateNewHarpoon();
             obj.SetActive(false);
             pool.Enqueue(obj);
         }
 
-        Debug.Log($"[HarpoonPool] 풀 초기화 완료 ({poolSize}개)");
+       // Debug.Log($"[HarpoonPool] 풀 초기화 완료 ({poolConfig.poolSize}개)");
     }
 
     // 새 작살 생성 함수 (반복 코드 정리)
@@ -39,7 +38,7 @@ public class HarpoonPool : MonoBehaviour
         if (tip != null)
             tip.SetPool(this);
         else
-            Debug.LogWarning("[HarpoonPool] HarpoonTip 컴포넌트를 찾을 수 없습니다!");
+            Debug.LogWarning("[HarpoonPool] HarpoonTip 컴포넌트를 찾을 수 없음");
 
         return obj;
     }
@@ -55,7 +54,7 @@ public class HarpoonPool : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("[HarpoonPool] 풀 부족! 새 작살 생성");
+           // Debug.LogWarning("[HarpoonPool] 풀 부족 새 작살 생성");
             obj = CreateNewHarpoon();
         }
 
@@ -68,7 +67,7 @@ public class HarpoonPool : MonoBehaviour
     {
         if (obj == null)
         {
-            Debug.LogWarning("[HarpoonPool] 반환 시 null 오브젝트 감지");
+           // Debug.LogWarning("[HarpoonPool] 반환 시 null 오브젝트 감지");
             return;
         }
 

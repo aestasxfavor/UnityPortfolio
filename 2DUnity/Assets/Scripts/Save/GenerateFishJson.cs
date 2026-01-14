@@ -29,7 +29,7 @@ public class GenerateSimpleFishJson
 
         if (!Directory.Exists(fishPath))
         {
-            Debug.LogError($"[GenerateFishJson] 폴더 없음: {fishPath}");
+           // Debug.LogError($"[GenerateFishJson] 폴더 없음: {fishPath}");
             return;
         }
 
@@ -38,7 +38,7 @@ public class GenerateSimpleFishJson
 
         if (spriteGUIDs == null || spriteGUIDs.Length == 0)
         {
-            Debug.LogError($"[GenerateFishJson] Sprite가 없음: {fishPath}");
+           //Debug.LogError($"[GenerateFishJson] Sprite가 없음: {fishPath}");
             return;
         }
 
@@ -70,7 +70,7 @@ public class GenerateSimpleFishJson
             if (!System.Enum.TryParse(baseName, true, out FishType fishType))
             {
                 // 매핑 실패한건 로그로 출력해서 바로 원인 확인 가능
-                Debug.LogWarning($"[GenerateFishJson] FishType 없음: baseName={baseName} / sprite={fileName}");
+                //Debug.LogWarning($"[GenerateFishJson] FishType 없음: baseName={baseName} / sprite={fileName}");
                 continue;
             }
 
@@ -102,7 +102,7 @@ public class GenerateSimpleFishJson
         {
             if (!addedFish.ContainsKey(type))
             {
-                Debug.LogError($"[GenerateFishJson] JSON 누락됨: {type} ({(int)type})");
+               // Debug.LogError($"[GenerateFishJson] JSON 누락됨: {type} ({(int)type})");
             }
         }
 
@@ -112,7 +112,7 @@ public class GenerateSimpleFishJson
 
         AssetDatabase.Refresh();
 
-        Debug.Log($"[GenerateFishJson] 물고기 {fishList.fishList.Count}개 JSON 생성 완료 → {savePath}");
+       // Debug.Log($"[GenerateFishJson] 물고기 {fishList.fishList.Count}개 JSON 생성 완료 → {savePath}");
     }
 }
 #endif

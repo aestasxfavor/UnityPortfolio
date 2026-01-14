@@ -26,6 +26,7 @@ public class PlayerAim : MonoBehaviour
     public bool IsHarpoonReady { get; private set; }
     private bool wantToFire;
 
+    // Todo: MVP가 다 완성되고 나서 SO로 분리할 예정
     #region Visual Data
     [System.Serializable]
     private struct HarpoonVisual

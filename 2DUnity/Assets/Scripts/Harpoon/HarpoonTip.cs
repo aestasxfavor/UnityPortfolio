@@ -3,11 +3,9 @@ using UnityEngine;
 
 public class HarpoonTip : MonoBehaviour
 {
-    // Todo: 2차 리팩토링 때 SO로 뺄 예정
-    private Vector3 startPos;
-    [SerializeField] private float speed = 5f;
-    [SerializeField] private float maxDistance = 6f;
+   [SerializeField] private HarpoonTipConfigSO tipConfig;
 
+    private Vector3 startPos;
     private Vector3 direction;
     private HarpoonPool pool;
 
@@ -27,9 +25,9 @@ public class HarpoonTip : MonoBehaviour
 
     void Update()
     {
-        transform.position += direction * speed * Time.deltaTime;
+        transform.position += direction * tipConfig.speed * Time.deltaTime;
 
-        if (Vector3.Distance(startPos, transform.position) >= maxDistance)
+        if (Vector3.Distance(startPos, transform.position) >= tipConfig.maxDistance)
         {
             pool?.ReturnHarpoon(gameObject);
         }
@@ -61,9 +59,9 @@ public class HarpoonTip : MonoBehaviour
 
         fish.isCaught = true;
 
-        Debug.Log($"[HarpoonTip] {fish.fishType} 잡음");
+        //Debug.Log($"[HarpoonTip] {fish.fishType} 잡음");
 
-        Debug.Log($"[HarpoonTip] 잡은 fishType = {fish.fishType}");
+        //Debug.Log($"[HarpoonTip] 잡은 fishType = {fish.fishType}");
         // 단일 진입점
         FishInventoryService.Instance.AddFish(fish.fishType);
 

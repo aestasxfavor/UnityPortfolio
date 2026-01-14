@@ -31,7 +31,7 @@ public class FishInventory : MonoBehaviour
             caughtFishDict[fishName] = 1;
         }
 
-        Debug.Log($"{fishName} 잡음! 현재 수량: {caughtFishDict[fishName]}");
+       // Debug.Log($"{fishName} 잡음! 현재 수량: {caughtFishDict[fishName]}");
     }
 
     public int GetFishCount(string fishName)
@@ -43,10 +43,10 @@ public class FishInventory : MonoBehaviour
 
     public void PrintInventory()
     {
-        Debug.Log("[현재 인벤토리]");
+        //Debug.Log("[현재 인벤토리]");
         foreach (var fish in caughtFishDict)
         {
-            Debug.Log($"- {fish.Key}: {fish.Value}마리");
+            //Debug.Log($"- {fish.Key}: {fish.Value}마리");
         }
     }
 }
