@@ -1,4 +1,5 @@
 using System.IO;
+using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class SaveManager : MonoBehaviour
@@ -8,6 +9,11 @@ public class SaveManager : MonoBehaviour
    [SerializeField] private FishInventoryData storageInventoryData;
 
     private string savePath;
+
+    private float saveTimer;
+    private bool saveRequest;
+
+    private float saveCoolDown = 10f;
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -24,7 +30,7 @@ public class SaveManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
+
     void Start()
     {
         if(GameManager.Instance != null)
@@ -37,7 +43,25 @@ public class SaveManager : MonoBehaviour
         Load();
     }
 
-   public void Save()
+    private void Update()
+    {
+        if (!saveRequest) return;
+
+        saveTimer += Time.unscaledDeltaTime;
+        if (saveTimer < saveCoolDown) return;
+
+        saveTimer = 0f;
+        saveRequest = false;
+
+        Save();
+    }
+
+    public void RequestSave()
+    {
+        saveRequest = true;
+    }
+
+    public void Save()
     {
         if(storageInventoryData == null)
         {
@@ -48,6 +72,7 @@ public class SaveManager : MonoBehaviour
 
         foreach (var fish in storageInventoryData.caughtFishList)
         {
+            if (fish == null) continue;
             saveData.caughtFishList.Add(new FishSaveSlot { fishType = fish.fishType.ToString(), count = fish.count });
         }
 

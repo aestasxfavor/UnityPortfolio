@@ -19,20 +19,20 @@ public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정
     /// </summary>
     public void AddFish(FishType type)
     {
-        var existing = caughtFishList.Find(f => f.fishType == type);
-        if (existing != null)
+        for (int i = 0; i < caughtFishList.Count; i++)
         {
-            existing.count++;
-
-            return;
-        }
-        else
-        {
-            caughtFishList.Add(new FishSlot { fishType = type, count = 1 });
+            var slot = caughtFishList[i];
+            if(slot != null && slot.fishType == type)
+            {
+                slot.count++;
+                return;
+            }
         }
 
-       // Debug.Log($"FishInventoryData: {type} ");
-        SaveManager.Instance.Save();
+        caughtFishList.Add(new FishSlot  { fishType = type, count = 1 });
+
+        // Debug.Log($"FishInventoryData: {type} ");
+        SaveManager.Instance.RequestSave();
     }
 
 
@@ -56,24 +56,30 @@ public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정
             return;
         }
 
-        int movedCount = 0;
-
         foreach (var fish in caughtFishList)
         {
             if (fish == null) continue;
 
-            var existing = targetInventory.caughtFishList.Find(f => f.fishType == fish.fishType);
-            if (existing != null)
+            FishSlot exist = null;
+
+            for (int i = 0; i < targetInventory.caughtFishList.Count; i++)
             {
-                existing.count += fish.count;
+                var t = targetInventory.caughtFishList[i];
+                if(t != null && t.fishType == fish.fishType)
+                {
+                    exist = t;
+                    break;
+                }
+            }
+
+            if (exist != null)
+            {
+                exist.count += fish.count;
             }
             else
             {
-                targetInventory.caughtFishList.Add(new FishSlot 
-                { fishType = fish.fishType, count = fish.count });
+                targetInventory.caughtFishList.Add(new FishSlot { fishType = fish.fishType, count = fish.count });
             }
-
-            movedCount++;
         }
 
        // Debug.Log($"[FishInventoryData] {targetInventory.name}으로 {movedCount}종 이동 완료");
@@ -87,12 +93,14 @@ public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정
             return;
         }
 
-        var exisiting = caughtFishList.Find(f => f.fishType == type);
-
-        if (exisiting != null)
+        for (int i = 0; i < caughtFishList.Count; i++)
         {
-            exisiting.count = count;
-            return;
+            var slot = caughtFishList[i];
+            if(slot != null && slot.fishType == type)
+            {
+                slot.count = count;
+                return;
+            }
         }
 
         caughtFishList.Add(new FishSlot {fishType = type, count = count });

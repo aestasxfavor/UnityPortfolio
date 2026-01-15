@@ -92,6 +92,9 @@ public class InventoryUI : MonoBehaviour, UIClosable
     {
         isInventoryOpen = !isInventoryOpen;
         inventoryPanelRoot.SetActive(isInventoryOpen);
+
+        if (isInventoryOpen)
+            RefreshUI();
     }
 
     private void CreateSlots(Transform parent, List<UISlot> list, int size)
@@ -114,6 +117,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
 
     public void RefreshUI()
     {
+
         if (!isSlotsCreated) return; // 슬롯 생성 전 호출 방어
 
         if (sharedInventoryData == null)

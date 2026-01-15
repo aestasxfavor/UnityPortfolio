@@ -8,6 +8,8 @@ public class FishSpawner : MonoBehaviour
 
     [SerializeField] private SpawnerConfigSO spawnerConfig;
 
+    private readonly List<GameObject> aliveFish = new();
+
     private void Start()
     {
         StartCoroutine(FishSpawn());
@@ -18,6 +20,15 @@ public class FishSpawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(spawnerConfig.fishInterval);
+
+            for(int i = aliveFish.Count - 1; i >= 0; i--)
+            {
+                if(aliveFish[i] == null)
+                    aliveFish.RemoveAt(i);
+            }
+
+            if (aliveFish.Count >= spawnerConfig.maxFishSpawn)
+                continue;
 
             GameObject randomFish = fishPrefabs[Random.Range(0, fishPrefabs.Count)];
 

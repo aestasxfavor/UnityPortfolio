@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class FishInventoryService : MonoBehaviour
 {
@@ -9,7 +10,7 @@ public class FishInventoryService : MonoBehaviour
 
     private FishInventoryData inventoryData;
 
-    private readonly Dictionary<FishType, Sprite> fishSpriteCache = new();
+    private readonly Dictionary<FishType, Sprite> fishSpriteCache = new(128);
 
     private void Awake()
     {
@@ -27,58 +28,61 @@ public class FishInventoryService : MonoBehaviour
         inventoryData = GameManager.Instance.GetStorageInventoryData();
     }
 
-    public void AddFish(FishType fishType)
+    private FishInventoryData Data
     {
-        if (inventoryData == null)
+        get
         {
-            inventoryData = GameManager.Instance?.GetStorageInventoryData();
             if (inventoryData == null)
             {
-               // Debug.LogError("[FishInventoryService] inventoryData is null");
-                return;
+                inventoryData = GameManager.Instance?.GetStorageInventoryData();
             }
+            return inventoryData;
+        }
+    }
+
+
+    public void AddFish(FishType fishType)
+    {
+        var data = Data;
+        if (data == null)
+        {
+            return;
         }
 
-        inventoryData.AddFish(fishType);
+        data.AddFish(fishType);
         OnInventoryChanged?.Invoke();
     }
 
     public Sprite GetFishSprite(FishType fishType)
     {
-        if (!fishSpriteCache.TryGetValue(fishType, out var sprite))
+        if (fishSpriteCache.TryGetValue(fishType, out var sprite))
         {
-            sprite = LoadFishSprite(fishType);
-            if (sprite != null)
-                fishSpriteCache[fishType] = sprite;
+            return sprite;
+
         }
+        sprite = LoadFishSprite(fishType);
+
+        if (sprite != null)
+            fishSpriteCache[fishType] = sprite;
+
         return sprite;
     }
 
     private Sprite LoadFishSprite(FishType fishType)
     {
-        if (FishDataLoader.Instance == null)
-        {
-           // Debug.LogError($"[FishInventoryService] FishDataLoader.Instance == null (fishType={fishType})");
-            return null;
-        }
+        var loader = FishDataLoader.Instance;
+        if (loader == null) return null;
 
-        var info = FishDataLoader.Instance.GetFishInfo(fishType);
-        if (info == null)
-        {
-          //  Debug.LogError($"[FishInventoryService] FishInfo null (fishType={fishType})");
-            return null;
-        }
+        var info = loader.GetFishInfo(fishType);
+        if (info == null) return null;
 
         if (string.IsNullOrEmpty(info.worldSpritePath))
-        {
-           // Debug.LogError($"[FishInventoryService] worldSpritePath empty (fishType={fishType})");
             return null;
-        }
 
         var sprites = Resources.LoadAll<Sprite>(info.worldSpritePath);
         if (sprites == null || sprites.Length == 0)
         {
-           // Debug.LogError($"[FishInventoryService] LoadAll<Sprite> fail path={info.worldSpritePath} (fishType={fishType})");
+            // Debug.LogError($"[FishInventoryService] LoadAll<Sprite> fail path={info.worldSpritePath} (fishType={fishType})");
             return null;
         }
 
@@ -87,11 +91,12 @@ public class FishInventoryService : MonoBehaviour
         {
             for (int i = 0; i < sprites.Length; i++)
             {
-                if (sprites[i] != null && sprites[i].name == info.iconSpriteName)
-                    return sprites[i];
+                var s = sprites[i];
+                if (s != null && s.name == info.iconSpriteName)
+                    return s;
             }
 
-           // Debug.LogError($"[FishInventoryService] target sprite not found: {info.iconSpriteName} / path={info.worldSpritePath}");
+            // Debug.LogError($"[FishInventoryService] target sprite not found: {info.iconSpriteName} / path={info.worldSpritePath}");
             return null;
         }
 

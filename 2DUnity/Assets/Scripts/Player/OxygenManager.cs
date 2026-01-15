@@ -29,20 +29,9 @@ public class OxygenManager : MonoBehaviour, UIClosable
             currentOxygen = 0;
             isActive = false;
 
-           // Debug.Log("[OxygenManager] Oxygen Depleted");
 
-            if (SceneFlowManager.Instance == null)
-            {
-               // Debug.LogError("[OxygenManager] SceneFlowManager.Instance == null");
-            }
-            else
-            {
-               // Debug.Log("[OxygenManager] ChangeScene(Land) 호출");
+            if (SceneFlowManager.Instance != null)
                 SceneFlowManager.Instance.ChangeScene(SceneType.Land);
-            }
-
-
-            SceneFlowManager.Instance.ChangeScene(SceneType.Land);
         }
     }
 
