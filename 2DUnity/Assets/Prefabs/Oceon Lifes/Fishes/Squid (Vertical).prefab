@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 5524686429334449501}
   - component: {fileID: 2028754477633941816}
   - component: {fileID: 5073552523365855478}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Squid (Vertical)
-  m_TagString: Fish
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

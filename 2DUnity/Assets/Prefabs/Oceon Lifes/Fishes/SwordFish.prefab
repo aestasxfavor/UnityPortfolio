@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 5048305932704405129}
   - component: {fileID: 4351469420752205179}
   - component: {fileID: 3288565122835033133}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: SwordFish
-  m_TagString: Fish
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

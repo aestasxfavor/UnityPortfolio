@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 8790149763849901461}
   - component: {fileID: 3819431333740731941}
   - component: {fileID: 5578789025392418378}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Rock Fish
-  m_TagString: Fish
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

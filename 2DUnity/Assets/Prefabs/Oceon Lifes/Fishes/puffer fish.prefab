@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 4918681020961456760}
   - component: {fileID: 6398302137542508811}
   - component: {fileID: 845290049058806519}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: puffer fish
-  m_TagString: Fish
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

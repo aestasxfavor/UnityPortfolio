@@ -41,14 +41,14 @@ public class HarpoonTip : MonoBehaviour
 
     /// <summary>
     /// 2차 리팩토링할 때 할 것
-    /// Tag가 아닌 LayCast, OverlapCircle 사용하기
+    /// Tag가 아닌 LayMask, OverlapCircle 사용하기
     /// </summary>
     /// <param name="collision"></param>
     void OnTriggerEnter2D(Collider2D collision)
     {
         if (!gameObject.activeInHierarchy || pool == null) return;
 
-        if (!collision.CompareTag("Fish"))
+        if (!LayerUtil.IsLayer(collision.gameObject, Layers.Fish))
         {
             pool?.ReturnHarpoon(gameObject);
             return;
@@ -59,9 +59,6 @@ public class HarpoonTip : MonoBehaviour
 
         fish.isCaught = true;
 
-        //Debug.Log($"[HarpoonTip] {fish.fishType} 잡음");
-
-        //Debug.Log($"[HarpoonTip] 잡은 fishType = {fish.fishType}");
         // 단일 진입점
         FishInventoryService.Instance.AddFish(fish.fishType);
 

@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 5557682664212868202}
   - component: {fileID: 1490456714491798814}
   - component: {fileID: 7448238959380444962}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Blue Fish
-  m_TagString: Fish
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
