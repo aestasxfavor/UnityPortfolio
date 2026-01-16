@@ -5,11 +5,15 @@ using UnityEngine.UI;
 
 public class SceneryManager : MonoBehaviour
 {
+    public static SceneryManager Instance;
     [SerializeField] GameObject screen;
     [SerializeField] Slider progress;
     [SerializeField] float displayProgress;
 
-    public static SceneryManager Instance;
+    private Coroutine transitionRoutine;
+    private bool isLoading;
+
+
 
     private void Awake()
     {
@@ -29,20 +33,32 @@ public class SceneryManager : MonoBehaviour
 
     public void LoadScene(string sceneName)
     {
-        StartCoroutine(TransitionScene(sceneName));
+        if (isLoading) return;
+
+        if (transitionRoutine != null)
+        {
+            StopCoroutine(transitionRoutine);
+
+        }
+
+        transitionRoutine = StartCoroutine(TransitionScene(sceneName));
+        //StartCoroutine(TransitionScene(sceneName));
     }
 
     // SceneryManager.cs 내부
 
     public IEnumerator TransitionScene(string sceneName)
     {
+        isLoading = true;
+
         // 버튼 UI 비활성화 (Land 씬 기준)
         GameObject buttons = GameManager.Instance?.GetButtonCanvasInstance();
         if (buttons != null) buttons.SetActive(false);
 
-        progress.value = 0;
-        displayProgress = 0;
-        screen.SetActive(true);
+        if (progress != null) progress.value = 0f;
+        displayProgress = 0f;
+
+        if (screen != null) screen.SetActive(true);
 
         AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
         asyncOperation.allowSceneActivation = false;
@@ -56,13 +72,16 @@ public class SceneryManager : MonoBehaviour
                 if (progress.value >= 0.99f)
                 {
                     asyncOperation.allowSceneActivation = true;
-                    screen.SetActive(false);
 
-                    // ? 씬 전환 완료 후 버튼 UI 다시 활성화
+                    yield return null;
+
+                    if (screen != null) screen.SetActive(false);
+
+                    // 씬 전환 완료 후 버튼 UI 다시 활성화
                     if (sceneName == "Land" && buttons != null)
                         buttons.SetActive(true);
 
-                    yield break;
+                    break;
                 }
             }
             else
@@ -72,6 +91,9 @@ public class SceneryManager : MonoBehaviour
 
             yield return null;
         }
+
+        isLoading = false;
+        transitionRoutine = null;
     }
 
 }

@@ -51,12 +51,16 @@ public class InventoryUI : MonoBehaviour, UIClosable
 
     private void OnEnable()
     {
+        SceneFlowManager.Instance?.Register(this);
+
         if (FishInventoryService.Instance != null)
             FishInventoryService.Instance.OnInventoryChanged += RefreshUI; // 이벤트 구독
     }
 
     private void OnDisable()
     {
+        SceneFlowManager.Instance?.UnRegister(this);
+
         if (FishInventoryService.Instance != null)
             FishInventoryService.Instance.OnInventoryChanged -= RefreshUI; // 이벤트 해제
 
@@ -161,6 +165,13 @@ public class InventoryUI : MonoBehaviour, UIClosable
 
     public void Close()
     {
+        isInventoryOpen = false;
+
+        if(inventoryPanelRoot != null)
+        {
+            inventoryPanelRoot.SetActive(false);
+        }   
+        
         transform.root.gameObject.SetActive(false);
     }
 }

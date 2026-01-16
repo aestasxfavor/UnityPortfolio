@@ -42,12 +42,24 @@ public class UISlot : MonoBehaviour
 
     private void UpdateCountText()
     {
+        //if (countText == null) return;
+
+        //if (count <= 1)
+        //    countText.text = "";          // 1¸¶¸®ÀÏ ¶© ¼ýÀÚ ¼û±è
+        //else
+        //    countText.text = count.ToString(); // x2, x3 ...
+
         if (countText == null) return;
 
         if (count <= 1)
-            countText.text = "";          // 1¸¶¸®ÀÏ ¶© ¼ýÀÚ ¼û±è
+        {
+            countText.enabled = false;
+        }
         else
-            countText.text = count.ToString(); // x2, x3 ...
+        {
+            countText.enabled = true;
+            countText.text = count.ToString();
+        }
     }
 
     // ½½·Ô ºñ¿ì±â (³ªÁß¿¡ ¾µ ÀÏ ÀÖÀ¸¸é »ç¿ë)
@@ -64,6 +76,9 @@ public class UISlot : MonoBehaviour
         }
 
         if (countText != null)
+        {
             countText.text = "";
+            countText.enabled = false;
+        }
     }
 }

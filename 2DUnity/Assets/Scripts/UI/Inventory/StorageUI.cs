@@ -133,8 +133,27 @@ public class StorageUI : MonoBehaviour
             }
             else
             {
-                UISlot emptySlot = allSlots.Find(s => s.IsEmpty && !slotMap.ContainsValue(s));
-                if (emptySlot != null)
+                //UISlot emptySlot = allSlots.Find(s => s.IsEmpty && !slotMap.ContainsValue(s));
+                //if (emptySlot != null)
+                //{
+                //    emptySlot.SetItem(icon, fish.fishType, fish.count);
+                //}
+
+                UISlot emptySlot = null;
+
+                for (int i = 0;  i < allSlots.Count;  i++)
+                {
+                    var s = allSlots[i];
+                    if (!s.IsEmpty) continue;
+
+                    if (slotMap.ContainsValue(s)) continue;
+
+                    emptySlot = s;
+                    break;
+
+                }
+
+                if(emptySlot != null)
                 {
                     emptySlot.SetItem(icon, fish.fishType, fish.count);
                 }

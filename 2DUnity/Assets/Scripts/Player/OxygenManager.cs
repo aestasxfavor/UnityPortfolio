@@ -10,6 +10,16 @@ public class OxygenManager : MonoBehaviour, UIClosable
 
     private bool isActive = true;
 
+
+    private void OnEnable()
+    {
+        SceneFlowManager.Instance?.Register(this);
+    }
+
+    private void OnDisable()
+    {
+        SceneFlowManager.Instance?.UnRegister(this);
+    }
     void Start()
     {
         currentOxygen = oxygenConfig.maxOxygen;

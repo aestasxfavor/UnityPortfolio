@@ -36,9 +36,12 @@ public class GameManager : MonoBehaviour
     public FishInventoryData GetStorageInventoryData() => storageInventoryData;
     public FishInventoryData GetSeaInventoryData() => seaInventoryData;
 
+    public bool IsSceneLoading { get; private set; }
+
+
     private void Awake()
     {
-     
+
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -55,25 +58,20 @@ public class GameManager : MonoBehaviour
 
     private void OnDestroy()
     {
-        SceneManager.sceneLoaded -= OnSceneLoaded;
-    }
-
-    private void Start()
-    {
-        //Debug.Log($"[GameManager] 초기화 완료 — storageInventoryData: {(storageInventoryData != null ? storageInventoryData.name : "NULL")}");
-        //Debug.Log($"[GameManager] 초기화 완료 — seaInventoryData: {(seaInventoryData != null ? seaInventoryData.name : "NULL")}");
+        if (Instance == this)
+            SceneManager.sceneLoaded -= OnSceneLoaded;
     }
 
     private void EnsureFishDataLoader()
     {
         if (FishDataLoader.Instance != null) return;
 
-        if(fishDataLoaderPrefab == null)
+        if (fishDataLoaderPrefab == null)
         {
             return;
         }
 
-        if(fishDataLoaderInstance == null)
+        if (fishDataLoaderInstance == null)
         {
             fishDataLoaderInstance = Instantiate(fishDataLoaderPrefab);
         }
@@ -81,6 +79,7 @@ public class GameManager : MonoBehaviour
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
+        IsSceneLoading = false;
         StartCoroutine(SetupSceneDelayed(scene));
     }
 
@@ -101,13 +100,13 @@ public class GameManager : MonoBehaviour
     {
         CleanupOceanObjects();
 
-       // Debug.Log("[GameManager] Ocean 씬 세팅 시작");
+        // Debug.Log("[GameManager] Ocean 씬 세팅 시작");
 
         // 바다 데이터 비우고 서비스가 바다 데이터 물게 하기
         var seaData = GetSeaInventoryData();
         if (seaData == null)
         {
-           // Debug.LogError("[GameManager] seaInventoryData가 null입니다 (Inspector 연결 확인)");
+            // Debug.LogError("[GameManager] seaInventoryData가 null입니다 (Inspector 연결 확인)");
             yield break;
         }
         seaData.Clear();
@@ -162,11 +161,11 @@ public class GameManager : MonoBehaviour
         if (oceanManager != null)
         {
             oceanManager.Initialize(spawnerInstance, oxygenMgrInstance, inventoryUIInstance);
-           // Debug.Log("[GameManager] OceanManager 초기화 완료");
+            // Debug.Log("[GameManager] OceanManager 초기화 완료");
         }
         else
         {
-           // Debug.LogWarning("[GameManager] OceanManager를 찾을 수 없습니다");
+            // Debug.LogWarning("[GameManager] OceanManager를 찾을 수 없습니다");
         }
 
         if (SoundManager.Instance != null)
@@ -175,7 +174,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-           // Debug.LogWarning("[GameManager] SoundManager.Instance == null");
+            // Debug.LogWarning("[GameManager] SoundManager.Instance == null");
         }
 
         Debug.Log("[GameManager] Ocean 씬 세팅 완료");
@@ -205,18 +204,18 @@ public class GameManager : MonoBehaviour
     // -------------------------
     private void SetupLandScene()
     {
-       // Debug.Log("[GameManager] Land 씬 세팅 시작");
+        // Debug.Log("[GameManager] Land 씬 세팅 시작");
 
         if (seaInventoryData == null || storageInventoryData == null)
         {
-           // Debug.LogError("[GameManager] sea/storage InventoryData가 null입니다 (Inspector 연결 확인)");
+            // Debug.LogError("[GameManager] sea/storage InventoryData가 null입니다 (Inspector 연결 확인)");
             return;
         }
 
         // 바다 인벤 → 보관함 누적
         seaInventoryData.TransferTo(storageInventoryData);
 
-        if(SaveManager.Instance != null)
+        if (SaveManager.Instance != null)
             SaveManager.Instance.Save();
 
         // 서비스가 storage 물게 하기
@@ -237,7 +236,7 @@ public class GameManager : MonoBehaviour
         }
         else
         {
-           // Debug.LogWarning("[GameManager] StorageUI를 찾을 수 없습니다");
+            // Debug.LogWarning("[GameManager] StorageUI를 찾을 수 없습니다");
         }
 
         // 버튼 캔버스 (중복 생성 방지)
@@ -254,7 +253,7 @@ public class GameManager : MonoBehaviour
             if (storageButton != null && storageUIInstance != null)
             {
                 storageButton.SetTargetStorage(storageUIInstance);
-               // Debug.Log("[GameManager] StorageButton ↔ StorageUI 연결 완료");
+                // Debug.Log("[GameManager] StorageButton ↔ StorageUI 연결 완료");
             }
         }
 
@@ -288,6 +287,10 @@ public class GameManager : MonoBehaviour
     public void GoToFadeScene(SceneType targetScene)
     {
         Debug.Log($"[GameManager] 페이드 씬 전환 요청 → {targetScene}");
+
+        if (IsSceneLoading) return;
+        IsSceneLoading = true;
+
 
         string sceneName = targetScene.ToString();
 
