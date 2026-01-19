@@ -14,7 +14,6 @@ public class StorageButton : MonoBehaviour
         if (storageUI != null)
         {
             storageUI.ToggleInventoryUI();
-           // Debug.Log("[StorageButton] 보관함 열기 성공");
         }
         else
         {
