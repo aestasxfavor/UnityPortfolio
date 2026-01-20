@@ -278,10 +278,24 @@ public class GameManager : MonoBehaviour
 
     public void GoToLand()
     {
+
+
         if (SceneryManager.Instance != null)
             SceneryManager.Instance.LoadScene("Land");
         else
             SceneManager.LoadScene("Land");
+
+        if (SaveManager.Instance != null)
+        {
+            var mail = SaveManager.Instance.GetMailboxSaveData();
+            Debug.Log($"[MAIL] GoToLand called / unlocked(before)={mail.firstReturnMailUnlocked}");
+
+            if (!mail.firstReturnMailUnlocked)
+            {
+                mail.firstReturnMailUnlocked = true;
+                SaveManager.Instance.RequestSave();
+            }
+        }
     }
 
     public void GoToFadeScene(SceneType targetScene)

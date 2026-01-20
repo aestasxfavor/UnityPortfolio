@@ -6,7 +6,8 @@ public class SaveManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public static SaveManager Instance { get; private set; }
-   [SerializeField] private FishInventoryData storageInventoryData;
+    [SerializeField] private FishInventoryData storageInventoryData;
+    [SerializeField] private MailboxSaveData mailboxSaveData = new();
 
     private string savePath;
 
@@ -28,18 +29,21 @@ public class SaveManager : MonoBehaviour
         savePath = Path.Combine(Application.persistentDataPath, "fish_save.json");
         Debug.Log($"세이브 경로 : " + savePath);
 
+        if (mailboxSaveData == null)
+            mailboxSaveData = new MailboxSaveData();
+
     }
 
 
     void Start()
     {
-        if(GameManager.Instance != null)
+        if (GameManager.Instance != null)
         {
             storageInventoryData = GameManager.Instance.GetStorageInventoryData();
         }
 
         if (storageInventoryData == null) return;
-            
+
         Load();
     }
 
@@ -63,7 +67,7 @@ public class SaveManager : MonoBehaviour
 
     public void Save()
     {
-        if(storageInventoryData == null)
+        if (storageInventoryData == null)
         {
             return;
         }
@@ -76,6 +80,10 @@ public class SaveManager : MonoBehaviour
             saveData.caughtFishList.Add(new FishSaveSlot { fishType = fish.fishType.ToString(), count = fish.count });
         }
 
+        if (mailboxSaveData == null)
+            mailboxSaveData = new MailboxSaveData();
+        saveData.mailbox = mailboxSaveData;
+
         string json = JsonUtility.ToJson(saveData, true);
 
         File.WriteAllText(savePath, json);
@@ -84,7 +92,7 @@ public class SaveManager : MonoBehaviour
 
     public void Load()
     {
-        if(!File.Exists(savePath))
+        if (!File.Exists(savePath))
         {
             return;
         }
@@ -93,17 +101,38 @@ public class SaveManager : MonoBehaviour
 
         SaveData loadedData = JsonUtility.FromJson<SaveData>(json);
 
-        if(loadedData == null)
+        if (loadedData == null)
         {
             return;
         }
 
-            storageInventoryData.caughtFishList.
-            Clear();
+        storageInventoryData.caughtFishList.
+        Clear();
 
         foreach (var slot in loadedData.caughtFishList)
         {
             storageInventoryData.AddFishSave(slot.fishType, slot.count);
         }
+
+        if (mailboxSaveData == null)
+            mailboxSaveData = new MailboxSaveData();
+
+
+        if (loadedData.mailbox != null)
+        {
+            mailboxSaveData.firstReturnMailUnlocked = loadedData.mailbox.firstReturnMailUnlocked;
+            mailboxSaveData.firstReturnMailRead = loadedData.mailbox.firstReturnMailRead;
+        }
+        else
+        {
+            mailboxSaveData.firstReturnMailUnlocked = false;
+            mailboxSaveData.firstReturnMailRead = false;
+        }
+
+    }
+
+    public MailboxSaveData GetMailboxSaveData()
+    {
+        return mailboxSaveData;
     }
 }

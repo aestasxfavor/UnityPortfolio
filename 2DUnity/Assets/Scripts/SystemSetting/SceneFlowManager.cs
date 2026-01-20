@@ -54,15 +54,6 @@ public class SceneFlowManager : MonoBehaviour
         {
             oceanClosable[i]?.Close();
         }
-
-        //foreach (var ui in FindObjectsOfType<MonoBehaviour>(true))
-        //{
-        //    if(ui is UIClosable closable)
-        //    {
-        //       // Debug.Log($"[SceneFlow] Close UI: {ui.name}");
-        //        closable.Close();
-        //    }
-        //}
     }
 
    public void ChangeScene(SceneType type)

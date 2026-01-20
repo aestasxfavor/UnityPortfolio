@@ -120,6 +120,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exitPopup: {fileID: 5012532057752779884}
   comingSoonPopup: {fileID: 5730846378494907906}
+  mailboxUI: {fileID: 0}
   isActive: 0
 --- !u!1 &2034568444801301212
 GameObject:
@@ -2116,7 +2117,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6960443374956546937}
         m_TargetAssemblyTypeName: LandUIManager, Assembly-CSharp
-        m_MethodName: ShowComingSoon
+        m_MethodName: ToggleMailBox
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -2138,7 +2139,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aab436a38801754eb642e53d8c81fd2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  isLockedButton: 1
+  isLockedButton: 0
 --- !u!114 &1093565087220854169
 MonoBehaviour:
   m_ObjectHideFlags: 0

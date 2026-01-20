@@ -12,4 +12,5 @@ public class FishSaveSlot
 public class SaveData
 {
     public List<FishSaveSlot> caughtFishList = new List<FishSaveSlot>();
+    public MailboxSaveData mailbox = new();
 }

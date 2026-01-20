@@ -7,6 +7,12 @@ public class LandUIManager : MonoBehaviour
     [SerializeField] private GameObject exitPopup;
     [SerializeField] private GameObject comingSoonPopup;
     [SerializeField] private bool isActive = false;
+    private MailboxUI mailboxUI;
+
+    private void Start()
+    {
+        mailboxUI = FindAnyObjectByType<MailboxUI>(FindObjectsInactive.Include);
+    }
 
     public void ShowExitPopup()
     {
@@ -28,6 +34,12 @@ public class LandUIManager : MonoBehaviour
     public void HideComingSoon()
     {
         comingSoonPopup.SetActive(false);
+    }
+
+    public void ToggleMailBox()
+    {
+        if(mailboxUI == null) return;
+        mailboxUI.Toggle();
     }
 
     public void ExitGame()

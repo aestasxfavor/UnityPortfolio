@@ -1,8 +1,6 @@
 using UnityEngine;
-/// <summary>
-/// 우편함 로직
-/// </summary>
-public class MailboxService : MonoBehaviour
+
+public class MailButton : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
