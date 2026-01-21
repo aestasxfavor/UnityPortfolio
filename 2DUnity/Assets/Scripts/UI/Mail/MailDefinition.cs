@@ -9,12 +9,15 @@ public class MailDefinition : ScriptableObject
     [SerializeField] private string mailId = "M001";
 
     [Header("UI")]
-    [SerializeField] private string title;
+    [SerializeField] private string listTitle;  // 버튼용
+    [SerializeField] private string title;      // 본문 제목
 
     [TextArea(6, 20)]
     [SerializeField] private string body;
 
     public string MailId => mailId;
+
+    public string ListTitle => string.IsNullOrWhiteSpace(listTitle) ? title : listTitle;
     public string Title => title;
     public string Body => body;
 }

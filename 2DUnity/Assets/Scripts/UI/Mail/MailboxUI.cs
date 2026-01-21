@@ -63,9 +63,11 @@ public sealed class MailboxUI : MonoBehaviour
 
     public void Toggle()
     {
+        Debug.Log($"[MAILBOX] Toggle called / this={gameObject.name} / panelRoot={(panelRoot == null ? "NULL" : panelRoot.name)}");
+
         if (panelRoot == null) return;
 
-        if (panelRoot.activeSelf) Close();
+        if (panelRoot.activeInHierarchy) Close();
         else Open();
     }
 
@@ -88,7 +90,8 @@ public sealed class MailboxUI : MonoBehaviour
             firstMailButton.interactable = unlocked;
 
         if (firstMailTitleText != null)
-            firstMailTitleText.text = unlocked ? firstMailDefinition.Title : "새 편지가 없습니다";
+            firstMailTitleText.text = unlocked ? firstMailDefinition.ListTitle : "새 편지가 없습니다";
+
 
         // 2) NEW 배지 표시 (언락 && 안읽음)
         if (newBadge != null)
@@ -100,11 +103,7 @@ public sealed class MailboxUI : MonoBehaviour
             if (viewerTitleText != null) viewerTitleText.text = "";
             if (viewerBodyText != null) viewerBodyText.text = "";
         }
-        else
-        {
-            // MVP 편의: 열면 자동으로 본문 보여주게(원하면 삭제 가능)
-            ShowFirstMailInViewer();
-        }
+    
     }
 
     private void OnClickFirstMail()
@@ -139,9 +138,4 @@ public sealed class MailboxUI : MonoBehaviour
             viewerBodyText.text = firstMailDefinition.Body;
     }
 
-    public void OnClikMailM001()
-    {
-        viewerTitleText.text = firstMailDefinition.Title;
-        viewerBodyText.text = firstMailDefinition.Body;
-    }
 }

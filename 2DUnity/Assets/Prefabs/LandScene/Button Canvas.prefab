@@ -120,7 +120,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   exitPopup: {fileID: 5012532057752779884}
   comingSoonPopup: {fileID: 5730846378494907906}
-  mailboxUI: {fileID: 0}
   isActive: 0
 --- !u!1 &2034568444801301212
 GameObject:
