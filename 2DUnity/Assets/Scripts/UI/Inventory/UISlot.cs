@@ -81,4 +81,33 @@ public class UISlot : MonoBehaviour
             countText.enabled = false;
         }
     }
+
+    public void CodexDiscover(Sprite icon)
+    {
+        isEmpty = false; 
+        if(itemIcon != null)
+        {
+            itemIcon.sprite = icon;
+            itemIcon.enabled = true;
+            itemIcon.color = Color.white;
+        }
+
+        if (countText != null)
+            countText.enabled = false;
+    }
+
+    public void CodexUndiscover(Sprite unknownIcon)
+    {
+        isEmpty = true;
+
+        if (itemIcon != null)
+        {
+            itemIcon.sprite = unknownIcon;
+            itemIcon.enabled = true;
+            itemIcon.color = new Color(0, 0, 0, 0.4f);
+        }
+
+        if (countText != null)
+            countText.enabled = false;
+    }
 }

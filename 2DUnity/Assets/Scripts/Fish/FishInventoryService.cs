@@ -50,6 +50,8 @@ public class FishInventoryService : MonoBehaviour
         }
 
         data.AddFish(fishType);
+
+        SaveManager.Instance?.FishCodex(fishType);
         OnInventoryChanged?.Invoke();
     }
 

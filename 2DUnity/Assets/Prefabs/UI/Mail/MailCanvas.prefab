@@ -1395,6 +1395,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   firstMailDefinition: {fileID: 11400000, guid: e8294b9dd693c2d4d830d2916b06eedf, type: 2}
   panelRoot: {fileID: 7575387179028508771}
+  canvasRoot: {fileID: 3919849276970871258}
   firstMailButton: {fileID: 6648341798819207866}
   firstMailTitleText: {fileID: 3172683074823746377}
   newBadge: {fileID: 0}

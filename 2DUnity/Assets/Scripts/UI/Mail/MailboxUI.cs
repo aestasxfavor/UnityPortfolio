@@ -9,6 +9,8 @@ public sealed class MailboxUI : MonoBehaviour
 
     [Header("Root Panel")]
     [SerializeField] private GameObject panelRoot;
+    [SerializeField] private GameObject canvasRoot; // MailCanvas
+
 
     [Header("List Item")]
     [SerializeField] private Button firstMailButton;
@@ -49,16 +51,22 @@ public sealed class MailboxUI : MonoBehaviour
 
     public void Open()
     {
-        if (panelRoot == null) return;
+        if (canvasRoot != null)
+            canvasRoot.SetActive(true);
+        if (panelRoot != null)
+            panelRoot.SetActive(true);
 
-        panelRoot.SetActive(true);
+
         Refresh();
     }
 
     public void Close()
     {
-        if (panelRoot == null) return;
-        panelRoot.SetActive(false);
+        if(canvasRoot != null)
+            canvasRoot.SetActive(false);
+
+        if(panelRoot != null)
+            panelRoot.SetActive(false);
     }
 
     public void Toggle()

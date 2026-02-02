@@ -1,11 +1,11 @@
-using UnityEngine.SceneManagement;
+                        using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class LandUIManager : MonoBehaviour
 {
     [Header("ÆË¾÷ ÂüÁ¶")]
     [SerializeField] private GameObject exitPopup;
-    [SerializeField] private GameObject comingSoonPopup;
+    //[SerializeField] private GameObject comingSoonPopup;
     [SerializeField] private bool isActive = false;
     private MailboxUI mailboxUI;
 
@@ -27,13 +27,13 @@ public class LandUIManager : MonoBehaviour
     public void ShowComingSoon()
     {
         isActive = !isActive;
-        comingSoonPopup.SetActive(isActive);
+       
 
     }
 
     public void HideComingSoon()
     {
-        comingSoonPopup.SetActive(false);
+       
     }
 
     public void ToggleMailBox()

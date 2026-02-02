@@ -1,6 +1,7 @@
+using System.Collections.Generic;
 using System.IO;
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
+using System;
 
 public class SaveManager : MonoBehaviour
 {
@@ -8,6 +9,7 @@ public class SaveManager : MonoBehaviour
     public static SaveManager Instance { get; private set; }
     [SerializeField] private FishInventoryData storageInventoryData;
     [SerializeField] private MailboxSaveData mailboxSaveData = new();
+    private HashSet<FishType> discoveredFish = new HashSet<FishType>();
 
     private string savePath;
 
@@ -84,6 +86,12 @@ public class SaveManager : MonoBehaviour
             mailboxSaveData = new MailboxSaveData();
         saveData.mailbox = mailboxSaveData;
 
+        saveData.codex = new CodexSaveData();
+        foreach (var fish in discoveredFish)
+        {
+            saveData.codex.codexFishID.Add(fish.ToString());
+        }
+
         string json = JsonUtility.ToJson(saveData, true);
 
         File.WriteAllText(savePath, json);
@@ -129,10 +137,40 @@ public class SaveManager : MonoBehaviour
             mailboxSaveData.firstReturnMailRead = false;
         }
 
+        discoveredFish.Clear();
+
+        if (loadedData.codex != null && loadedData.codex.codexFishID != null)
+        {
+            foreach (var id in loadedData.codex.codexFishID)
+            {
+                if (Enum.TryParse(id, out FishType type))
+                {
+                    discoveredFish.Add(type);
+                }
+            }
+        }
     }
 
     public MailboxSaveData GetMailboxSaveData()
     {
         return mailboxSaveData;
+    }
+
+    public void FishCodex(FishType fishType)
+    {
+        if (discoveredFish.Add(fishType))
+        {
+            Debug.Log($"[CodexUI] 신규 어종 등록: {fishType}");
+            RequestSave();
+        }
+        else
+        {
+            Debug.Log($"[CodexUI] 이미 등록됨: {fishType}");
+        }
+    }
+
+    public bool IsFishDiscovered(FishType fishType)
+    {
+        return discoveredFish.Contains(fishType);
     }
 }
