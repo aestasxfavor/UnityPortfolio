@@ -10,13 +10,19 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private FishInventoryData storageInventoryData;
     [SerializeField] private MailboxSaveData mailboxSaveData = new();
     private HashSet<FishType> discoveredFish = new HashSet<FishType>();
+    private CodexSaveData codexSaveData = new CodexSaveData();
 
     private string savePath;
+    private string mailPath;
+    private string codexPath;
 
     private float saveTimer;
+    private float saveCoolDown = 10f;
+    
     private bool saveRequest;
 
-    private float saveCoolDown = 10f;
+
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -29,6 +35,8 @@ public class SaveManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         savePath = Path.Combine(Application.persistentDataPath, "fish_save.json");
+        mailPath = Path.Combine(Application.persistentDataPath, "mail_save.json");
+        codexPath = Path.Combine(Application.persistentDataPath, "codex_save.json");
         Debug.Log($"세이브 경로 : " + savePath);
 
         if (mailboxSaveData == null)
@@ -47,6 +55,8 @@ public class SaveManager : MonoBehaviour
         if (storageInventoryData == null) return;
 
         Load();
+        LoadMail();
+        LoadCodex();
     }
 
     private void Update()
@@ -60,6 +70,8 @@ public class SaveManager : MonoBehaviour
         saveRequest = false;
 
         Save();
+        SaveMail();
+        SaveCodex();
     }
 
     public void RequestSave()
@@ -80,16 +92,6 @@ public class SaveManager : MonoBehaviour
         {
             if (fish == null) continue;
             saveData.caughtFishList.Add(new FishSaveSlot { fishType = fish.fishType.ToString(), count = fish.count });
-        }
-
-        if (mailboxSaveData == null)
-            mailboxSaveData = new MailboxSaveData();
-        saveData.mailbox = mailboxSaveData;
-
-        saveData.codex = new CodexSaveData();
-        foreach (var fish in discoveredFish)
-        {
-            saveData.codex.codexFishID.Add(fish.ToString());
         }
 
         string json = JsonUtility.ToJson(saveData, true);
@@ -122,38 +124,83 @@ public class SaveManager : MonoBehaviour
             storageInventoryData.AddFishSave(slot.fishType, slot.count);
         }
 
-        if (mailboxSaveData == null)
-            mailboxSaveData = new MailboxSaveData();
+        //if (mailboxSaveData == null)
+        //    mailboxSaveData = new MailboxSaveData();
 
 
-        if (loadedData.mailbox != null)
-        {
-            mailboxSaveData.firstReturnMailUnlocked = loadedData.mailbox.firstReturnMailUnlocked;
-            mailboxSaveData.firstReturnMailRead = loadedData.mailbox.firstReturnMailRead;
-        }
-        else
-        {
-            mailboxSaveData.firstReturnMailUnlocked = false;
-            mailboxSaveData.firstReturnMailRead = false;
-        }
-
-        discoveredFish.Clear();
-
-        if (loadedData.codex != null && loadedData.codex.codexFishID != null)
-        {
-            foreach (var id in loadedData.codex.codexFishID)
-            {
-                if (Enum.TryParse(id, out FishType type))
-                {
-                    discoveredFish.Add(type);
-                }
-            }
-        }
+        //if (loadedData.mailbox != null)
+        //{
+        //    mailboxSaveData.firstReturnMailUnlocked = loadedData.mailbox.firstReturnMailUnlocked;
+        //    mailboxSaveData.firstReturnMailRead = loadedData.mailbox.firstReturnMailRead;
+        //}
+        //else
+        //{
+        //    mailboxSaveData.firstReturnMailUnlocked = false;
+        //    mailboxSaveData.firstReturnMailRead = false;
+        //}
     }
-
+    #region 메일 Json
     public MailboxSaveData GetMailboxSaveData()
     {
         return mailboxSaveData;
+    }
+    public void SaveMail()
+    {
+        if (mailboxSaveData == null)
+            mailboxSaveData = new MailboxSaveData();
+
+        string json = JsonUtility.ToJson(mailboxSaveData, true);
+        File.WriteAllText(mailPath, json);
+    }
+
+    public void LoadMail()
+    {
+        if (!File.Exists(mailPath))
+        {
+            mailboxSaveData = new MailboxSaveData();
+            return;
+        }
+
+        string json = File.ReadAllText(mailPath);
+        mailboxSaveData = JsonUtility.FromJson<MailboxSaveData>(json);
+
+        if (mailboxSaveData == null)
+            mailboxSaveData = new MailboxSaveData();
+    }
+    #endregion
+
+    #region 도감 Json
+    public void SaveCodex()
+    {
+        codexSaveData.codexFishID.Clear();
+        foreach (var fish in discoveredFish)
+        {
+            codexSaveData.codexFishID.Add(fish.ToString());
+        }
+
+        string json = JsonUtility.ToJson(codexSaveData, true);
+        File.WriteAllText(codexPath, json);
+    }
+
+    public void LoadCodex()
+    {
+        if (!File.Exists(codexPath)) return;
+
+        string json = File.ReadAllText(codexPath);
+        codexSaveData = JsonUtility.FromJson<CodexSaveData>(json);
+
+        discoveredFish.Clear();
+
+        if (codexSaveData.codexFishID == null) return;
+
+        foreach (var id in codexSaveData.codexFishID)
+        {
+            if(Enum.TryParse(id, out FishType type))
+            {
+                discoveredFish.Add(type);
+            }
+        }
+
     }
 
     public void FishCodex(FishType fishType)
@@ -161,7 +208,7 @@ public class SaveManager : MonoBehaviour
         if (discoveredFish.Add(fishType))
         {
             Debug.Log($"[CodexUI] 신규 어종 등록: {fishType}");
-            RequestSave();
+            SaveCodex();
         }
         else
         {
@@ -173,4 +220,7 @@ public class SaveManager : MonoBehaviour
     {
         return discoveredFish.Contains(fishType);
     }
+    #endregion
+
+
 }

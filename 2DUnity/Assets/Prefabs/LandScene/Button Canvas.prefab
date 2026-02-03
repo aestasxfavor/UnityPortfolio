@@ -1272,7 +1272,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 6960443374956546937}
         m_TargetAssemblyTypeName: LandUIManager, Assembly-CSharp
-        m_MethodName: ShowComingSoon
+        m_MethodName: ToggleCodex
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

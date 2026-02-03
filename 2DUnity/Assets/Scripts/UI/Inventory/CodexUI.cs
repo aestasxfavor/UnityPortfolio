@@ -1,5 +1,5 @@
-using NUnit.Framework;
 using System.Collections.Generic;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -9,7 +9,8 @@ public class CodexUI : MonoBehaviour
     [SerializeField] private GameObject slotPrefab;
     [SerializeField] private Sprite unknownIcon;
 
-    private List<UISlot> slots = new();
+
+    private List<CodexUISlot> slots = new();
 
     private void OnEnable()
     {
@@ -24,10 +25,18 @@ public class CodexUI : MonoBehaviour
         }
         slots.Clear();
 
+        int index = 1;
+
         foreach (FishType type in System.Enum.GetValues(typeof(FishType)))
         {
             GameObject obj = Instantiate(slotPrefab, codexPannel);
-            UISlot slot = obj.GetComponent<UISlot>();
+            CodexUISlot slot = obj.GetComponent<CodexUISlot>();
+            
+            if(slot ==null)
+            {
+                continue;
+            }
+
             slots.Add(slot);
 
             bool discovered = SaveManager.Instance.IsFishDiscovered(type);
@@ -35,12 +44,20 @@ public class CodexUI : MonoBehaviour
             if (discovered)
             {
                 Sprite icon = FishInventoryService.Instance.GetFishSprite(type);
-                slot.CodexDiscover(icon);
+                slot.SetDiscovered(icon, index);
+
             }
             else
             {
-                slot.CodexUndiscover(unknownIcon);
+                slot.SetUndiscovered(unknownIcon, index);
             }
+            index++;
         }
     }
+
+    public void CodexToggle()
+    {
+        gameObject.SetActive(!gameObject.activeSelf);
+    }
+
 }

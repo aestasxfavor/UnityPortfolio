@@ -1,19 +1,27 @@
-                        using UnityEngine.SceneManagement;
+using UnityEngine.SceneManagement;
 using UnityEngine;
 
 public class LandUIManager : MonoBehaviour
 {
     [Header("팝업 참조")]
     [SerializeField] private GameObject exitPopup;
-    //[SerializeField] private GameObject comingSoonPopup;
+
     [SerializeField] private bool isActive = false;
     private MailboxUI mailboxUI;
+    private CodexUI codexUI;
 
     private void Start()
     {
         mailboxUI = FindAnyObjectByType<MailboxUI>(FindObjectsInactive.Include);
+        codexUI = FindAnyObjectByType<CodexUI>(FindObjectsInactive.Include);
     }
 
+    public void ToggleCodex()
+    {
+        // 리팩토링 때 open, close 함수 각각 만들어서 관리할 예정
+        if (codexUI == null) return;
+        codexUI.CodexToggle();
+    }
     public void ShowExitPopup()
     {
         exitPopup.SetActive(true);
@@ -24,22 +32,11 @@ public class LandUIManager : MonoBehaviour
         exitPopup.SetActive(false);
     }
 
-    public void ShowComingSoon()
-    {
-        isActive = !isActive;
-       
-
-    }
-
-    public void HideComingSoon()
-    {
-       
-    }
 
     public void ToggleMailBox()
     {
-        if(mailboxUI == null) return;
-        mailboxUI.Toggle();
+        if (mailboxUI == null) return;
+        mailboxUI.MailToggle();
     }
 
     public void ExitGame()

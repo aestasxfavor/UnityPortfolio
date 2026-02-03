@@ -69,9 +69,9 @@ public sealed class MailboxUI : MonoBehaviour
             panelRoot.SetActive(false);
     }
 
-    public void Toggle()
+    public void MailToggle()
     {
-        Debug.Log($"[MAILBOX] Toggle called / this={gameObject.name} / panelRoot={(panelRoot == null ? "NULL" : panelRoot.name)}");
+        Debug.Log($"[MAILBOX] CodexToggle called / this={gameObject.name} / panelRoot={(panelRoot == null ? "NULL" : panelRoot.name)}");
 
         if (panelRoot == null) return;
 
