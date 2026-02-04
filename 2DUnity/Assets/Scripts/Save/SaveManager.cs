@@ -7,10 +7,12 @@ public class SaveManager : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public static SaveManager Instance { get; private set; }
+
     [SerializeField] private FishInventoryData storageInventoryData;
     [SerializeField] private MailboxSaveData mailboxSaveData = new();
-    private HashSet<FishType> discoveredFish = new HashSet<FishType>();
+
     private CodexSaveData codexSaveData = new CodexSaveData();
+    private HashSet<FishType> discoveredFish = new HashSet<FishType>();
 
     private string savePath;
     private string mailPath;

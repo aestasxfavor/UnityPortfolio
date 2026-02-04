@@ -8,12 +8,9 @@ public class SceneryManager : MonoBehaviour
     public static SceneryManager Instance;
     [SerializeField] GameObject screen;
     [SerializeField] Slider progress;
-    [SerializeField] float displayProgress;
 
     private Coroutine transitionRoutine;
     private bool isLoading;
-
-
 
     private void Awake()
     {
@@ -56,7 +53,6 @@ public class SceneryManager : MonoBehaviour
         if (buttons != null) buttons.SetActive(false);
 
         if (progress != null) progress.value = 0f;
-        displayProgress = 0f;
 
         if (screen != null) screen.SetActive(true);
 

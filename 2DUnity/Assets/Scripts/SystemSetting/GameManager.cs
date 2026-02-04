@@ -98,6 +98,7 @@ public class GameManager : MonoBehaviour
     // -------------------------
     private IEnumerator SetupOceanScene()
     {
+        // Todo: OceanManager가 수명 관리하도록 이동 예정
         CleanupOceanObjects();
 
         // Debug.Log("[GameManager] Ocean 씬 세팅 시작");
@@ -111,27 +112,33 @@ public class GameManager : MonoBehaviour
         }
         seaData.Clear();
 
+        // 겜매니저에 유지하기
         if (FishInventoryService.Instance != null)
             FishInventoryService.Instance.SetInventoryData(seaData);
         else
             Debug.LogWarning("[GameManager] FishInventoryService.Instance == null");
 
         // 플레이어 생성
+        // Todo: OceanManager가 생성 책임을 가지도록 이동 가능 (선택)
         if (playerPrefab != null)
             playerInstance = Instantiate(playerPrefab);
 
+        // Todo: OceanManager가 생성 책임을 가지도록 이동 가능 (선택)
         // 맵 생성
         if (oceanMapPrefab != null)
             oceanMapInstance = Instantiate(oceanMapPrefab);
 
+        // Todo: OceanManager로 이동 예정
         // 물고기 스포너
         if (fishSpawnerPrefab != null)
             spawnerInstance = Instantiate(fishSpawnerPrefab).GetComponent<FishSpawner>();
 
+        // Todo: OceanManager로 이동 예정
         // 산소 UI
         if (oxygenUIPrefab != null)
             oxygenMgrInstance = Instantiate(oxygenUIPrefab).GetComponent<OxygenManager>();
 
+        // Todo: OceanManager로 이동 예정
         // 인벤토리 UI
         if (inventoryUIPrefab != null)
             inventoryUIInstance = Instantiate(inventoryUIPrefab).GetComponentInChildren<InventoryUI>(true);
@@ -157,7 +164,8 @@ public class GameManager : MonoBehaviour
         }
 
         // OceanManager 연결
-        var oceanManager = FindObjectOfType<OceanManager>();
+        // Todo: 겜매니저에 유지하기
+        var oceanManager = FindFirstObjectByType<OceanManager>();
         if (oceanManager != null)
         {
             oceanManager.Initialize(spawnerInstance, oxygenMgrInstance, inventoryUIInstance);
@@ -180,6 +188,7 @@ public class GameManager : MonoBehaviour
         Debug.Log("[GameManager] Ocean 씬 세팅 완료");
     }
 
+    // Todo: OceanSceneManager가 씬 종료 시 정리하도록 이동 예정
     private void CleanupOceanObjects()
     {
         if (playerInstance != null) Destroy(playerInstance);
@@ -223,6 +232,7 @@ public class GameManager : MonoBehaviour
             FishInventoryService.Instance.SetInventoryData(storageInventoryData);
 
         // Storage UI (중복 생성 방지)
+        // Todo: LandUIManager로 이동 예정
         if (storageUICanvasInstance == null && storageUICanvasPrefab != null)
         {
             storageUICanvasInstance = Instantiate(storageUICanvasPrefab);
@@ -239,6 +249,7 @@ public class GameManager : MonoBehaviour
             // Debug.LogWarning("[GameManager] StorageUI를 찾을 수 없습니다");
         }
 
+        // Todo: LandUIManager로 이동 예정
         // 버튼 캔버스 (중복 생성 방지)
         if (buttonCanvasInstance == null && buttonCanvasPrefab != null)
         {
@@ -295,6 +306,7 @@ public class GameManager : MonoBehaviour
         if (IsSceneLoading) return;
         IsSceneLoading = true;
 
+        // Todo: MailBoxService로 이동 예정
         if (targetScene == SceneType.Land && SaveManager.Instance != null)
         {
             var mail = SaveManager.Instance.GetMailboxSaveData();
@@ -312,7 +324,7 @@ public class GameManager : MonoBehaviour
 
         string sceneName = targetScene.ToString();
 
-        var sceneryManager = FindObjectOfType<SceneryManager>();
+        var sceneryManager = FindFirstObjectByType<SceneryManager>();
         if (sceneryManager != null)
             sceneryManager.LoadScene(sceneName);
         else

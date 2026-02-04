@@ -645,6 +645,22 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 20
       objectReference: {fileID: 0}
+    - target: {fileID: 2428176266898752942, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 450
+      objectReference: {fileID: 0}
+    - target: {fileID: 2428176266898752942, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 2428176266898752942, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -350
+      objectReference: {fileID: 0}
+    - target: {fileID: 3271400034376581024, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 500
+      objectReference: {fileID: 0}
     - target: {fileID: 3919849276970871258, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
       propertyPath: m_Name
       value: MailCanvas
@@ -661,6 +677,10 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 4261297171577309039, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5200195238997544043, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
       propertyPath: m_AnchorMax.y
       value: 1
@@ -671,7 +691,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5200195238997544043, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 690
+      value: 390
       objectReference: {fileID: 0}
     - target: {fileID: 5200195238997544043, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -692,6 +712,18 @@ PrefabInstance:
     - target: {fileID: 5988882406130707604, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
       propertyPath: m_SizeDelta.x
       value: -20
+      objectReference: {fileID: 0}
+    - target: {fileID: 6197217754569269221, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 120
+      objectReference: {fileID: 0}
+    - target: {fileID: 6197217754569269221, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8755117680970935568, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 1000
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

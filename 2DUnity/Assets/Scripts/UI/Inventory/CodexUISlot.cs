@@ -2,6 +2,10 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
+/// <summary>
+/// UISlot을 상속받을까라는 생각을 왜 리팩토링할때 떠올린거지 근데 가능한가..?
+/// 일단 보류
+/// </summary>
 public class CodexUISlot : MonoBehaviour
 {
     [SerializeField] private Image icon;

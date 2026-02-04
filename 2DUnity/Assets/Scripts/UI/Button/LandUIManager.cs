@@ -6,7 +6,7 @@ public class LandUIManager : MonoBehaviour
     [Header("ÆË¾÷ ÂüÁ¶")]
     [SerializeField] private GameObject exitPopup;
 
-    [SerializeField] private bool isActive = false;
+    //[SerializeField] private bool isActive = false;
     private MailboxUI mailboxUI;
     private CodexUI codexUI;
 
