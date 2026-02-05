@@ -27,19 +27,19 @@ public sealed class MailboxUI : MonoBehaviour
     private void Awake()
     {
         if (firstMailButton != null)
+        {
             firstMailButton.onClick.AddListener(OnClickFirstMail);
 
-        //if (closeButton != null)
-        //    closeButton.onClick.AddListener(Close);
+        }
     }
 
     private void OnDestroy()
     {
         if (firstMailButton != null)
+        {
             firstMailButton.onClick.RemoveListener(OnClickFirstMail);
 
-        //if (closeButton != null)
-        //    closeButton.onClick.RemoveListener(Close);
+        }
     }
 
     // -------------------------
@@ -55,14 +55,6 @@ public sealed class MailboxUI : MonoBehaviour
         Refresh();
     }
 
-    //public void Close()
-    //{
-
-    //    if(panelRoot != null)
-    //        panelRoot.SetActive(false);
-    //}
-
-
     // -------------------------
     // UI Update
     // -------------------------
@@ -73,9 +65,10 @@ public sealed class MailboxUI : MonoBehaviour
         if (SaveManager.Instance == null || firstMailDefinition == null)
             return;
 
+        // mailService.sc 로 이관 예정
         var mailSave = SaveManager.Instance.GetMailboxSaveData();
 
-        // 1) 언락 여부에 따른 버튼 활성화
+        // mailService.sc 로 이관 예정 (IsMailUnlocked 함수로 들어갈 예정)
         bool unlocked = mailSave.firstReturnMailUnlocked;
 
         if (firstMailButton != null)
@@ -86,6 +79,7 @@ public sealed class MailboxUI : MonoBehaviour
 
 
         // 2) NEW 배지 표시 (언락 && 안읽음)
+        // mailService.sc 로 이관 예정 (IsMailNew 함수로 들어갈 예정)
         if (newBadge != null)
             newBadge.SetActive(unlocked && !mailSave.firstReturnMailRead);
 
@@ -102,8 +96,9 @@ public sealed class MailboxUI : MonoBehaviour
     {
         if (SaveManager.Instance == null || firstMailDefinition == null)
             return;
-
+        // Todo: MailBoxService.sc로 이관 예정
         var mailSave = SaveManager.Instance.GetMailboxSaveData();
+        
         if (!mailSave.firstReturnMailUnlocked)
             return;
 
@@ -114,9 +109,11 @@ public sealed class MailboxUI : MonoBehaviour
         {
             mailSave.firstReturnMailRead = true;
             SaveManager.Instance.RequestSave();
+            // Todo: MailBoxService.sc로 이관 예정(MarkAsRead 함수로 들어갈 예정)
         }
 
         // NEW 배지 끄기
+        // Todo: New 배지 상태 판단 MailBoxService.sc에서 담당 할 예정
         if (newBadge != null)
             newBadge.SetActive(false);
     }

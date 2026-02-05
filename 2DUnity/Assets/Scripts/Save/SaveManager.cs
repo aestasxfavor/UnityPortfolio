@@ -5,13 +5,13 @@ using System;
 
 public class SaveManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     public static SaveManager Instance { get; private set; }
 
     [SerializeField] private FishInventoryData storageInventoryData;
     [SerializeField] private MailboxSaveData mailboxSaveData = new();
 
     private CodexSaveData codexSaveData = new CodexSaveData();
+
     private HashSet<FishType> discoveredFish = new HashSet<FishType>();
 
     private string savePath;
@@ -20,7 +20,7 @@ public class SaveManager : MonoBehaviour
 
     private float saveTimer;
     private float saveCoolDown = 10f;
-    
+
     private bool saveRequest;
 
 
@@ -125,21 +125,6 @@ public class SaveManager : MonoBehaviour
         {
             storageInventoryData.AddFishSave(slot.fishType, slot.count);
         }
-
-        //if (mailboxSaveData == null)
-        //    mailboxSaveData = new MailboxSaveData();
-
-
-        //if (loadedData.mailbox != null)
-        //{
-        //    mailboxSaveData.firstReturnMailUnlocked = loadedData.mailbox.firstReturnMailUnlocked;
-        //    mailboxSaveData.firstReturnMailRead = loadedData.mailbox.firstReturnMailRead;
-        //}
-        //else
-        //{
-        //    mailboxSaveData.firstReturnMailUnlocked = false;
-        //    mailboxSaveData.firstReturnMailRead = false;
-        //}
     }
     #region 메일 Json
     public MailboxSaveData GetMailboxSaveData()
@@ -172,6 +157,11 @@ public class SaveManager : MonoBehaviour
     #endregion
 
     #region 도감 Json
+    public CodexSaveData GetCodexSaveData()
+    {
+        return codexSaveData;
+    }
+
     public void SaveCodex()
     {
         codexSaveData.codexFishID.Clear();
@@ -197,7 +187,7 @@ public class SaveManager : MonoBehaviour
 
         foreach (var id in codexSaveData.codexFishID)
         {
-            if(Enum.TryParse(id, out FishType type))
+            if (Enum.TryParse(id, out FishType type))
             {
                 discoveredFish.Add(type);
             }

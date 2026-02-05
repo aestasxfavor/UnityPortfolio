@@ -287,7 +287,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ab8833eb49b796b4f8bbd6bc972880c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sharedInventoryData: {fileID: 11400000, guid: fb120184e94b6014b9ed4c1eea48b740, type: 2}
   inventoryParent: {fileID: 3959598829806562345}
   slotPrefab: {fileID: 5781296773945941349, guid: 1e33842ac7b19a44cb14cc374350ccb5, type: 3}
   storageConfig: {fileID: 11400000, guid: 3655d70a7910f8b47878049380be62b7, type: 2}
