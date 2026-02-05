@@ -4,16 +4,33 @@ using UnityEngine;
 public class OceanManager : MonoBehaviour
 {
     [Header("References")]
-    [SerializeField] private FishSpawner fishSpawner;
-    [SerializeField] private OxygenManager oxygenManager;
-    [SerializeField] private InventoryUI inventoryUI;
+    [SerializeField] private GameObject fishSpawnerPrefab;
+    [SerializeField] private GameObject oxygenUIPrefab;
+    [SerializeField] private GameObject inventoryUIPrefab;
 
-    public void Initialize(FishSpawner spawner, OxygenManager oxygen, InventoryUI inv)
+    private FishSpawner fishSpawner;
+    private OxygenManager oxygenManager;
+    private InventoryUI inventoryUI;
+
+
+    public void Initialize(FishInventoryData seaData)
     {
-        fishSpawner = spawner;
-        oxygenManager = oxygen;
-        inventoryUI = inv;
-       // Debug.Log("[OceanManager] Initialize 완료");
+        if (fishSpawnerPrefab != null)
+        {
+            fishSpawner = Instantiate(fishSpawnerPrefab).GetComponent<FishSpawner>();
+        }
+
+        if (oxygenUIPrefab != null)
+        {
+            oxygenManager = Instantiate(oxygenUIPrefab).GetComponent<OxygenManager>();
+        }
+
+        if (inventoryUIPrefab != null)
+        {
+            inventoryUI = Instantiate(inventoryUIPrefab).GetComponentInChildren<InventoryUI>(true);
+        }
+
+        inventoryUI?.SetInventoryData(seaData);
     }
 
     private void Start() => StartCoroutine(LateStart());

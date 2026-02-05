@@ -9,7 +9,7 @@ public sealed class MailboxUI : MonoBehaviour
 
     [Header("Root Panel")]
     [SerializeField] private GameObject panelRoot;
-    [SerializeField] private GameObject canvasRoot; // MailCanvas
+    //[SerializeField] private GameObject canvasRoot; // MailCanvas
 
 
     [Header("List Item")]
@@ -26,14 +26,11 @@ public sealed class MailboxUI : MonoBehaviour
 
     private void Awake()
     {
-        if (panelRoot != null)
-            panelRoot.SetActive(false);
-
         if (firstMailButton != null)
             firstMailButton.onClick.AddListener(OnClickFirstMail);
 
-        if (closeButton != null)
-            closeButton.onClick.AddListener(Close);
+        //if (closeButton != null)
+        //    closeButton.onClick.AddListener(Close);
     }
 
     private void OnDestroy()
@@ -41,8 +38,8 @@ public sealed class MailboxUI : MonoBehaviour
         if (firstMailButton != null)
             firstMailButton.onClick.RemoveListener(OnClickFirstMail);
 
-        if (closeButton != null)
-            closeButton.onClick.RemoveListener(Close);
+        //if (closeButton != null)
+        //    closeButton.onClick.RemoveListener(Close);
     }
 
     // -------------------------
@@ -51,33 +48,20 @@ public sealed class MailboxUI : MonoBehaviour
 
     public void Open()
     {
-        if (canvasRoot != null)
-            canvasRoot.SetActive(true);
-        if (panelRoot != null)
-            panelRoot.SetActive(true);
+        //if (panelRoot != null)
+        //    panelRoot.SetActive(true);
 
 
         Refresh();
     }
 
-    public void Close()
-    {
-        if(canvasRoot != null)
-            canvasRoot.SetActive(false);
+    //public void Close()
+    //{
 
-        if(panelRoot != null)
-            panelRoot.SetActive(false);
-    }
+    //    if(panelRoot != null)
+    //        panelRoot.SetActive(false);
+    //}
 
-    public void MailToggle()
-    {
-        Debug.Log($"[MAILBOX] CodexToggle called / this={gameObject.name} / panelRoot={(panelRoot == null ? "NULL" : panelRoot.name)}");
-
-        if (panelRoot == null) return;
-
-        if (panelRoot.activeInHierarchy) Close();
-        else Open();
-    }
 
     // -------------------------
     // UI Update

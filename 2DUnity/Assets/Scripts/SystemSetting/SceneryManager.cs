@@ -39,7 +39,6 @@ public class SceneryManager : MonoBehaviour
         }
 
         transitionRoutine = StartCoroutine(TransitionScene(sceneName));
-        //StartCoroutine(TransitionScene(sceneName));
     }
 
     // SceneryManager.cs 내부
@@ -48,9 +47,10 @@ public class SceneryManager : MonoBehaviour
     {
         isLoading = true;
 
-        // 버튼 UI 비활성화 (Land 씬 기준)
-        GameObject buttons = GameManager.Instance?.GetButtonCanvasInstance();
-        if (buttons != null) buttons.SetActive(false);
+        var landUI = FindFirstObjectByType<LandUIManager>();
+        if (landUI != null)
+            landUI.SetButtonUIActive(false);
+
 
         if (progress != null) progress.value = 0f;
 
@@ -73,9 +73,11 @@ public class SceneryManager : MonoBehaviour
 
                     if (screen != null) screen.SetActive(false);
 
-                    // 씬 전환 완료 후 버튼 UI 다시 활성화
-                    if (sceneName == "Land" && buttons != null)
-                        buttons.SetActive(true);
+                    if (sceneName == "Land" && landUI != null)
+                    {
+                        landUI.SetButtonUIActive(true);
+                    }
+
 
                     break;
                 }

@@ -512,9 +512,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 35abecbf939cff845bedb8805f65727d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  fishSpawner: {fileID: 0}
-  oxygenManager: {fileID: 0}
-  inventoryUI: {fileID: 0}
+  fishSpawnerPrefab: {fileID: 1143922786552182546, guid: 57946a55ea8160c47b71f2228b47b6d2, type: 3}
+  oxygenUIPrefab: {fileID: 861281122793370087, guid: f96b0be0222b77146a46229767704d53, type: 3}
+  inventoryUIPrefab: {fileID: 3679155371573781950, guid: a671c6e704cfca549916707cc4029ea3, type: 3}
 --- !u!4 &1248915131
 Transform:
   m_ObjectHideFlags: 0
