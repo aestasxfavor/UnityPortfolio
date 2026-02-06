@@ -9,8 +9,6 @@ public sealed class MailboxUI : MonoBehaviour
 
     [Header("Root Panel")]
     [SerializeField] private GameObject panelRoot;
-    //[SerializeField] private GameObject canvasRoot; // MailCanvas
-
 
     [Header("List Item")]
     [SerializeField] private Button firstMailButton;
@@ -23,6 +21,8 @@ public sealed class MailboxUI : MonoBehaviour
 
     [Header("Close Button")]
     [SerializeField] private Button closeButton;
+
+    private MailBoxService mailboxService;
 
     private void Awake()
     {
@@ -42,46 +42,44 @@ public sealed class MailboxUI : MonoBehaviour
         }
     }
 
-    // -------------------------
-    // Public
-    // -------------------------
+    public void Init(MailBoxService service)
+    {
+        mailboxService = service;
+    }
 
     public void Open()
     {
-        //if (panelRoot != null)
-        //    panelRoot.SetActive(true);
-
-
         Refresh();
     }
 
-    // -------------------------
-    // UI Update
-    // -------------------------
-
     private void Refresh()
     {
-        // 안전장치
-        if (SaveManager.Instance == null || firstMailDefinition == null)
-            return;
+        if (mailboxService == null || firstMailDefinition == null) return;
 
-        // mailService.sc 로 이관 예정
-        var mailSave = SaveManager.Instance.GetMailboxSaveData();
+        if (mailboxService == null) return;
 
-        // mailService.sc 로 이관 예정 (IsMailUnlocked 함수로 들어갈 예정)
-        bool unlocked = mailSave.firstReturnMailUnlocked;
+        bool unlocked = mailboxService.IsMailUnlocked(null);
+        bool isRead = mailboxService.IsMailRead(null);
 
         if (firstMailButton != null)
+        {
             firstMailButton.interactable = unlocked;
+        }
 
-        if (firstMailTitleText != null)
+        if(firstMailTitleText != null)
+        {
             firstMailTitleText.text = unlocked ? firstMailDefinition.ListTitle : "새 편지가 없습니다";
+        }
 
+        if(newBadge !=null)
+        {
+            newBadge.SetActive(unlocked && !isRead);
+        }
 
         // 2) NEW 배지 표시 (언락 && 안읽음)
         // mailService.sc 로 이관 예정 (IsMailNew 함수로 들어갈 예정)
-        if (newBadge != null)
-            newBadge.SetActive(unlocked && !mailSave.firstReturnMailRead);
+        //if (newBadge != null)
+        //    newBadge.SetActive(unlocked && !mailSave.firstReturnMailRead);
 
         // 3) 우측 뷰어 초기화
         if (!unlocked)
@@ -94,22 +92,18 @@ public sealed class MailboxUI : MonoBehaviour
 
     private void OnClickFirstMail()
     {
-        if (SaveManager.Instance == null || firstMailDefinition == null)
-            return;
-        // Todo: MailBoxService.sc로 이관 예정
-        var mailSave = SaveManager.Instance.GetMailboxSaveData();
-        
-        if (!mailSave.firstReturnMailUnlocked)
-            return;
+        if(mailboxService == null) return;
+
+        if (!mailboxService.IsMailUnlocked(null)) return;
+
+    
+
 
         ShowFirstMailInViewer();
 
-        // 읽음 처리
-        if (!mailSave.firstReturnMailRead)
+        if (!mailboxService.IsMailRead(null))
         {
-            mailSave.firstReturnMailRead = true;
-            SaveManager.Instance.RequestSave();
-            // Todo: MailBoxService.sc로 이관 예정(MarkAsRead 함수로 들어갈 예정)
+            mailboxService.MarkAsRead(null);
         }
 
         // NEW 배지 끄기

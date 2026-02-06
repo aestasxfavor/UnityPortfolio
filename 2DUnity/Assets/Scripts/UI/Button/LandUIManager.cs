@@ -21,11 +21,12 @@ public class LandUIManager : MonoBehaviour
 
     private MailboxUI mailboxUI;
     private CodexUI codexUI;
-
+    private CodexService codexService;
+    private MailBoxService mailBoxService;
     private void Start()
     {
-        //mailboxUI = FindAnyObjectByType<MailboxUI>(FindObjectsInactive.Include);
-        //codexUI = FindAnyObjectByType<CodexUI>(FindObjectsInactive.Include);
+        codexService = FindAnyObjectByType<CodexService>();
+        mailBoxService = FindAnyObjectByType<MailBoxService>();
     }
 
     public void SetUpLand(FishInventoryData storageData)
@@ -76,9 +77,26 @@ public class LandUIManager : MonoBehaviour
                 storageButton.SetTargetStorage(storageUIInstance);
             }
         }
-    }
 
-    public void SetButtonUIActive(bool active)
+        if (codexService != null && !codexService.IsInitialized)
+        {
+            codexService.Init(SaveManager.Instance.GetCodexSaveData());
+        }
+
+        // tq 이거 진짜 그지같은거 나중에 서비스 매니저나 이벤트 만들어서 따로 관리할 예정
+        var inventory = FishInventoryService.Instance;
+        if (inventory != null)
+        {
+            inventory.Init(codexService);
+        }
+
+        if(mailBoxService != null && !mailBoxService.IsInitialized)
+        {
+            mailBoxService.Init(SaveManager.Instance.GetMailboxSaveData());
+        }
+}
+
+public void SetButtonUIActive(bool active)
     {
         if (buttonCanvasInstance != null)
             buttonCanvasInstance.SetActive(active);
@@ -141,9 +159,10 @@ public class LandUIManager : MonoBehaviour
         {
             mailboxCanvasInstance = Instantiate(mailboxCanvasPrefab);
             mailboxUI = mailboxCanvasInstance.GetComponentInChildren<MailboxUI>(true);
+            mailboxUI.Init(mailBoxService);
             mailboxCanvasInstance.SetActive(false);
-            Debug.Log($"[MAIL] instance={mailboxCanvasInstance.name}, active={mailboxCanvasInstance.activeSelf}");
-            Debug.Log($"[MAIL] panelRoot={(mailboxUI != null ? mailboxUI.transform.name : "UI NULL")}");
+            //Debug.Log($"[MAIL] instance={mailboxCanvasInstance.name}, active={mailboxCanvasInstance.activeSelf}");
+            //Debug.Log($"[MAIL] panelRoot={(mailboxUI != null ? mailboxUI.transform.name : "UI NULL")}");
 
         }
     }
@@ -154,7 +173,9 @@ public class LandUIManager : MonoBehaviour
         {
             codexCanvasInstance = Instantiate(codexCanvasPrefab);
             codexUI = codexCanvasInstance.GetComponentInChildren<CodexUI>(true);
+            codexUI.Init(codexService);
             codexCanvasInstance.SetActive(false);
+ 
         }
     }
 

@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 // 현재 UI가 SaveManager에 직접 접근 중
-// 추후 CodexService 분리 시 도감 관련 로직을 Service로 이관 예정
+// 추후 CodexService 분리 시 도감 관련 로직을 Service로 이관 예정 (완료)
 
 
 public class CodexUI : MonoBehaviour
@@ -15,9 +15,24 @@ public class CodexUI : MonoBehaviour
 
 
     private List<CodexUISlot> slots = new();
+    private CodexService codexService;
 
     private void OnEnable()
     {
+        TryBuild();
+    }
+
+    public void Init(CodexService service)
+    {
+        codexService = service;
+        TryBuild();
+    }
+
+    private void TryBuild()
+    {
+        if (codexService == null) return;
+        if (!codexService.IsInitialized) return;
+
         BuildCodex();
     }
 
@@ -43,8 +58,9 @@ public class CodexUI : MonoBehaviour
 
             slots.Add(slot);
 
-            // Todo: CodexService.sc로 이동 예정 (IsDiscovered 함수로 들어갈 예정)
-            bool discovered = SaveManager.Instance.IsFishDiscovered(type);
+            bool discovered = codexService.IsDiscovered(type);
+            //Debug.Log($"[CodexUI] slots count = {slots.Count}, childCount = {codexPannel.childCount}");
+
 
             if (discovered)
             {
@@ -62,6 +78,7 @@ public class CodexUI : MonoBehaviour
 
     public void CodexToggle()
     {
+        if (codexService == null) return;
         gameObject.SetActive(!gameObject.activeSelf);
     }
 

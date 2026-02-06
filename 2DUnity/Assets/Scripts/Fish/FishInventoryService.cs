@@ -9,11 +9,13 @@ public class FishInventoryService : MonoBehaviour
     public event Action OnInventoryChanged;
 
     private FishInventoryData inventoryData;
+    private CodexService codexService;
 
     private readonly Dictionary<FishType, Sprite> fishSpriteCache = new(128);
 
     private void Awake()
     {
+
         if (Instance != null)
         {
             Destroy(gameObject);
@@ -40,6 +42,11 @@ public class FishInventoryService : MonoBehaviour
         }
     }
 
+    public void Init(CodexService service)
+    {
+        codexService = service;
+    }
+
 
     public void AddFish(FishType fishType)
     {
@@ -51,7 +58,8 @@ public class FishInventoryService : MonoBehaviour
 
         data.AddFish(fishType);
 
-        SaveManager.Instance?.FishCodex(fishType);
+        codexService?.RegisterFish(fishType);
+
         OnInventoryChanged?.Invoke();
     }
 

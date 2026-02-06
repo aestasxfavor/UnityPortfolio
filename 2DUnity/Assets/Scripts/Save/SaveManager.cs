@@ -12,8 +12,6 @@ public class SaveManager : MonoBehaviour
 
     private CodexSaveData codexSaveData = new CodexSaveData();
 
-    private HashSet<FishType> discoveredFish = new HashSet<FishType>();
-
     private string savePath;
     private string mailPath;
     private string codexPath;
@@ -164,53 +162,26 @@ public class SaveManager : MonoBehaviour
 
     public void SaveCodex()
     {
-        codexSaveData.codexFishID.Clear();
-        foreach (var fish in discoveredFish)
-        {
-            codexSaveData.codexFishID.Add(fish.ToString());
-        }
-
         string json = JsonUtility.ToJson(codexSaveData, true);
         File.WriteAllText(codexPath, json);
     }
 
     public void LoadCodex()
     {
-        if (!File.Exists(codexPath)) return;
+        if (!File.Exists(codexPath))
+        {
+            codexSaveData = new CodexSaveData();
+            return;
+        } 
 
         string json = File.ReadAllText(codexPath);
         codexSaveData = JsonUtility.FromJson<CodexSaveData>(json);
 
-        discoveredFish.Clear();
-
-        if (codexSaveData.codexFishID == null) return;
-
-        foreach (var id in codexSaveData.codexFishID)
+        if(codexSaveData == null)
         {
-            if (Enum.TryParse(id, out FishType type))
-            {
-                discoveredFish.Add(type);
-            }
+            codexSaveData= new CodexSaveData();
         }
 
-    }
-
-    public void FishCodex(FishType fishType)
-    {
-        if (discoveredFish.Add(fishType))
-        {
-            Debug.Log($"[CodexUI] 신규 어종 등록: {fishType}");
-            SaveCodex();
-        }
-        else
-        {
-            Debug.Log($"[CodexUI] 이미 등록됨: {fishType}");
-        }
-    }
-
-    public bool IsFishDiscovered(FishType fishType)
-    {
-        return discoveredFish.Contains(fishType);
     }
     #endregion
 
