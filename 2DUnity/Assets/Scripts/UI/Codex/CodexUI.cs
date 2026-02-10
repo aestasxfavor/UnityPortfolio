@@ -17,8 +17,9 @@ public class CodexUI : MonoBehaviour
     private List<CodexUISlot> slots = new();
     private CodexService codexService;
 
-    private void OnEnable()
+    public void Open()
     {
+        Debug.Log("도감 열림");
         TryBuild();
     }
 
@@ -76,10 +77,10 @@ public class CodexUI : MonoBehaviour
         }
     }
 
-    public void CodexToggle()
-    {
-        if (codexService == null) return;
-        gameObject.SetActive(!gameObject.activeSelf);
-    }
+    //public void CodexToggle()
+    //{
+    //    if (codexService == null) return;
+    //    gameObject.SetActive(!gameObject.activeSelf);
+    //}
 
 }

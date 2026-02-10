@@ -1,5 +1,10 @@
 using UnityEngine;
 
+/// <summary>
+/// Todo: 7단계 리팩토링에서 스크립트 삭제 예정
+/// 현재 Button-> LandUIManager 연결용 스크립트
+/// </summary>
+
 public class StorageButton : MonoBehaviour
 {
     //private StorageUI storageUI;

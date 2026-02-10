@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class LandUIManager : MonoBehaviour
 {
-    [Header("팝업 참조")]
+    [Header("프리팹 연결")]
     [SerializeField] private GameObject exitPopupPrefab;
 
     [SerializeField] private GameObject storageUICanvasPrefab;
@@ -13,12 +13,12 @@ public class LandUIManager : MonoBehaviour
 
     // Land 생성물 캐시
     private GameObject storageUICanvasInstance;
-    private StorageUI storageUIInstance;
     private GameObject buttonCanvasInstance;
     private GameObject exitPopupInstance;
     private GameObject mailboxCanvasInstance;
     private GameObject codexCanvasInstance;
 
+    private StorageUI storageUI;
     private MailboxUI mailboxUI;
     private CodexUI codexUI;
     private CodexService codexService;
@@ -31,16 +31,16 @@ public class LandUIManager : MonoBehaviour
 
     public void SetUpLand(FishInventoryData storageData)
     {
-        if (storageUIInstance == null && storageUICanvasPrefab != null)
+        if (storageUI == null && storageUICanvasPrefab != null)
         {
             storageUICanvasInstance = Instantiate(storageUICanvasPrefab);
-            storageUIInstance = storageUICanvasInstance.GetComponentInChildren<StorageUI>(true);
+            storageUI = storageUICanvasInstance.GetComponentInChildren<StorageUI>(true);
 
         }
 
-        if (storageUIInstance != null)
+        if (storageUI != null)
         {
-            storageUIInstance.SetInventoryData(storageData);
+            storageUI.SetInventoryData(storageData);
         }
 
         if (buttonCanvasInstance == null && buttonCanvasPrefab != null)
@@ -78,9 +78,9 @@ public class LandUIManager : MonoBehaviour
         //if (buttonCanvasInstance != null)
         //{
         //    var storageButton = buttonCanvasInstance.GetComponentInChildren<StorageButton>(true);
-        //    if (storageButton != null && storageUIInstance != null)
+        //    if (storageButton != null && storageUI != null)
         //    {
-        //        storageButton.SetTargetStorage(storageUIInstance);
+        //        storageButton.SetTargetStorage(storageUI);
         //    }
         //}
 
@@ -162,7 +162,7 @@ public class LandUIManager : MonoBehaviour
 
         if (mailboxCanvasInstance == null) return;
         mailboxCanvasInstance.SetActive(true);
-        mailboxUI?.Open();
+        mailboxUI.Open();
     }
 
     public void OpenCodex()
@@ -172,7 +172,7 @@ public class LandUIManager : MonoBehaviour
 
         if(codexCanvasInstance == null) return;
         codexCanvasInstance.SetActive(true);
-
+        codexUI.Open();
     }
 
     public void OpenStorage()
@@ -182,7 +182,7 @@ public class LandUIManager : MonoBehaviour
 
         CloseAllLandUI();
         storageUICanvasInstance.SetActive(true);
-        storageUIInstance.Open();
+        storageUI.Open();
     }
     #endregion
 

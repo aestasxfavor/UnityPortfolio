@@ -190,6 +190,7 @@ public class StorageUI : MonoBehaviour
 
     public void Open()
     {
+        Debug.Log("보관함 열림");
         if (inventoryPanelRoot == null) return;
 
         inventoryPanelRoot.SetActive(true);

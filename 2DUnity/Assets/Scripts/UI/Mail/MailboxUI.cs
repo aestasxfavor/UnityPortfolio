@@ -49,6 +49,11 @@ public sealed class MailboxUI : MonoBehaviour
 
     public void Open()
     {
+        if (panelRoot != null)
+        {
+            Debug.Log("우편함 활성화됨");
+            panelRoot.SetActive(true);
+        }
         Refresh();
     }
 
