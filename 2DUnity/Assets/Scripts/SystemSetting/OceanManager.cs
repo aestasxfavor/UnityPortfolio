@@ -12,6 +12,12 @@ public class OceanManager : MonoBehaviour
     private OxygenManager oxygenManager;
     private InventoryUI inventoryUI;
 
+    public void ResetOcean()
+    {
+        //Todo: 내일 리팩토링 6단계 시작예정
+        Debug.Log("ResetOcean 호출됨");
+    }
+
 
     public void Initialize(FishInventoryData seaData)
     {

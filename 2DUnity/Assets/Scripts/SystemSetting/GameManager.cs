@@ -7,13 +7,13 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("Prefabs")]
-    // 5단계 리팩토링 때 OceanManager로 이관예정
+    // 6단계 리팩토링 때 OceanManager로 이관예정
     public GameObject playerPrefab;
     public GameObject oceanMapPrefab;
     public GameObject fishDataLoaderPrefab;
 
 
-    // 5단계 리팩토링 때 OceanManager로 이관예정
+    // 6단계 리팩토링 때 OceanManager로 이관예정
     // Ocean 생성물 캐시
     private GameObject playerInstance;
     private GameObject oceanMapInstance;
