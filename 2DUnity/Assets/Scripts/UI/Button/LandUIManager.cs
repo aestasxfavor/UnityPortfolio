@@ -69,14 +69,20 @@ public class LandUIManager : MonoBehaviour
             }
         }
 
-        if (buttonCanvasInstance != null)
+        var storageButton = buttonCanvasInstance.GetComponentInChildren<StorageButton>(true);
+        if(storageButton != null)
         {
-            var storageButton = buttonCanvasInstance.GetComponentInChildren<StorageButton>(true);
-            if (storageButton != null && storageUIInstance != null)
-            {
-                storageButton.SetTargetStorage(storageUIInstance);
-            }
+            storageButton.SetLandUIManager(this);
         }
+
+        //if (buttonCanvasInstance != null)
+        //{
+        //    var storageButton = buttonCanvasInstance.GetComponentInChildren<StorageButton>(true);
+        //    if (storageButton != null && storageUIInstance != null)
+        //    {
+        //        storageButton.SetTargetStorage(storageUIInstance);
+        //    }
+        //}
 
         if (codexService != null && !codexService.IsInitialized)
         {
@@ -90,13 +96,13 @@ public class LandUIManager : MonoBehaviour
             inventory.Init(codexService);
         }
 
-        if(mailBoxService != null && !mailBoxService.IsInitialized)
+        if (mailBoxService != null && !mailBoxService.IsInitialized)
         {
             mailBoxService.Init(SaveManager.Instance.GetMailboxSaveData());
         }
-}
+    }
 
-public void SetButtonUIActive(bool active)
+    public void SetButtonUIActive(bool active)
     {
         if (buttonCanvasInstance != null)
             buttonCanvasInstance.SetActive(active);
@@ -127,16 +133,70 @@ public void SetButtonUIActive(bool active)
             }
         }
     }
-    public void ToggleCodex()
+
+    #region Land UI Open API (리팩토링 4단계)
+    public void CloseAllLandUI()
+    {
+        if(mailboxCanvasInstance != null)
+        {
+            mailboxCanvasInstance.SetActive(false);
+        }
+
+        if(codexCanvasInstance !=null)
+        {
+            codexCanvasInstance.SetActive(false);
+        }
+
+        if(storageUICanvasInstance != null)
+        {
+            storageUICanvasInstance.SetActive(false);
+        }
+        
+        // Todo: 상점은 나중에 만들기 
+    }
+
+    public void OpenMailbox()
+    {
+        SetMailbox();
+        CloseAllLandUI();
+
+        if (mailboxCanvasInstance == null) return;
+        mailboxCanvasInstance.SetActive(true);
+        mailboxUI?.Open();
+    }
+
+    public void OpenCodex()
     {
         SetCodex();
-        if (codexCanvasInstance == null) return;
+        CloseAllLandUI();
 
-        bool active = codexCanvasInstance.activeSelf;
-        codexCanvasInstance.SetActive(!active);
+        if(codexCanvasInstance == null) return;
+        codexCanvasInstance.SetActive(true);
+
+    }
+
+    public void OpenStorage()
+    {
+        Debug.Log($"[OpenStorage] canvas = {storageUICanvasInstance}");
+        if(storageUICanvasInstance == null) return;
+
+        CloseAllLandUI();
+        storageUICanvasInstance.SetActive(true);
+        storageUIInstance.Open();
+    }
+    #endregion
+
+    public void ToggleCodex()
+    {
+        //SetCodex();
+        //if (codexCanvasInstance == null) return;
+
+        //bool active = codexCanvasInstance.activeSelf;
+        //codexCanvasInstance.SetActive(!active);
         // 리팩토링 때 open, close 함수 각각 만들어서 관리할 예정
         //if (codexUI == null) return;
         //codexUI.CodexToggle();
+        OpenCodex();
     }
     public void ShowExitPopup()
     {
@@ -175,25 +235,26 @@ public void SetButtonUIActive(bool active)
             codexUI = codexCanvasInstance.GetComponentInChildren<CodexUI>(true);
             codexUI.Init(codexService);
             codexCanvasInstance.SetActive(false);
- 
+
         }
     }
 
 
     public void ToggleMailBox()
     {
-        Debug.Log("메일 버튼 눌림");
-        SetMailbox();
-        if (mailboxCanvasInstance == null) return;
+        //Debug.Log("메일 버튼 눌림");
+        //SetMailbox();
+        //if (mailboxCanvasInstance == null) return;
 
-        bool active = mailboxCanvasInstance.activeSelf;
-        Debug.Log("메일 현재 상태: " + active);
-        mailboxCanvasInstance.SetActive(!active);
+        //bool active = mailboxCanvasInstance.activeSelf;
+        //Debug.Log("메일 현재 상태: " + active);
+        //mailboxCanvasInstance.SetActive(!active);
 
-        if (!active & mailboxUI != null)
-        {
-            mailboxUI.Open();
-        }
+        //if (!active & mailboxUI != null)
+        //{
+        //    mailboxUI.Open();
+        //}
+        OpenMailbox();
     }
 
     public void ExitGame()
@@ -204,4 +265,25 @@ public void SetButtonUIActive(bool active)
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
+
+#if UNITY_EDITOR
+    [ContextMenu("TEST/Open Mailbox")]
+    private void Test_OpenMailbox()
+    {
+        OpenMailbox();
+    }
+
+    [ContextMenu("TEST/Open Codex")]
+    private void Test_OpenCodex()
+    {
+        OpenCodex();
+    }
+
+    [ContextMenu("TEST/Open Storage")]
+    private void Test_OpenStorage()
+    {
+        OpenStorage();
+    }
+#endif
+
 }

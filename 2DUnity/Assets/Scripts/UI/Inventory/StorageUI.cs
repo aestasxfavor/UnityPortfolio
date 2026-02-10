@@ -166,25 +166,34 @@ public class StorageUI : MonoBehaviour
 
 
     // 버튼에서 호출할 UI 토글 함수
-    public void ToggleInventoryUI()
+    //public void ToggleInventoryUI()
+    //{
+    //    if (inventoryPanelRoot == null)
+    //    {
+    //        Debug.LogWarning("[StorageUI] inventoryPanelRoot 연결 안 됨");
+    //        return;
+    //    }
+
+    //    bool newState = !inventoryPanelRoot.activeSelf;
+    //    inventoryPanelRoot.SetActive(newState);
+
+    //    if (newState)
+    //    {
+    //        LoadFishData();
+    //      //  Debug.Log("[StorageUI] 보관함 열림");
+    //    }
+    //    //else
+    //    //{
+    //    //    Debug.Log("[StorageUI] 보관함 닫힘");
+    //    //}
+    //}
+
+    public void Open()
     {
-        if (inventoryPanelRoot == null)
-        {
-            Debug.LogWarning("[StorageUI] inventoryPanelRoot 연결 안 됨");
-            return;
-        }
+        if (inventoryPanelRoot == null) return;
 
-        bool newState = !inventoryPanelRoot.activeSelf;
-        inventoryPanelRoot.SetActive(newState);
+        inventoryPanelRoot.SetActive(true);
+        LoadFishData();
 
-        if (newState)
-        {
-            LoadFishData();
-          //  Debug.Log("[StorageUI] 보관함 열림");
-        }
-        //else
-        //{
-        //    Debug.Log("[StorageUI] 보관함 닫힘");
-        //}
     }
 }

@@ -2,22 +2,33 @@ using UnityEngine;
 
 public class StorageButton : MonoBehaviour
 {
-    private StorageUI storageUI;
+    //private StorageUI storageUI;
+    private LandUIManager landUIManager;
 
-    public void SetTargetStorage(StorageUI ui)
+    public void SetLandUIManager(LandUIManager manager)
     {
-        storageUI = ui;
+        landUIManager = manager;
     }
+
+    //public void SetTargetStorage(StorageUI ui)
+    //{
+    //    storageUI = ui;
+    //}
 
     public void OnClickOpenStorage()
     {
-        if (storageUI != null)
+        //if (storageUI != null)
+        //{
+        //    storageUI.ToggleInventoryUI();
+        //}
+        //else
+        //{
+        //    Debug.LogWarning("[StorageButton] StorageUI 참조 없음");
+        //}
+        if (landUIManager != null)
         {
-            storageUI.ToggleInventoryUI();
-        }
-        else
-        {
-            Debug.LogWarning("[StorageButton] StorageUI 참조 없음");
+            landUIManager.OpenStorage();
+
         }
     }
 }
