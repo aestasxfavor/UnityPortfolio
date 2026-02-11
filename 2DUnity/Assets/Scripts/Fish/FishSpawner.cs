@@ -10,9 +10,19 @@ public class FishSpawner : MonoBehaviour
 
     private readonly List<GameObject> aliveFish = new();
 
+    private Coroutine spawnRoutine;
     private void Start()
+    { 
+        StartSpawn();
+    }
+
+    public void StartSpawn()
     {
-        StartCoroutine(FishSpawn());
+        if (spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+        }
+        spawnRoutine = StartCoroutine(FishSpawn());
     }
 
     public IEnumerator FishSpawn()
@@ -35,6 +45,26 @@ public class FishSpawner : MonoBehaviour
             Vector2 randomPos = new Vector2(transform.position.x + Random.Range(-spawnerConfig.fishSpawnX, spawnerConfig.fishSpawnX), transform.position.y + Random.Range(-spawnerConfig.fishSpawnY, spawnerConfig.fishSpawnY));
 
             Instantiate(randomFish, randomPos, randomFish.transform.rotation);
+        }
+    }
+
+    public void ResetSpawn()
+    {
+        if(spawnRoutine != null)
+        {
+            StopCoroutine(spawnRoutine);
+            spawnRoutine = null;
+        }
+
+        for (int i = aliveFish.Count -1; i>=0; i--)
+        {
+            if (aliveFish[i]==null)
+            {
+                Destroy(aliveFish[i]);
+            }
+            aliveFish.Clear();
+
+            spawnRoutine = StartCoroutine(FishSpawn());
         }
     }
 }

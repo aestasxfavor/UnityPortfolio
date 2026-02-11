@@ -7,19 +7,9 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance;
 
     [Header("Prefabs")]
-    // 6단계 리팩토링 때 OceanManager로 이관예정
-    public GameObject playerPrefab;
-    public GameObject oceanMapPrefab;
     public GameObject fishDataLoaderPrefab;
 
-
-    // 6단계 리팩토링 때 OceanManager로 이관예정
-    // Ocean 생성물 캐시
-    private GameObject playerInstance;
-    private GameObject oceanMapInstance;
     private GameObject fishDataLoaderInstance;
-
- 
 
     [Header("공용 인벤토리 데이터 (씬 공통 사용)")]
     [SerializeField] private FishInventoryData storageInventoryData;
@@ -79,86 +69,24 @@ public class GameManager : MonoBehaviour
     {
         yield return null; // 한 프레임 대기
 
-        if (scene.name == "Ocean")
-            yield return StartCoroutine(SetupOceanScene());
-        else if (scene.name == "Land")
+        if(scene.name == "Ocean")
+        {
+            var seaData = GetSeaInventoryData();
+            seaData.Clear();
+
+            FishInventoryService.Instance?.SetInventoryData(seaData);
+
+            var ocean = FindFirstObjectByType<OceanManager>();
+            ocean?.SetUpOcean(seaData);
+        }
+        else if(scene.name =="Land")
+        {
             SetupLandScene();
+        }
     }
 
     // -------------------------
-    // Ocean Scene 세팅
-    // -------------------------
-    private IEnumerator SetupOceanScene()
-    {
-        // Todo: OceanManager가 수명 관리하도록 이동 예정 -> 5단계 리팩토링할 때 다시 손 볼 예정
-        CleanupOceanObjects();
-
-        // Debug.Log("[GameManager] Ocean 씬 세팅 시작");
-
-        // 바다 데이터 비우고 서비스가 바다 데이터 물게 하기
-        var seaData = GetSeaInventoryData();
-        if (seaData == null)
-        {
-            // Debug.LogError("[GameManager] seaInventoryData가 null입니다 (Inspector 연결 확인)");
-            yield break;
-        }
-        seaData.Clear();
-
-        // 겜매니저에 유지하기
-        if (FishInventoryService.Instance != null)
-            FishInventoryService.Instance.SetInventoryData(seaData);
-        else
-            Debug.LogWarning("[GameManager] FishInventoryService.Instance == null");
-
-        // 플레이어 생성
-        // Todo: OceanManager가 생성 책임을 가지도록 이동 가능 (5단계에서 진행예정)
-        if (playerPrefab != null)
-            playerInstance = Instantiate(playerPrefab);
-
-        // Todo: OceanManager가 생성 책임을 가지도록 이동 가능 (5단계에서 진행예정)
-        // 맵 생성
-        if (oceanMapPrefab != null)
-            oceanMapInstance = Instantiate(oceanMapPrefab);
-
-        yield return null; // 한 프레임 더 대기 (카메라와 오브젝트 로딩 기다림)
-
-        // 카메라 연결
-        CameraBound cam = FindFirstObjectByType<CameraBound>();
-        if (cam != null && playerInstance != null)
-        {
-            cam.SetTarget(playerInstance.transform);
-            //Debug.Log("[GameManager] CameraBound 플레이어 연결 완료");
-        }
-
-        // OceanManager 연결
-        // Todo: 겜매니저에 유지하기
-        var oceanManager = FindFirstObjectByType<OceanManager>();
-        if (oceanManager != null)
-        {
-            oceanManager.Initialize(seaData);
-        }
-
-
-        if (SoundManager.Instance != null)
-        {
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.waterSplashSFX);
-        }
-
-        Debug.Log("[GameManager] Ocean 씬 세팅 완료");
-    }
-
-    // Todo: OceanManager가 씬 종료 시 정리하도록 이동 예정
-    private void CleanupOceanObjects()
-    {
-        if (playerInstance != null) Destroy(playerInstance);
-        if (oceanMapInstance != null) Destroy(oceanMapInstance);
-
-        playerInstance = null;
-        oceanMapInstance = null;
-    }
-
-    // -------------------------
-    // Land Scene 세팅
+    // Land Scene 세팅 나중에 landUIManager로 옮기던지 LandManager로 옮기던지 둘중 하나할 예정
     // -------------------------
     private void SetupLandScene()
     {
@@ -224,7 +152,6 @@ public class GameManager : MonoBehaviour
                 Debug.Log($"[MAIL] unlocked(after)={mail.firstReturnMailUnlocked}");
             }
         }
-
 
         string sceneName = targetScene.ToString();
 
