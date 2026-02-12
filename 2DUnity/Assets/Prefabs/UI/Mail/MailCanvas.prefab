@@ -542,6 +542,7 @@ GameObject:
   - component: {fileID: 7918197609974464869}
   - component: {fileID: 5347118487451573819}
   - component: {fileID: 6186232663371231523}
+  - component: {fileID: 7282211489861986287}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -650,7 +651,31 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 5347118487451573819}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 0}
+        m_TargetAssemblyTypeName: 
+        m_MethodName: 
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: 
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7282211489861986287
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3670136942538457056}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dcf2124c5d405014d9d7381f934abb60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &3919849276970871258
 GameObject:
   m_ObjectHideFlags: 0
@@ -1393,7 +1418,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 854567c6a7f65f14c8b3dfb63a7bee5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  firstMailDefinition: {fileID: 11400000, guid: e8294b9dd693c2d4d830d2916b06eedf, type: 2}
   panelRoot: {fileID: 7575387179028508771}
   firstMailButton: {fileID: 6648341798819207866}
   firstMailTitleText: {fileID: 3172683074823746377}

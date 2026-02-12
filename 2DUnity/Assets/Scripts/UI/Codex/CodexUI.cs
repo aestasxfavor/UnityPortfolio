@@ -3,10 +3,6 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-// 현재 UI가 SaveManager에 직접 접근 중
-// 추후 CodexService 분리 시 도감 관련 로직을 Service로 이관 예정 (완료)
-
-
 public class CodexUI : MonoBehaviour
 {
     [SerializeField] private Transform codexPannel;
@@ -45,42 +41,24 @@ public class CodexUI : MonoBehaviour
         }
         slots.Clear();
 
-        int index = 1;
+        var list = codexService.GetCodexViewList();
 
-        foreach (FishType type in System.Enum.GetValues(typeof(FishType)))
+        foreach (var data in list)
         {
             GameObject obj = Instantiate(slotPrefab, codexPannel);
             CodexUISlot slot = obj.GetComponent<CodexUISlot>();
-            
-            if(slot ==null)
-            {
-                continue;
-            }
 
             slots.Add(slot);
 
-            bool discovered = codexService.IsDiscovered(type);
-            //Debug.Log($"[CodexUI] slots count = {slots.Count}, childCount = {codexPannel.childCount}");
-
-
-            if (discovered)
+            if(data.discovered)
             {
-                Sprite icon = FishInventoryService.Instance.GetFishSprite(type);
-                slot.SetDiscovered(icon, index);
-
+                slot.SetDiscovered(data.icon, data.index);
             }
             else
             {
-                slot.SetUndiscovered(unknownIcon, index);
+                slot.SetUndiscovered(unknownIcon, data.index);
             }
-            index++;
         }
     }
-
-    //public void CodexToggle()
-    //{
-    //    if (codexService == null) return;
-    //    gameObject.SetActive(!gameObject.activeSelf);
-    //}
 
 }

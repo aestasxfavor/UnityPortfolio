@@ -3,6 +3,19 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
 
+public struct FishViewData
+{
+    public FishType fishType;
+    public int count;
+
+    public FishViewData(FishType type, int _count)
+    {
+        fishType = type;
+        count = _count;
+    }
+}
+
+
 public class FishInventoryService : MonoBehaviour
 {
     public static FishInventoryService Instance;
@@ -119,5 +132,23 @@ public class FishInventoryService : MonoBehaviour
     {
         inventoryData = data;
         OnInventoryChanged?.Invoke();
+    }
+
+    // IReadOnlyList 이게 머여 
+    public IReadOnlyList<FishViewData> GetFishViewList()
+    {
+        var data = Data;
+        if (data == null) return null;
+
+        var result = new List<FishViewData>();
+
+        foreach (var slot in data.caughtFishList)
+        {
+            if (slot == null) continue;
+
+            result.Add(new FishViewData(slot.fishType, slot.count));
+        }
+
+        return result;
     }
 }

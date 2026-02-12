@@ -4,9 +4,6 @@ using TMPro;
 
 public sealed class MailboxUI : MonoBehaviour
 {
-    [Header("Mail Data")]
-    [SerializeField] private MailDefinition firstMailDefinition; // M001
-
     [Header("Root Panel")]
     [SerializeField] private GameObject panelRoot;
 
@@ -23,6 +20,7 @@ public sealed class MailboxUI : MonoBehaviour
     [SerializeField] private Button closeButton;
 
     private MailBoxService mailboxService;
+    private bool isMailSelected = false;
 
     private void Awake()
     {
@@ -59,71 +57,71 @@ public sealed class MailboxUI : MonoBehaviour
 
     private void Refresh()
     {
-        if (mailboxService == null || firstMailDefinition == null) return;
-
         if (mailboxService == null) return;
 
-        bool unlocked = mailboxService.IsMailUnlocked(null);
-        bool isRead = mailboxService.IsMailRead(null);
+        var mail = mailboxService.GetFirstMailViewData();
 
-        if (firstMailButton != null)
+        firstMailButton.interactable = mail.unlocked;
+
+        firstMailTitleText.text = mail.unlocked
+            ? mail.listTitle : "새 편지가 없습니다";
+
+        // Todo: NewBage는 상점까지 싹 다하고 디테일 작업때 할 예정
+        if (newBadge != null)
+            newBadge.SetActive(mail.unlocked && !mail.isRead);
+
+        if (!mail.unlocked)
         {
-            firstMailButton.interactable = unlocked;
+            viewerTitleText.text = "";
+            viewerBodyText.text = "";
         }
-
-        if(firstMailTitleText != null)
-        {
-            firstMailTitleText.text = unlocked ? firstMailDefinition.ListTitle : "새 편지가 없습니다";
-        }
-
-        if(newBadge !=null)
-        {
-            newBadge.SetActive(unlocked && !isRead);
-        }
-
-        // 2) NEW 배지 표시 (언락 && 안읽음)
-        // mailService.sc 로 이관 예정 (IsMailNew 함수로 들어갈 예정)
-        //if (newBadge != null)
-        //    newBadge.SetActive(unlocked && !mailSave.firstReturnMailRead);
-
-        // 3) 우측 뷰어 초기화
-        if (!unlocked)
-        {
-            if (viewerTitleText != null) viewerTitleText.text = "";
-            if (viewerBodyText != null) viewerBodyText.text = "";
-        }
-    
     }
 
     private void OnClickFirstMail()
     {
         if(mailboxService == null) return;
-
         if (!mailboxService.IsMailUnlocked(null)) return;
 
-    
+        if(isMailSelected)
+        {
+            isMailSelected = false;
+            HideViewer();
+            return;
+        }
+        isMailSelected = true;
 
+        mailboxService.SelectMail(null);
 
         ShowFirstMailInViewer();
+        Refresh();
 
-        if (!mailboxService.IsMailRead(null))
-        {
-            mailboxService.MarkAsRead(null);
-        }
-
-        // NEW 배지 끄기
-        // Todo: New 배지 상태 판단 MailBoxService.sc에서 담당 할 예정
-        if (newBadge != null)
-            newBadge.SetActive(false);
     }
 
     private void ShowFirstMailInViewer()
     {
+        if (mailboxService == null) return;
+
+        var mail = mailboxService.GetFirstMailViewData();
+
         if (viewerTitleText != null)
-            viewerTitleText.text = firstMailDefinition.Title;
+            viewerTitleText.text = mail.title;
 
         if (viewerBodyText != null)
-            viewerBodyText.text = firstMailDefinition.Body;
+            viewerBodyText.text = mail.body;
+    }
+
+    private void HideViewer()
+    {
+        if(viewerTitleText !=null)
+        {
+            viewerTitleText.text = "";
+        }
+
+        if(viewerBodyText != null)
+        {
+            viewerBodyText.text = "";
+        }
+
     }
 
 }

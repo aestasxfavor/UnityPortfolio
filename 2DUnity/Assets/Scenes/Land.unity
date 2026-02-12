@@ -577,8 +577,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e49c95bf2fc55a144a2ebcb32f5a4716, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 7523852955153887672, guid: c4cbcb7dd44da6243bb224eb722f0ec2, type: 3}
-  oceanMapPrefab: {fileID: 9170003171795374874, guid: 060855d15a406fb4fac1a29def3d9593, type: 3}
   fishDataLoaderPrefab: {fileID: 89068995838689660, guid: 26365a06b0292aa47a09bba381dc7bbe, type: 3}
   storageInventoryData: {fileID: 11400000, guid: fcdcd6419bdbcdb4ebed48837b8bcca3, type: 2}
   seaInventoryData: {fileID: 11400000, guid: dc37067d07ac2fc4c85fa47ca3eac3c9, type: 2}
@@ -626,6 +624,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bead17380d701214e88ac9c8132ac25c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  firstMailDefinition: {fileID: 11400000, guid: e8294b9dd693c2d4d830d2916b06eedf, type: 2}
 --- !u!4 &1617367841
 Transform:
   m_ObjectHideFlags: 0

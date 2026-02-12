@@ -5,7 +5,7 @@ using UnityEngine.UI;
 public class StorageUI : MonoBehaviour
 {
     [Header("공용 인벤토리 데이터")]
-    private FishInventoryData sharedInventoryData;
+    //private FishInventoryData sharedInventoryData;
 
     [Header("슬롯 관련 설정")]
     [SerializeField] private Transform inventoryParent;
@@ -55,14 +55,6 @@ public class StorageUI : MonoBehaviour
         }
     }
 
-    // GameManager에서 데이터 주입받기
-    public void SetInventoryData(FishInventoryData data)
-    {
-        sharedInventoryData = data;
-       // Debug.Log($"[StorageUI] storageInventoryData 주입 완료 ({data?.name})");
-        LoadFishData();
-    }
-
     // 슬롯 생성
     private void CreateSlots()
     {
@@ -109,39 +101,29 @@ public class StorageUI : MonoBehaviour
     // 인벤토리 데이터 로드
     public void LoadFishData()
     {
-        if (sharedInventoryData == null)
-        {
-            Debug.LogWarning("[StorageUI] sharedInventoryData가 비어 있음");
-            return;
-        }
-
         ClearSlots();
 
-        foreach (var fish in sharedInventoryData.caughtFishList)
+
+        var service = FishInventoryService.Instance;
+        if (service == null) return;
+
+        var fishList = service.GetFishViewList();
+        if (fishList == null) return;
+
+        foreach (var fish in fishList)
         {
-            if (fish == null) continue;
-
-            Sprite icon = FishInventoryService.Instance != null
-                ? FishInventoryService.Instance.GetFishSprite(fish.fishType)
-                : null;
-
+            Sprite icon = service.GetFishSprite(fish.fishType);
             if (icon == null) continue;
 
-            if (slotMap.TryGetValue(fish.fishType, out UISlot slot))
+            if(slotMap.TryGetValue(fish.fishType, out UISlot slot))
             {
                 slot.SetItem(icon, fish.fishType, fish.count);
             }
             else
             {
-                //UISlot emptySlot = allSlots.Find(s => s.IsEmpty && !slotMap.ContainsValue(s));
-                //if (emptySlot != null)
-                //{
-                //    emptySlot.SetItem(icon, fish.fishType, fish.count);
-                //}
-
                 UISlot emptySlot = null;
 
-                for (int i = 0;  i < allSlots.Count;  i++)
+                for (int i = 0; i < allSlots.Count; i++)
                 {
                     var s = allSlots[i];
                     if (!s.IsEmpty) continue;
@@ -153,7 +135,7 @@ public class StorageUI : MonoBehaviour
 
                 }
 
-                if(emptySlot != null)
+                if (emptySlot != null)
                 {
                     emptySlot.SetItem(icon, fish.fishType, fish.count);
                 }
@@ -163,30 +145,6 @@ public class StorageUI : MonoBehaviour
         LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryParent.GetComponent<RectTransform>());
        // Debug.Log("[StorageUI] 보관함 UI 갱신 완료");
     }
-
-
-    // 버튼에서 호출할 UI 토글 함수
-    //public void ToggleInventoryUI()
-    //{
-    //    if (inventoryPanelRoot == null)
-    //    {
-    //        Debug.LogWarning("[StorageUI] inventoryPanelRoot 연결 안 됨");
-    //        return;
-    //    }
-
-    //    bool newState = !inventoryPanelRoot.activeSelf;
-    //    inventoryPanelRoot.SetActive(newState);
-
-    //    if (newState)
-    //    {
-    //        LoadFishData();
-    //      //  Debug.Log("[StorageUI] 보관함 열림");
-    //    }
-    //    //else
-    //    //{
-    //    //    Debug.Log("[StorageUI] 보관함 닫힘");
-    //    //}
-    //}
 
     public void Open()
     {

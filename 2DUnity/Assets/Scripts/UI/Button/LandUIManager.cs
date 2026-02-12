@@ -29,6 +29,27 @@ public class LandUIManager : MonoBehaviour
         mailBoxService = FindAnyObjectByType<MailBoxService>();
     }
 
+    private void Update()
+    {
+        if (!Input.GetKeyDown(KeyCode.Escape)) return;
+
+        if (LandUIOpen())
+        {
+            CloseAllLandUI();
+        }
+    }
+
+    private bool LandUIOpen()
+    {
+        if (mailboxCanvasInstance != null && mailboxCanvasInstance.activeSelf) return true;
+
+        if (codexCanvasInstance != null && codexCanvasInstance.activeSelf) return true;
+
+        if (storageUICanvasInstance != null && storageUICanvasInstance.activeSelf) return true;
+
+        return false;
+    }
+
     public void SetUpLand(FishInventoryData storageData)
     {
         if (storageUI == null && storageUICanvasPrefab != null)
@@ -36,11 +57,11 @@ public class LandUIManager : MonoBehaviour
             storageUICanvasInstance = Instantiate(storageUICanvasPrefab);
             storageUI = storageUICanvasInstance.GetComponentInChildren<StorageUI>(true);
 
-        }
-
-        if (storageUI != null)
-        {
-            storageUI.SetInventoryData(storageData);
+            var closeButton = storageUICanvasInstance.GetComponentsInChildren<CloseLandUIButton>(true);
+            foreach (var button in closeButton)
+            {
+                button.Init(this);
+            }
         }
 
         if (buttonCanvasInstance == null && buttonCanvasPrefab != null)
@@ -49,6 +70,7 @@ public class LandUIManager : MonoBehaviour
 
             var buttons = buttonCanvasInstance.GetComponentsInChildren<UnityEngine.UI.Button>(true);
 
+            // Todo: 디테일 작업할 때 3개 묶어서 처리하는 버튼 스크립트 만들어서 enum으로 처리하던가 해야겠다
             foreach (var btn in buttons)
             {
                 switch (btn.name)
@@ -70,19 +92,10 @@ public class LandUIManager : MonoBehaviour
         }
 
         var storageButton = buttonCanvasInstance.GetComponentInChildren<StorageButton>(true);
-        if(storageButton != null)
+        if (storageButton != null)
         {
             storageButton.SetLandUIManager(this);
         }
-
-        //if (buttonCanvasInstance != null)
-        //{
-        //    var storageButton = buttonCanvasInstance.GetComponentInChildren<StorageButton>(true);
-        //    if (storageButton != null && storageUI != null)
-        //    {
-        //        storageButton.SetTargetStorage(storageUI);
-        //    }
-        //}
 
         if (codexService != null && !codexService.IsInitialized)
         {
@@ -120,6 +133,7 @@ public class LandUIManager : MonoBehaviour
 
             foreach (var btn in buttons)
             {
+                // Todo: 얘도 마찬가지로 디테일 할때 처리하던가 해야겠음
                 switch (btn.name)
                 {
                     case "Yes":
@@ -137,21 +151,21 @@ public class LandUIManager : MonoBehaviour
     #region Land UI Open API (리팩토링 4단계)
     public void CloseAllLandUI()
     {
-        if(mailboxCanvasInstance != null)
+        if (mailboxCanvasInstance != null)
         {
             mailboxCanvasInstance.SetActive(false);
         }
 
-        if(codexCanvasInstance !=null)
+        if (codexCanvasInstance != null)
         {
             codexCanvasInstance.SetActive(false);
         }
 
-        if(storageUICanvasInstance != null)
+        if (storageUICanvasInstance != null)
         {
             storageUICanvasInstance.SetActive(false);
         }
-        
+
         // Todo: 상점은 나중에 만들기 
     }
 
@@ -170,7 +184,7 @@ public class LandUIManager : MonoBehaviour
         SetCodex();
         CloseAllLandUI();
 
-        if(codexCanvasInstance == null) return;
+        if (codexCanvasInstance == null) return;
         codexCanvasInstance.SetActive(true);
         codexUI.Open();
     }
@@ -178,7 +192,7 @@ public class LandUIManager : MonoBehaviour
     public void OpenStorage()
     {
         Debug.Log($"[OpenStorage] canvas = {storageUICanvasInstance}");
-        if(storageUICanvasInstance == null) return;
+        if (storageUICanvasInstance == null) return;
 
         CloseAllLandUI();
         storageUICanvasInstance.SetActive(true);
@@ -188,14 +202,6 @@ public class LandUIManager : MonoBehaviour
 
     public void ToggleCodex()
     {
-        //SetCodex();
-        //if (codexCanvasInstance == null) return;
-
-        //bool active = codexCanvasInstance.activeSelf;
-        //codexCanvasInstance.SetActive(!active);
-        // 리팩토링 때 open, close 함수 각각 만들어서 관리할 예정
-        //if (codexUI == null) return;
-        //codexUI.CodexToggle();
         OpenCodex();
     }
     public void ShowExitPopup()
@@ -220,10 +226,14 @@ public class LandUIManager : MonoBehaviour
             mailboxCanvasInstance = Instantiate(mailboxCanvasPrefab);
             mailboxUI = mailboxCanvasInstance.GetComponentInChildren<MailboxUI>(true);
             mailboxUI.Init(mailBoxService);
-            mailboxCanvasInstance.SetActive(false);
-            //Debug.Log($"[MAIL] instance={mailboxCanvasInstance.name}, active={mailboxCanvasInstance.activeSelf}");
-            //Debug.Log($"[MAIL] panelRoot={(mailboxUI != null ? mailboxUI.transform.name : "UI NULL")}");
 
+            var closeButton = mailboxCanvasInstance.GetComponentsInChildren<CloseLandUIButton>(true);
+            foreach (var button in closeButton)
+            {
+                button.Init(this);
+            }
+
+            mailboxCanvasInstance.SetActive(false);
         }
     }
 
@@ -234,6 +244,13 @@ public class LandUIManager : MonoBehaviour
             codexCanvasInstance = Instantiate(codexCanvasPrefab);
             codexUI = codexCanvasInstance.GetComponentInChildren<CodexUI>(true);
             codexUI.Init(codexService);
+
+            var closeButton = codexCanvasInstance.GetComponentsInChildren<CloseLandUIButton>(true);
+            foreach (var button in closeButton)
+            {
+                button.Init(this);
+            }
+
             codexCanvasInstance.SetActive(false);
 
         }
@@ -242,18 +259,6 @@ public class LandUIManager : MonoBehaviour
 
     public void ToggleMailBox()
     {
-        //Debug.Log("메일 버튼 눌림");
-        //SetMailbox();
-        //if (mailboxCanvasInstance == null) return;
-
-        //bool active = mailboxCanvasInstance.activeSelf;
-        //Debug.Log("메일 현재 상태: " + active);
-        //mailboxCanvasInstance.SetActive(!active);
-
-        //if (!active & mailboxUI != null)
-        //{
-        //    mailboxUI.Open();
-        //}
         OpenMailbox();
     }
 
@@ -266,24 +271,24 @@ public class LandUIManager : MonoBehaviour
 #endif
     }
 
-#if UNITY_EDITOR
-    [ContextMenu("TEST/Open Mailbox")]
-    private void Test_OpenMailbox()
-    {
-        OpenMailbox();
-    }
+//#if UNITY_EDITOR
+//    [ContextMenu("TEST/Open Mailbox")]
+//    private void Test_OpenMailbox()
+//    {
+//        OpenMailbox();
+//    }
 
-    [ContextMenu("TEST/Open Codex")]
-    private void Test_OpenCodex()
-    {
-        OpenCodex();
-    }
+//    [ContextMenu("TEST/Open Codex")]
+//    private void Test_OpenCodex()
+//    {
+//        OpenCodex();
+//    }
 
-    [ContextMenu("TEST/Open Storage")]
-    private void Test_OpenStorage()
-    {
-        OpenStorage();
-    }
-#endif
+//    [ContextMenu("TEST/Open Storage")]
+//    private void Test_OpenStorage()
+//    {
+//        OpenStorage();
+//    }
+//#endif
 
 }

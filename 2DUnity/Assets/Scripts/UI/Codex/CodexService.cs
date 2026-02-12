@@ -1,6 +1,22 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct CodexViewData
+{
+    public FishType type;
+    public Sprite icon;
+    public bool discovered;
+    public int index;
+
+    public CodexViewData(FishType type, Sprite icon, bool discovered, int index)
+    {
+        this.type = type;
+        this.icon = icon;
+        this.discovered = discovered;
+        this.index = index;
+    }
+}
+
 public class CodexService : MonoBehaviour
 {
     private CodexSaveData codexSaveData;
@@ -67,4 +83,27 @@ public class CodexService : MonoBehaviour
         // 4. SaveManager에게 “저장 요청”만 보내기
         SaveManager.Instance.RequestSave();
     }
+
+    public List<CodexViewData> GetCodexViewList()
+    {
+        var list = new List<CodexViewData>();
+        if(!IsInitialized) return list;
+
+        int index = 1;
+
+        foreach (FishType type in System.Enum.GetValues(typeof(FishType)))
+        {
+            bool discovered = IsDiscovered(type);
+
+            Sprite icon = null;
+            if (discovered)
+                icon = FishInventoryService.Instance.GetFishSprite(type);
+
+            list.Add(new CodexViewData(type, icon, discovered, index));
+            index++;
+        }
+
+        return list;
+    }
+
 }
