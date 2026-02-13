@@ -29,7 +29,6 @@ public class InventoryUI : MonoBehaviour, UIClosable
     public void SetInventoryData(FishInventoryData data)
     {
         sharedInventoryData = data;
-       // Debug.Log($"[InventoryUI] storageInventoryData 주입 완료 ({data?.name})");
 
         // 슬롯이 아직 생성 전이면 Start에서 Refresh 할 거라 여기선 리턴
         if (!isSlotsCreated) return;

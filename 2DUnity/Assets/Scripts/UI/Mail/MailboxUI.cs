@@ -19,7 +19,7 @@ public sealed class MailboxUI : MonoBehaviour
     [Header("Close Button")]
     [SerializeField] private Button closeButton;
 
-    private MailBoxService mailboxService;
+    private MailboxService mailboxService;
     private bool isMailSelected = false;
 
     private void Awake()
@@ -40,7 +40,7 @@ public sealed class MailboxUI : MonoBehaviour
         }
     }
 
-    public void Init(MailBoxService service)
+    public void Init(MailboxService service)
     {
         mailboxService = service;
     }

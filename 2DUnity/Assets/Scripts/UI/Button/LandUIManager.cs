@@ -22,11 +22,13 @@ public class LandUIManager : MonoBehaviour
     private MailboxUI mailboxUI;
     private CodexUI codexUI;
     private CodexService codexService;
-    private MailBoxService mailBoxService;
+    private MailboxService mailBoxService;
     private void Start()
     {
+        // Todo: FindAnyObjectByType 이것 역시 파일 전체를 돌면서 검사를 하는거라 고칠 필요가 있긴함 
+        // 근데 아직은 못함
         codexService = FindAnyObjectByType<CodexService>();
-        mailBoxService = FindAnyObjectByType<MailBoxService>();
+        mailBoxService = FindAnyObjectByType<MailboxService>();
     }
 
     private void Update()
@@ -102,7 +104,7 @@ public class LandUIManager : MonoBehaviour
             codexService.Init(SaveManager.Instance.GetCodexSaveData());
         }
 
-        // tq 이거 진짜 그지같은거 나중에 서비스 매니저나 이벤트 만들어서 따로 관리할 예정
+        // Todo: 이거 진짜 그지같은거 나중에 서비스 매니저나 이벤트 만들어서 따로 관리할 예정
         var inventory = FishInventoryService.Instance;
         if (inventory != null)
         {
@@ -191,10 +193,10 @@ public class LandUIManager : MonoBehaviour
 
     public void OpenStorage()
     {
-        Debug.Log($"[OpenStorage] canvas = {storageUICanvasInstance}");
+        //Debug.Log($"[OpenStorage] canvas = {storageUICanvasInstance}");
+        CloseAllLandUI();
         if (storageUICanvasInstance == null) return;
 
-        CloseAllLandUI();
         storageUICanvasInstance.SetActive(true);
         storageUI.Open();
     }
@@ -256,7 +258,6 @@ public class LandUIManager : MonoBehaviour
         }
     }
 
-
     public void ToggleMailBox()
     {
         OpenMailbox();
@@ -270,25 +271,5 @@ public class LandUIManager : MonoBehaviour
         UnityEditor.EditorApplication.isPlaying = false;
 #endif
     }
-
-//#if UNITY_EDITOR
-//    [ContextMenu("TEST/Open Mailbox")]
-//    private void Test_OpenMailbox()
-//    {
-//        OpenMailbox();
-//    }
-
-//    [ContextMenu("TEST/Open Codex")]
-//    private void Test_OpenCodex()
-//    {
-//        OpenCodex();
-//    }
-
-//    [ContextMenu("TEST/Open Storage")]
-//    private void Test_OpenStorage()
-//    {
-//        OpenStorage();
-//    }
-//#endif
 
 }

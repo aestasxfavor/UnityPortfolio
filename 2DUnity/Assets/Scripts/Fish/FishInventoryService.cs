@@ -1,19 +1,6 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VFX;
-
-public struct FishViewData
-{
-    public FishType fishType;
-    public int count;
-
-    public FishViewData(FishType type, int _count)
-    {
-        fishType = type;
-        count = _count;
-    }
-}
 
 
 public class FishInventoryService : MonoBehaviour

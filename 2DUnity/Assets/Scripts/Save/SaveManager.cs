@@ -21,8 +21,6 @@ public class SaveManager : MonoBehaviour
 
     private bool saveRequest;
 
-
-
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -43,7 +41,6 @@ public class SaveManager : MonoBehaviour
             mailboxSaveData = new MailboxSaveData();
 
     }
-
 
     void Start()
     {

@@ -1,27 +1,31 @@
 using UnityEngine;
+/// <summary>
+/// Todo: 현재 MailboxService가 Singleton SaveManager에 의존중
+///  SaveManager.Instance.RequestSave();
+/// 상점까지 싹다 구현 다하고 디테일 작업할 때 의존을 유지할 지 냅둘지 고민하기로
+/// </summary>
+//public struct MailViewData
+//{
+//    public string mailID;
+//    public string listTitle;
+//    public string title;
+//    public string body;
+//    public bool unlocked;
+//    public bool isRead;
 
-public struct MailViewData
-{
-    public string mailID;
-    public string listTitle;
-    public string title;
-    public string body;
-    public bool unlocked;
-    public bool isRead;
-
-    public MailViewData(string _id, string _listTitle, string _title, string _body, bool _unlocked, bool _isRead)
-    {
-        mailID = _id;
-        listTitle = _listTitle;
-        title = _title;
-        body = _body;
-        unlocked = _unlocked;
-        isRead = _isRead;
-    }
-}
+//    public MailViewData(string _id, string _listTitle, string _title, string _body, bool _unlocked, bool _isRead)
+//    {
+//        mailID = _id;
+//        listTitle = _listTitle;
+//        title = _title;
+//        body = _body;
+//        unlocked = _unlocked;
+//        isRead = _isRead;
+//    }
+//}
 
 
-public class MailBoxService : MonoBehaviour
+public class MailboxService : MonoBehaviour
 {
     [SerializeField] private MailDefinition firstMailDefinition; // M001
    

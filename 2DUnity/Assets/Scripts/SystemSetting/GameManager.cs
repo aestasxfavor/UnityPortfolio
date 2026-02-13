@@ -2,6 +2,10 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Todo: FindFirstObjectByType를 5-6개 쓰고 있음 나중에 디테일 작업할 때 다시 고려해보기
+/// </summary>
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
