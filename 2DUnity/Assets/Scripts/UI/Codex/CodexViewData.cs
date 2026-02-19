@@ -7,11 +7,11 @@ public struct CodexViewData
     public bool discovered;
     public int index;
 
-    public CodexViewData(FishType type, Sprite icon, bool discovered, int index)
+    public CodexViewData(FishType _type, Sprite _icon, bool _discovered, int _index)
     {
-        this.type = type;
-        this.icon = icon;
-        this.discovered = discovered;
-        this.index = index;
+        type = _type;
+        icon = _icon;
+        discovered = _discovered;
+        index = _index;
     }
 }

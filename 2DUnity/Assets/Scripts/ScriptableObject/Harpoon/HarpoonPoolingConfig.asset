@@ -12,5 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1dd7dfedde3484141a4fee81320f62ce, type: 3}
   m_Name: HarpoonPoolingConfig
   m_EditorClassIdentifier: 
-  poolSize: 5
-  harpoonTipPrefab: {fileID: 0}
+  poolSize: 6
