@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e062fa4afbf1a334e845d0188ae05104
+guid: f0fb65aa40a117f40be8b3cc3ece3f48
 TextureImporter:
   internalIDToNameTable:
   - first:
@@ -86,6 +86,18 @@ TextureImporter:
   - first:
       213: -7300656319635983163
     second: Red_27
+  - first:
+      213: 6285426425962927572
+    second: Red_28
+  - first:
+      213: 5272962696499987204
+    second: Red_29
+  - first:
+      213: 8137865238253982330
+    second: Red_30
+  - first:
+      213: 5851941741769488358
+    second: Red_31
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -132,7 +144,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 64
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -156,7 +168,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 0
+    textureCompression: 1
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -177,6 +189,19 @@ TextureImporter:
     ignorePlatformSupport: 0
     androidETC2FallbackOverride: 0
     forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Android
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
@@ -186,7 +211,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 48
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -206,9 +231,9 @@ TextureImporter:
       name: Red_1
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
         y: 48
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -228,9 +253,9 @@ TextureImporter:
       name: Red_2
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 48
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -250,9 +275,9 @@ TextureImporter:
       name: Red_3
       rect:
         serializedVersion: 2
-        x: 48
+        x: 96
         y: 48
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -272,9 +297,9 @@ TextureImporter:
       name: Red_4
       rect:
         serializedVersion: 2
-        x: 64
+        x: 128
         y: 48
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -294,9 +319,9 @@ TextureImporter:
       name: Red_5
       rect:
         serializedVersion: 2
-        x: 80
+        x: 160
         y: 48
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -316,9 +341,9 @@ TextureImporter:
       name: Red_6
       rect:
         serializedVersion: 2
-        x: 96
+        x: 192
         y: 48
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -338,9 +363,9 @@ TextureImporter:
       name: Red_7
       rect:
         serializedVersion: 2
-        x: 112
+        x: 224
         y: 48
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -362,7 +387,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 32
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -382,9 +407,9 @@ TextureImporter:
       name: Red_9
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
         y: 32
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -404,9 +429,9 @@ TextureImporter:
       name: Red_10
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 32
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -426,9 +451,9 @@ TextureImporter:
       name: Red_11
       rect:
         serializedVersion: 2
-        x: 48
+        x: 96
         y: 32
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -448,9 +473,9 @@ TextureImporter:
       name: Red_12
       rect:
         serializedVersion: 2
-        x: 64
+        x: 128
         y: 32
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -470,9 +495,9 @@ TextureImporter:
       name: Red_13
       rect:
         serializedVersion: 2
-        x: 80
+        x: 160
         y: 32
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -492,9 +517,9 @@ TextureImporter:
       name: Red_14
       rect:
         serializedVersion: 2
-        x: 96
+        x: 192
         y: 32
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -514,9 +539,9 @@ TextureImporter:
       name: Red_15
       rect:
         serializedVersion: 2
-        x: 112
+        x: 224
         y: 32
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -538,7 +563,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 16
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -558,9 +583,9 @@ TextureImporter:
       name: Red_17
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
         y: 16
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -580,9 +605,9 @@ TextureImporter:
       name: Red_18
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 16
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -602,9 +627,9 @@ TextureImporter:
       name: Red_19
       rect:
         serializedVersion: 2
-        x: 48
+        x: 96
         y: 16
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -624,9 +649,9 @@ TextureImporter:
       name: Red_20
       rect:
         serializedVersion: 2
-        x: 64
+        x: 128
         y: 16
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -646,9 +671,9 @@ TextureImporter:
       name: Red_21
       rect:
         serializedVersion: 2
-        x: 80
+        x: 160
         y: 16
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -668,9 +693,9 @@ TextureImporter:
       name: Red_22
       rect:
         serializedVersion: 2
-        x: 96
+        x: 192
         y: 16
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -690,9 +715,9 @@ TextureImporter:
       name: Red_23
       rect:
         serializedVersion: 2
-        x: 112
+        x: 224
         y: 16
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -714,7 +739,7 @@ TextureImporter:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -734,9 +759,9 @@ TextureImporter:
       name: Red_25
       rect:
         serializedVersion: 2
-        x: 16
+        x: 32
         y: 0
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -756,9 +781,9 @@ TextureImporter:
       name: Red_26
       rect:
         serializedVersion: 2
-        x: 32
+        x: 64
         y: 0
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -778,9 +803,9 @@ TextureImporter:
       name: Red_27
       rect:
         serializedVersion: 2
-        x: 48
+        x: 96
         y: 0
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -800,9 +825,9 @@ TextureImporter:
       name: Red_28
       rect:
         serializedVersion: 2
-        x: 64
+        x: 128
         y: 0
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -810,10 +835,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: ac975991b14a4d247a78d01a44fbf157
-      internalID: -1090468482
+      spriteID: 4d59f5568025a3750800000000000000
+      internalID: 6285426425962927572
       vertices: []
       indices: 
       edges: []
@@ -822,9 +847,9 @@ TextureImporter:
       name: Red_29
       rect:
         serializedVersion: 2
-        x: 80
+        x: 160
         y: 0
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -832,10 +857,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: af5efc21b23519045b40c6c9d92b6e0a
-      internalID: -1333529939
+      spriteID: 40384c692a35d2940800000000000000
+      internalID: 5272962696499987204
       vertices: []
       indices: 
       edges: []
@@ -844,9 +869,9 @@ TextureImporter:
       name: Red_30
       rect:
         serializedVersion: 2
-        x: 96
+        x: 192
         y: 0
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -854,10 +879,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 9f662bb3d53faf14683eb02e84cd2901
-      internalID: -990276786
+      spriteID: a72d02461518fe070800000000000000
+      internalID: 8137865238253982330
       vertices: []
       indices: 
       edges: []
@@ -866,9 +891,9 @@ TextureImporter:
       name: Red_31
       rect:
         serializedVersion: 2
-        x: 112
+        x: 224
         y: 0
-        width: 16
+        width: 32
         height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
@@ -876,10 +901,10 @@ TextureImporter:
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: b02b26a6b57583444bbd026c79a89432
-      internalID: -811974745
+      spriteID: 6e7737c5206463150800000000000000
+      internalID: 5851941741769488358
       vertices: []
       indices: 
       edges: []
@@ -888,7 +913,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: cf3192b8ad4778c4fa73a56aabfae41f
+    spriteID: 54cabdd6e3a3d5944a6f28cdac96f1cc
     internalID: 0
     vertices: []
     indices: 
@@ -919,11 +944,11 @@ TextureImporter:
       Red_25: -7396589353877904233
       Red_26: 207985602576000244
       Red_27: -7300656319635983163
-      Red_28: -1090468482
-      Red_29: -1333529939
+      Red_28: 6285426425962927572
+      Red_29: 5272962696499987204
       Red_3: 2398322965701019735
-      Red_30: -990276786
-      Red_31: -811974745
+      Red_30: 8137865238253982330
+      Red_31: 5851941741769488358
       Red_4: -7465866551671254797
       Red_5: -8314221879049074932
       Red_6: 4744403000761406451
