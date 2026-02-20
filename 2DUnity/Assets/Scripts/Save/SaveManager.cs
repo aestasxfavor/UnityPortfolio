@@ -11,10 +11,12 @@ public class SaveManager : MonoBehaviour
     [SerializeField] private MailboxSaveData mailboxSaveData = new();
 
     private CodexSaveData codexSaveData = new CodexSaveData();
+    private CoinSaveData coinSaveData = new CoinSaveData();
 
     private string savePath;
     private string mailPath;
     private string codexPath;
+    private string coinPath;
 
     private float saveTimer;
     private float saveCoolDown = 10f;
@@ -35,6 +37,7 @@ public class SaveManager : MonoBehaviour
         savePath = Path.Combine(Application.persistentDataPath, "fish_save.json");
         mailPath = Path.Combine(Application.persistentDataPath, "mail_save.json");
         codexPath = Path.Combine(Application.persistentDataPath, "codex_save.json");
+        coinPath = Path.Combine(Application.persistentDataPath, "coin_save.json");
         Debug.Log($"세이브 경로 : " + savePath);
 
         if (mailboxSaveData == null)
@@ -54,6 +57,7 @@ public class SaveManager : MonoBehaviour
         Load();
         LoadMail();
         LoadCodex();
+        LoadCoin();
     }
 
     private void Update()
@@ -169,18 +173,46 @@ public class SaveManager : MonoBehaviour
         {
             codexSaveData = new CodexSaveData();
             return;
-        } 
+        }
 
         string json = File.ReadAllText(codexPath);
         codexSaveData = JsonUtility.FromJson<CodexSaveData>(json);
 
-        if(codexSaveData == null)
+        if (codexSaveData == null)
         {
-            codexSaveData= new CodexSaveData();
+            codexSaveData = new CodexSaveData();
         }
 
     }
     #endregion
 
+    #region 코인 Json
+    public CoinSaveData GetCoinSaveData()
+    {
+        return coinSaveData;
+    }
 
+    public void SaveCoin()
+    {
+        string json = JsonUtility.ToJson(coinSaveData, true);
+        File.WriteAllText(coinPath, json);
+    }
+
+    public void LoadCoin()
+    {
+        if (!File.Exists(coinPath))
+        {
+            coinSaveData = new CoinSaveData { currentCoin = 0 };
+            return;
+        }
+
+        string json = File.ReadAllText(coinPath);
+        coinSaveData = JsonUtility.FromJson<CoinSaveData>(json);
+
+        if (coinSaveData == null)
+        {
+            coinSaveData = new CoinSaveData { currentCoin = 0 };
+        }
+    }
+    #endregion
 }

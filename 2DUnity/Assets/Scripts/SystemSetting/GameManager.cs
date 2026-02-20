@@ -142,7 +142,7 @@ public class GameManager : MonoBehaviour
         if (IsSceneLoading) return;
         IsSceneLoading = true;
 
-        // Todo: MailBoxService로 이동 예정
+        // Todo: MailBoxService로 이동 예정 -> 교환상점까지 다하고 나서 수정하든지 할 예정
         if (targetScene == SceneType.Land && SaveManager.Instance != null)
         {
             var mail = SaveManager.Instance.GetMailboxSaveData();

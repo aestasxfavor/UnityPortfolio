@@ -10,12 +10,6 @@ public class CodexService : MonoBehaviour
 
     public bool IsInitialized { get; private set; }
 
-    private void Awake()
-    {
-        Debug.Log($"[CodexService] Awake instanceID={GetInstanceID()}");
-    }
-
-
     public void Init(CodexSaveData saveData)
     {
         Debug.Log("[CodexService] Init CALLED");
@@ -50,7 +44,7 @@ public class CodexService : MonoBehaviour
 
     public void RegisterFish(FishType type)
     {
-        Debug.Log($"[CodexService] RegisterFish CALLED : {type}, initialized={IsInitialized}");
+        //Debug.Log($"[CodexService] RegisterFish CALLED : {type}, initialized={IsInitialized}");
 
         // 1. 이미 등록됐는지 체크
         if(discoveredFish.Contains(type))

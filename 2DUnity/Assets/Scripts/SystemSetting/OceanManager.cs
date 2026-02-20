@@ -19,7 +19,6 @@ public class OceanManager : MonoBehaviour
 
     public void ResetOcean()
     {
-        //Todo: 내일 리팩토링 6단계 시작예정
         Debug.Log("ResetOcean 호출됨");
         oxygenManager?.ResetOxygen();
         inventoryUI?.Close();
@@ -112,7 +111,6 @@ public class OceanManager : MonoBehaviour
     {
         yield return null;
         fishSpawner?.FishSpawn();
-        //oxygenManager?.ResetOxygen();
     }
 
 
