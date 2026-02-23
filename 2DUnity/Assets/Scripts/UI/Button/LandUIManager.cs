@@ -10,6 +10,7 @@ public class LandUIManager : MonoBehaviour
     [SerializeField] private GameObject buttonCanvasPrefab;
     [SerializeField] private GameObject mailboxCanvasPrefab;
     [SerializeField] private GameObject codexCanvasPrefab;
+    [SerializeField] private GameObject shopCanvas;
 
     // Land 생성물 캐시
     private GameObject storageUICanvasInstance;
@@ -21,6 +22,7 @@ public class LandUIManager : MonoBehaviour
     private StorageUI storageUI;
     private MailboxUI mailboxUI;
     private CodexUI codexUI;
+    private ShopUI shopUI;
     private CodexService codexService;
     private MailboxService mailBoxService;
     private void Start()
@@ -89,8 +91,11 @@ public class LandUIManager : MonoBehaviour
                     case "Codex Button":
                         btn.onClick.AddListener(ToggleCodex);
                         break;
+                    case "Shop Button":
+                        btn.onClick.AddListener(ToggleShop);
+                        break;
                 }
-            }
+            }                                     
         }
 
         var storageButton = buttonCanvasInstance.GetComponentInChildren<StorageButton>(true);
@@ -169,6 +174,11 @@ public class LandUIManager : MonoBehaviour
         }
 
         // Todo: 상점은 나중에 만들기 
+        if (shopCanvas != null)
+        {
+            shopCanvas.SetActive(false);
+        }
+        
     }
 
     public void OpenMailbox()
@@ -199,6 +209,15 @@ public class LandUIManager : MonoBehaviour
 
         storageUICanvasInstance.SetActive(true);
         storageUI.Open();
+    }
+
+    public void OpenShop()
+    {
+        CloseAllLandUI();
+        if(shopCanvas ==null) return;
+        shopCanvas.SetActive(true);
+        //shopUI.Open();
+
     }
     #endregion
 
@@ -261,6 +280,11 @@ public class LandUIManager : MonoBehaviour
     public void ToggleMailBox()
     {
         OpenMailbox();
+    }
+
+    public void ToggleShop()
+    {
+        OpenShop();
     }
 
     public void ExitGame()
