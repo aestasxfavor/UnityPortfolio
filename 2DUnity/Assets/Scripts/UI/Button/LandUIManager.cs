@@ -51,6 +51,8 @@ public class LandUIManager : MonoBehaviour
 
         if (storageUICanvasInstance != null && storageUICanvasInstance.activeSelf) return true;
 
+        // Todo: 상점 오픈은 추후에 아마 리팩토링때 할 예정
+        if (shopCanvas != null && shopCanvas.activeSelf) return true;
         return false;
     }
 
@@ -203,7 +205,7 @@ public class LandUIManager : MonoBehaviour
 
     public void OpenStorage()
     {
-        //Debug.Log($"[OpenStorage] canvas = {storageUICanvasInstance}");
+       
         CloseAllLandUI();
         if (storageUICanvasInstance == null) return;
 
@@ -212,11 +214,14 @@ public class LandUIManager : MonoBehaviour
     }
 
     public void OpenShop()
-    {
-        CloseAllLandUI();
+    { 
+        //CloseAllLandUI(); // Todo: 리팩토링 때 살릴 예정
         if(shopCanvas ==null) return;
         shopCanvas.SetActive(true);
-        //shopUI.Open();
+        // TODO (리팩토링):
+        // ShopUI.Open()에서 Panel 활성화 처리로 이동
+        shopCanvas.transform.GetChild(0).gameObject.SetActive(true);
+        //shopUI.Open();        // Todo: 추후 예정
 
     }
     #endregion
