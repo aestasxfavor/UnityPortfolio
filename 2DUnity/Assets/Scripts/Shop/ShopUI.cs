@@ -1,4 +1,5 @@
-
+using System.Collections.Generic;
+using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,12 @@ public class ShopUI : MonoBehaviour
     [Header("Tab Roots")]
     [SerializeField] private GameObject coinTabRoot;
     [SerializeField] private GameObject shopTabRoot;
+
+    [Header("Coin Exchange")]
+    [SerializeField] private Transform coinGridRoot;
+    [SerializeField] private GameObject fishToCoinSlotPrefab;
+    [SerializeField] private Sprite emptySprite;
+
 
     private void Awake()
     {
@@ -30,6 +37,8 @@ public class ShopUI : MonoBehaviour
         Debug.Log("코인탭 전환");
         coinTabRoot.SetActive(true);
         shopTabRoot.SetActive(false);
+
+        BuildInventorySlots();
     }
 
     public void OpenShopTab()
@@ -37,5 +46,86 @@ public class ShopUI : MonoBehaviour
         Debug.Log("상점탭 전환");
         coinTabRoot.SetActive(false);
         shopTabRoot.SetActive(true);
+    }
+
+    public void BuildInventorySlots()
+    {
+        Debug.Log($"FishType 개수: {System.Enum.GetValues(typeof(FishType)).Length}");
+        // 1. 기존 슬롯 제거
+        foreach (Transform child in coinGridRoot)
+        {
+            Destroy(child.gameObject);
+        }
+        // 2. 보관함 데이터 가져오기 (fishInventoryService 참고)
+        var service = FishInventoryService.Instance;
+        if (service == null) return;
+
+        var fishList = service.GetFishViewList();
+        if(fishList == null) return;
+
+        // 3. 슬롯 생성하기 (도감 슬롯 기준)
+        Dictionary<FishType, int> inventoryMap = new();
+        foreach (var fish in fishList)
+        {
+            inventoryMap[fish.fishType] = fish.count;
+        }
+
+        int totalSlotCount = 12; // Todo: SO로 분리하여 원하는 만큼 슬롯을 늘릴 수 있음
+        FishType[] fishTypes = (FishType[])System.Enum.GetValues(typeof(FishType));
+
+        for (int i = 0; i < totalSlotCount; i++)
+        {
+            GameObject obj = Instantiate(fishToCoinSlotPrefab, coinGridRoot);
+            FishToCoinSlot slot = obj.GetComponent<FishToCoinSlot>();
+
+            if(i<fishTypes.Length)
+            {
+                FishType fishType = fishTypes[i];
+
+                if (inventoryMap.TryGetValue(fishType, out int count) && count > 0)
+                {
+                    Sprite icon = service.GetFishSprite(fishType);
+                    if (icon != null)
+                    {
+                        slot.Set(icon, count, fishType);
+                    }
+                    else
+                    {
+                        slot.SetEmpty(emptySprite);
+                    }
+                }
+                else
+                {
+                    slot.SetEmpty(emptySprite);
+                }
+            }
+            else
+            {
+                slot.SetEmpty(emptySprite);
+            }
+        }
+        //foreach (FishType fishType in System.Enum.GetValues(typeof(FishType)))
+        //{
+        //    GameObject obj = Instantiate(fishToCoinSlotPrefab, coinGridRoot);
+        //    FishToCoinSlot slot = obj.GetComponent<FishToCoinSlot>();
+
+        //    if (inventoryMap.TryGetValue(fishType, out int count) && count > 0)
+        //    {
+        //        Sprite icon = service.GetFishSprite(fishType);
+        //        if (icon != null)
+        //        {
+        //            slot.Set(icon, count, fishType); // ???여기가 문제라는건 
+        //        }
+        //        else
+        //        {
+        //            slot.SetEmpty(emptySprite);
+        //        }
+        //    }
+        //    else
+        //    {
+        //        // 보관함에 없음 → 빈 슬롯
+        //        slot.SetEmpty(emptySprite);
+        //    }
+        //}
     }
 }
