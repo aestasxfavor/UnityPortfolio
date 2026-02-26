@@ -138,4 +138,35 @@ public class FishInventoryService : MonoBehaviour
 
         return result;
     }
+
+    #region 물고기 코인 교환 로직
+    public int CalculateTotalCoin()  // 물고기 계산함수
+    {
+        int total = 0;
+        foreach (var fish in inventoryData.caughtFishList)
+        {
+            if (fish == null) continue;
+            total += fish.count;
+        }
+
+        return total * 10;
+    }
+
+    public int ExchangeAllFishToCoin()     // 교환실행 함수
+    {
+     
+        // 1. 잡은 물고기 총 계산하기
+        int coin = CalculateTotalCoin();
+
+        // 2. 잡은 물고기 전부 비우기
+        inventoryData.caughtFishList.Clear();
+
+        // 3. 코인 증가시키기
+        CoinService.Instance.AddCoin(coin);
+        // 4. 저장하기 
+        SaveManager.Instance.RequestSave();
+
+        return coin;
+    }
+    #endregion
 }

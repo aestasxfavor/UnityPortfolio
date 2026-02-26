@@ -73,6 +73,7 @@ public class SaveManager : MonoBehaviour
         Save();
         SaveMail();
         SaveCodex();
+        SaveCoin();
     }
 
     public void RequestSave()

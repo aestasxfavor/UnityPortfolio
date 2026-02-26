@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.UI;
@@ -18,11 +19,20 @@ public class ShopUI : MonoBehaviour
     [SerializeField] private GameObject fishToCoinSlotPrefab;
     [SerializeField] private Sprite emptySprite;
 
+    [SerializeField] private TextMeshProUGUI amountText;
+    [SerializeField] private TextMeshProUGUI harpoonCoinText;
+
+    private const int RequiredCoin = 1500;
 
     private void Awake()
     {
         coinTabButton.onClick.AddListener(OpenCoinTab);
         shopTabButton.onClick.AddListener(OpenShopTab);
+    }
+
+    private void Start()
+    {
+        UpdateCoinUI();
     }
 
     // 상점 열릴 때 기본 상태
@@ -39,6 +49,7 @@ public class ShopUI : MonoBehaviour
         shopTabRoot.SetActive(false);
 
         BuildInventorySlots();
+        amountText.text = FishInventoryService.Instance.CalculateTotalCoin().ToString();
     }
 
     public void OpenShopTab()
@@ -127,5 +138,29 @@ public class ShopUI : MonoBehaviour
         //        slot.SetEmpty(emptySprite);
         //    }
         //}
+    }
+
+    public void OnClickExchange()
+    {
+        var service = FishInventoryService.Instance;
+        if (service == null) return;
+
+        int gained = service.CalculateTotalCoin();
+
+        service.ExchangeAllFishToCoin();
+       
+        BuildInventorySlots();
+        amountText.text = $"{gained:N0}개";
+
+        UpdateCoinUI();
+
+
+        Debug.Log($"[교환 완료] {gained} 코인 획득");
+    }
+
+    public void UpdateCoinUI()
+    {
+        int current = CoinService.Instance.CurrentCoin;
+        harpoonCoinText.text = $"{current} / {RequiredCoin}";
     }
 }

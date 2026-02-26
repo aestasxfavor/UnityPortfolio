@@ -34,7 +34,7 @@ public class CoinValueTable
             table[fishType] = value;
         }
     }
-
+    
     public static int GetCoinValue(FishType fishType)
     {
         Load();
