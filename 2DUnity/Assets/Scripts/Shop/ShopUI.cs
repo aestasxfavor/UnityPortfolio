@@ -35,6 +35,17 @@ public class ShopUI : MonoBehaviour
         UpdateCoinUI();
     }
 
+    private void Update()
+    {
+        if(Input.GetKeyDown(KeyCode.P))
+        {
+            CoinService.Instance.AddCoin(5000);
+            UpdateCoinUI();
+
+            Debug.Log("테스트 코인 지급 완료");
+        }
+    }
+
     // 상점 열릴 때 기본 상태
     public void Open()
     {
@@ -115,29 +126,7 @@ public class ShopUI : MonoBehaviour
                 slot.SetEmpty(emptySprite);
             }
         }
-        //foreach (FishType fishType in System.Enum.GetValues(typeof(FishType)))
-        //{
-        //    GameObject obj = Instantiate(fishToCoinSlotPrefab, coinGridRoot);
-        //    FishToCoinSlot slot = obj.GetComponent<FishToCoinSlot>();
 
-        //    if (inventoryMap.TryGetValue(fishType, out int count) && count > 0)
-        //    {
-        //        Sprite icon = service.GetFishSprite(fishType);
-        //        if (icon != null)
-        //        {
-        //            slot.Set(icon, count, fishType); // ???여기가 문제라는건 
-        //        }
-        //        else
-        //        {
-        //            slot.SetEmpty(emptySprite);
-        //        }
-        //    }
-        //    else
-        //    {
-        //        // 보관함에 없음 → 빈 슬롯
-        //        slot.SetEmpty(emptySprite);
-        //    }
-        //}
     }
 
     public void OnClickExchange()
@@ -162,5 +151,33 @@ public class ShopUI : MonoBehaviour
     {
         int current = CoinService.Instance.CurrentCoin;
         harpoonCoinText.text = $"{current} / {RequiredCoin}";
+    }
+
+    public void BuyHarpoonUpgrade()
+    {
+        int current = CoinService.Instance.CurrentCoin;
+
+        // 코인부족 시
+        if(current < RequiredCoin)
+        {
+            Debug.Log("코인이 부족합니다");
+            return;
+        }
+
+        // 이미 보유중인지 확인 여부
+        if(SaveManager.Instance.HasHarpoonUpgrade())
+        {
+            Debug.Log("보유 중인 아이템입니다.");
+            return;
+        }
+
+        // 구매 성공시
+        CoinService.Instance.SpendCoin(RequiredCoin);
+        SaveManager.Instance.SetHarpoonUpgrade(true);
+
+        UpdateCoinUI();
+
+        Debug.Log("구매가 완료되었습니다.");
+      
     }
 }

@@ -14,4 +14,6 @@ public class SaveData
     public List<FishSaveSlot> caughtFishList = new List<FishSaveSlot>();
     public MailboxSaveData mailbox = new();
     public CodexSaveData codex = new();
+
+    public bool hasHarpoonUpgrade;
 }

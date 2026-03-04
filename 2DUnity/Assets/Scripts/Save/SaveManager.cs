@@ -23,6 +23,8 @@ public class SaveManager : MonoBehaviour
 
     private bool saveRequest;
 
+    private bool hasHarpoonUpgrade;
+
     void Awake()
     {
         if (Instance != null && Instance != this)
@@ -89,6 +91,7 @@ public class SaveManager : MonoBehaviour
         }
 
         SaveData saveData = new SaveData();
+        saveData.hasHarpoonUpgrade = hasHarpoonUpgrade;
 
         foreach (var fish in storageInventoryData.caughtFishList)
         {
@@ -117,6 +120,8 @@ public class SaveManager : MonoBehaviour
         {
             return;
         }
+
+        hasHarpoonUpgrade = loadedData.hasHarpoonUpgrade;
 
         storageInventoryData.caughtFishList.
         Clear();
@@ -214,6 +219,17 @@ public class SaveManager : MonoBehaviour
         {
             coinSaveData = new CoinSaveData { currentCoin = 0 };
         }
+    }
+
+    public bool HasHarpoonUpgrade()
+    {
+        return hasHarpoonUpgrade;
+    }
+
+    public void SetHarpoonUpgrade(bool _hasHarpoonUpgrade)
+    {
+        hasHarpoonUpgrade = _hasHarpoonUpgrade;
+        RequestSave();
     }
     #endregion
 }
