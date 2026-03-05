@@ -26,6 +26,8 @@ public class PlayerAim : MonoBehaviour
     public bool IsHarpoonReady { get; private set; }
     private bool wantToFire;
 
+    private HarpoonType currentHarpoonType = HarpoonType.Normal;
+
     // Todo: MVP가 다 완성되고 나서 SO로 분리할 예정
     #region Visual Data
     [System.Serializable]
@@ -92,6 +94,22 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
+        if (Keyboard.current != null && Keyboard.current.tabKey.wasPressedThisFrame)
+        {
+            Debug.Log("TAB 감지됨");
+        }
+
+        if (Keyboard.current.tabKey.wasPressedThisFrame)
+        {
+            if (!SaveManager.Instance.HasHarpoonUpgrade()) return;
+
+            currentHarpoonType = currentHarpoonType == HarpoonType.Normal ? HarpoonType.Upgrade : HarpoonType.Normal;
+
+            harpoonFire.SetHarpoonType(currentHarpoonType);
+
+            Debug.Log($"현재 작살: {currentHarpoonType}");
+        }
+
         if (!IsHarpoonReady)
             return;
 
@@ -111,6 +129,8 @@ public class PlayerAim : MonoBehaviour
         {
             wantToFire = true;
         }
+
+        
     }
 
 

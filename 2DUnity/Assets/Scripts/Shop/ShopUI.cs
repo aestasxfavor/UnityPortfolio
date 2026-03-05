@@ -37,7 +37,7 @@ public class ShopUI : MonoBehaviour
 
     private void Update()
     {
-        if(Input.GetKeyDown(KeyCode.P))
+        if (Input.GetKeyDown(KeyCode.P))
         {
             CoinService.Instance.AddCoin(5000);
             UpdateCoinUI();
@@ -50,7 +50,7 @@ public class ShopUI : MonoBehaviour
     public void Open()
     {
         OpenCoinTab();
-    
+
     }
 
     public void OpenCoinTab()
@@ -83,7 +83,7 @@ public class ShopUI : MonoBehaviour
         if (service == null) return;
 
         var fishList = service.GetFishViewList();
-        if(fishList == null) return;
+        if (fishList == null) return;
 
         // 3. 슬롯 생성하기 (도감 슬롯 기준)
         Dictionary<FishType, int> inventoryMap = new();
@@ -100,7 +100,7 @@ public class ShopUI : MonoBehaviour
             GameObject obj = Instantiate(fishToCoinSlotPrefab, coinGridRoot);
             FishToCoinSlot slot = obj.GetComponent<FishToCoinSlot>();
 
-            if(i<fishTypes.Length)
+            if (i < fishTypes.Length)
             {
                 FishType fishType = fishTypes[i];
 
@@ -137,7 +137,7 @@ public class ShopUI : MonoBehaviour
         int gained = service.CalculateTotalCoin();
 
         service.ExchangeAllFishToCoin();
-       
+
         BuildInventorySlots();
         amountText.text = $"{gained:N0}개";
 
@@ -158,14 +158,14 @@ public class ShopUI : MonoBehaviour
         int current = CoinService.Instance.CurrentCoin;
 
         // 코인부족 시
-        if(current < RequiredCoin)
+        if (current < RequiredCoin)
         {
             Debug.Log("코인이 부족합니다");
             return;
         }
 
         // 이미 보유중인지 확인 여부
-        if(SaveManager.Instance.HasHarpoonUpgrade())
+        if (SaveManager.Instance.HasHarpoonUpgrade())
         {
             Debug.Log("보유 중인 아이템입니다.");
             return;
@@ -178,6 +178,6 @@ public class ShopUI : MonoBehaviour
         UpdateCoinUI();
 
         Debug.Log("구매가 완료되었습니다.");
-      
+
     }
 }

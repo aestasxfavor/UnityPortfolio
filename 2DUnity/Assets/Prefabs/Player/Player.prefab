@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5683153217022304453}
   - component: {fileID: 7377376661046855602}
   - component: {fileID: 5583847281278182246}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: harpoon
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,6 +105,7 @@ MonoBehaviour:
   harpoonPool: {fileID: -890209178008201469}
   firePoint: {fileID: 6040259063038685400}
   fireConfig: {fileID: 11400000, guid: 68a05bcf8444e584f98fcc1c5fa9ae47, type: 2}
+  currentHarpoonType: 0
 --- !u!1 &7501918749133149369
 GameObject:
   m_ObjectHideFlags: 0
@@ -115,7 +116,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6040259063038685400}
   - component: {fileID: 8254678111738436021}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: Fire Point
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -207,7 +208,7 @@ GameObject:
   - component: {fileID: 1270206896838704956}
   - component: {fileID: 651324597514422601}
   - component: {fileID: -890209178008201469}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -422,7 +423,7 @@ GameObject:
   - component: {fileID: 4101331896360398245}
   - component: {fileID: 8154795231108521952}
   - component: {fileID: 4245281831473872445}
-  m_Layer: 0
+  m_Layer: 7
   m_Name: HarpoonTip
   m_TagString: Untagged
   m_Icon: {fileID: 0}

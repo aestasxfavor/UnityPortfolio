@@ -38,13 +38,11 @@ public class HarpoonTip : MonoBehaviour
         if (col != null) col.enabled = true;
     }
 
-    /// <summary>
-    /// 2차 리팩토링할 때 할 것
-    /// Tag가 아닌 LayMask, OverlapCircle 사용하기
-    /// </summary>
-    /// <param name="collision"></param>
+
     void OnTriggerEnter2D(Collider2D collision)
     {
+        Debug.Log("충돌 발생: " + collision.name);
+
         if (!gameObject.activeInHierarchy || pool == null) return;
 
         if (!LayerUtil.IsLayer(collision.gameObject, Layers.Fish))
