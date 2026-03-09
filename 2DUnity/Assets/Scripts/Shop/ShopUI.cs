@@ -21,6 +21,7 @@ public class ShopUI : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI amountText;
     [SerializeField] private TextMeshProUGUI harpoonCoinText;
+    [SerializeField] private PopupManager popupManager;
 
     private const int RequiredCoin = 1500;
 
@@ -131,6 +132,11 @@ public class ShopUI : MonoBehaviour
 
     public void OnClickExchange()
     {
+        popupManager.ShowExchange(ExchangeFishToCoin);
+    }
+
+    public void ExchangeFishToCoin()
+    {
         var service = FishInventoryService.Instance;
         if (service == null) return;
 
@@ -161,6 +167,7 @@ public class ShopUI : MonoBehaviour
         if (current < RequiredCoin)
         {
             Debug.Log("코인이 부족합니다");
+            popupManager.ShowCoinFail();
             return;
         }
 
@@ -168,6 +175,7 @@ public class ShopUI : MonoBehaviour
         if (SaveManager.Instance.HasHarpoonUpgrade())
         {
             Debug.Log("보유 중인 아이템입니다.");
+            popupManager.ShowHasHarpoon();
             return;
         }
 
