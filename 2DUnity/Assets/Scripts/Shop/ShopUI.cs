@@ -21,7 +21,8 @@ public class ShopUI : MonoBehaviour
 
     [SerializeField] private TextMeshProUGUI amountText;
     [SerializeField] private TextMeshProUGUI harpoonCoinText;
-    [SerializeField] private PopupManager popupManager;
+
+    private PopupManager popupManager;
 
     private const int RequiredCoin = 1500;
 
@@ -36,22 +37,32 @@ public class ShopUI : MonoBehaviour
         UpdateCoinUI();
     }
 
+#if UNITY_EDITOR
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.P))
         {
-            CoinService.Instance.AddCoin(5000);
-            UpdateCoinUI();
-
-            Debug.Log("테스트 코인 지급 완료");
+            DebugAddCoin();
         }
+    }
+#endif
+
+    public void Init(PopupManager _popupManager)
+    {
+        popupManager = _popupManager;
+    }
+
+    private void DebugAddCoin()
+    {
+        CoinService.Instance.AddCoin(5000);
+        UpdateCoinUI();
+        Debug.Log("테스트 코인 지급 완료");
     }
 
     // 상점 열릴 때 기본 상태
     public void Open()
     {
         OpenCoinTab();
-
     }
 
     public void OpenCoinTab()
@@ -73,7 +84,7 @@ public class ShopUI : MonoBehaviour
 
     public void BuildInventorySlots()
     {
-        Debug.Log($"FishType 개수: {System.Enum.GetValues(typeof(FishType)).Length}");
+       // Debug.Log($"FishType 개수: {System.Enum.GetValues(typeof(FishType)).Length}");
         // 1. 기존 슬롯 제거
         foreach (Transform child in coinGridRoot)
         {
@@ -150,7 +161,7 @@ public class ShopUI : MonoBehaviour
         UpdateCoinUI();
 
 
-        Debug.Log($"[교환 완료] {gained} 코인 획득");
+       // Debug.Log($"[교환 완료] {gained} 코인 획득");
     }
 
     public void UpdateCoinUI()
@@ -161,31 +172,36 @@ public class ShopUI : MonoBehaviour
 
     public void BuyHarpoonUpgrade()
     {
-        int current = CoinService.Instance.CurrentCoin;
+        Debug.Log("구매버튼 호출됨");
+        popupManager.ShowBuyCheck(BuyHarppon);
+    }
 
-        // 코인부족 시
+    private void BuyHarppon()
+    {
+        Debug.Log("BuyHarppon 실행");
+
+        int current = CoinService.Instance.CurrentCoin;
+        Debug.Log("현재 코인: " + current);
+
         if (current < RequiredCoin)
         {
-            Debug.Log("코인이 부족합니다");
+            Debug.Log("코인 부족 팝업");
             popupManager.ShowCoinFail();
             return;
         }
 
-        // 이미 보유중인지 확인 여부
         if (SaveManager.Instance.HasHarpoonUpgrade())
         {
-            Debug.Log("보유 중인 아이템입니다.");
+            Debug.Log("이미 보유 팝업");
             popupManager.ShowHasHarpoon();
             return;
         }
 
-        // 구매 성공시
+        Debug.Log("구매 성공");
+
         CoinService.Instance.SpendCoin(RequiredCoin);
         SaveManager.Instance.SetHarpoonUpgrade(true);
 
         UpdateCoinUI();
-
-        Debug.Log("구매가 완료되었습니다.");
-
     }
 }

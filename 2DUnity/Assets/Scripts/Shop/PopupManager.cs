@@ -38,8 +38,11 @@ public class PopupManager : MonoBehaviour
 
     private void OnClickYes()
     {
-        yesAction?.Invoke();
+        Debug.Log("Yes Clicked");
+
+        var action = yesAction;
         CloseAll();
+        action?.Invoke();
     }
 
     private void BuyCheckPopup()

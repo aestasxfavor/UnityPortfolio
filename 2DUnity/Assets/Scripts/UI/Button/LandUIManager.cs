@@ -10,7 +10,7 @@ public class LandUIManager : MonoBehaviour
     [SerializeField] private GameObject buttonCanvasPrefab;
     [SerializeField] private GameObject mailboxCanvasPrefab;
     [SerializeField] private GameObject codexCanvasPrefab;
-    [SerializeField] private GameObject shopCanvas;
+    [SerializeField] private GameObject shopCanvasPrefab;
 
     // Land 생성물 캐시
     private GameObject storageUICanvasInstance;
@@ -18,6 +18,7 @@ public class LandUIManager : MonoBehaviour
     private GameObject exitPopupInstance;
     private GameObject mailboxCanvasInstance;
     private GameObject codexCanvasInstance;
+    private GameObject shopCanvasInstance;
 
     private StorageUI storageUI;
     private MailboxUI mailboxUI;
@@ -25,12 +26,14 @@ public class LandUIManager : MonoBehaviour
     private ShopUI shopUI;
     private CodexService codexService;
     private MailboxService mailBoxService;
+    private PopupManager popupManager;
     private void Start()
     {
         // Todo: FindAnyObjectByType 이것 역시 파일 전체를 돌면서 검사를 하는거라 고칠 필요가 있긴함 
         // 근데 아직은 못함
         codexService = FindAnyObjectByType<CodexService>();
         mailBoxService = FindAnyObjectByType<MailboxService>();
+        popupManager = FindAnyObjectByType<PopupManager>();
     }
 
     private void Update()
@@ -52,7 +55,7 @@ public class LandUIManager : MonoBehaviour
         if (storageUICanvasInstance != null && storageUICanvasInstance.activeSelf) return true;
 
         // Todo: 상점 오픈은 추후에 아마 리팩토링때 할 예정
-        if (shopCanvas != null && shopCanvas.activeSelf) return true;
+        if (shopCanvasInstance != null && shopCanvasInstance.activeSelf) return true;
         return false;
     }
 
@@ -176,9 +179,9 @@ public class LandUIManager : MonoBehaviour
         }
 
         // Todo: 상점은 나중에 만들기 
-        if (shopCanvas != null)
+        if (shopCanvasInstance != null)
         {
-            shopCanvas.SetActive(false);
+            shopCanvasInstance.SetActive(false);
         }
         
     }
@@ -203,26 +206,24 @@ public class LandUIManager : MonoBehaviour
         codexUI.Open();
     }
 
+    public void OpenShop()
+    {
+        SetShop();
+        CloseAllLandUI(); 
+        if(shopCanvasInstance == null) return;
+
+        shopCanvasInstance.SetActive(true);
+        shopUI.Open();        
+
+    }
+
     public void OpenStorage()
     {
-       
         CloseAllLandUI();
         if (storageUICanvasInstance == null) return;
 
         storageUICanvasInstance.SetActive(true);
         storageUI.Open();
-    }
-
-    public void OpenShop()
-    { 
-        //CloseAllLandUI(); // Todo: 리팩토링 때 살릴 예정
-        if(shopCanvas ==null) return;
-        shopCanvas.SetActive(true);
-        // TODO (리팩토링):
-        // ShopUI.Open()에서 Panel 활성화 처리로 이동
-        shopCanvas.transform.GetChild(0).gameObject.SetActive(true);
-        //shopUI.Open();        // Todo: 추후 예정
-
     }
     #endregion
 
@@ -280,6 +281,26 @@ public class LandUIManager : MonoBehaviour
             codexCanvasInstance.SetActive(false);
 
         }
+    }
+
+    private void SetShop()
+    {
+        Debug.Log("교환상점 열림");
+        if (shopCanvasInstance == null && shopCanvasPrefab != null)
+        {
+            shopCanvasInstance = Instantiate(shopCanvasPrefab);
+            shopUI = shopCanvasInstance.GetComponentInChildren<ShopUI>(true);
+            shopUI.Init(popupManager);
+
+            var closeButton = shopCanvasInstance.GetComponentsInChildren<CloseLandUIButton>(true);
+            foreach (var button in closeButton)
+            {
+                button.Init(this);
+            }
+
+            shopCanvasInstance.SetActive(false);
+        }
+
     }
 
     public void ToggleMailBox()
