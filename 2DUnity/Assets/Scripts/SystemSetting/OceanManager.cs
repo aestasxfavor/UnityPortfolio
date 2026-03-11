@@ -9,10 +9,12 @@ public class OceanManager : MonoBehaviour
     [SerializeField] private GameObject inventoryUIPrefab;
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject oceanMapPrefab;
+    [SerializeField] private GameObject harpoonUIPrefab;
 
     private FishSpawner fishSpawner;
     private OxygenManager oxygenManager;
     private InventoryUI inventoryUI;
+    private HarpoonUI harpoonUI;
 
     private GameObject playerInstance;
     private GameObject oceanMapInstance;
@@ -46,9 +48,12 @@ public class OceanManager : MonoBehaviour
 
     public void Initialize(FishInventoryData seaData)
     {
-        if(playerPrefab !=null)
+        PlayerAim playerAim = null;
+
+        if (playerPrefab != null)
         {
             playerInstance = Instantiate(playerPrefab);
+            playerAim = playerInstance.GetComponent<PlayerAim>();
         }
 
         if (oceanMapPrefab != null)
@@ -71,6 +76,12 @@ public class OceanManager : MonoBehaviour
             inventoryUI = Instantiate(inventoryUIPrefab).GetComponentInChildren<InventoryUI>(true);
             inventoryUI?.SetInventoryData(seaData);
         }
+
+        if (harpoonUIPrefab != null)
+        {
+            harpoonUI = Instantiate(harpoonUIPrefab).GetComponent<HarpoonUI>();
+           
+        }
     }
 
     public void CleanUp()
@@ -80,24 +91,29 @@ public class OceanManager : MonoBehaviour
             Destroy(playerInstance);
         }
 
-        if(oceanMapInstance != null)
+        if (oceanMapInstance != null)
         {
             Destroy(oceanMapInstance);
         }
 
-        if(fishSpawner != null)
+        if (fishSpawner != null)
         {
             Destroy(fishSpawner.gameObject);
         }
 
-        if(oxygenManager != null)
+        if (oxygenManager != null)
         {
             Destroy(oxygenManager.gameObject);
         }
 
-        if(inventoryUI !=null)
+        if (inventoryUI != null)
         {
             Destroy(inventoryUI.gameObject);
+        }
+
+        if (harpoonUI != null)
+        {
+            Destroy(harpoonUI.gameObject);
         }
 
         playerInstance = null;
@@ -105,6 +121,7 @@ public class OceanManager : MonoBehaviour
         fishSpawner = null;
         oxygenManager = null;
         inventoryUI = null;
+        harpoonUI = null;
     }
 
     private IEnumerator LateStart()

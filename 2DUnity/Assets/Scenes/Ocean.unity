@@ -517,6 +517,7 @@ MonoBehaviour:
   inventoryUIPrefab: {fileID: 3679155371573781950, guid: a671c6e704cfca549916707cc4029ea3, type: 3}
   playerPrefab: {fileID: 7523852955153887672, guid: c4cbcb7dd44da6243bb224eb722f0ec2, type: 3}
   oceanMapPrefab: {fileID: 9170003171795374874, guid: 060855d15a406fb4fac1a29def3d9593, type: 3}
+  harpoonUIPrefab: {fileID: 3575810672426610128, guid: 2f22403e6aa606940b137ce8151b5b96, type: 3}
 --- !u!4 &1248915131
 Transform:
   m_ObjectHideFlags: 0

@@ -14,6 +14,7 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private Transform harpoon;
     [SerializeField] private MovePlayer movePlayer;
     [SerializeField] private HarpoonFire harpoonFire;
+    private HarpoonUI harpoonUI;
 
     private PlayerCtrls ctrls;
     private SpriteRenderer harpoonSR;
@@ -27,6 +28,7 @@ public class PlayerAim : MonoBehaviour
     private bool wantToFire;
 
     private HarpoonType currentHarpoonType = HarpoonType.Normal;
+    public HarpoonType CurrentHarpoonType => currentHarpoonType;
 
     // Todo: MVP가 다 완성되고 나서 SO로 분리할 예정
     #region Visual Data
@@ -92,6 +94,12 @@ public class PlayerAim : MonoBehaviour
         animator.SetBool("IsHoldingHarpoon", false);
     }
 
+    private void Start()
+    {
+        harpoonUI = FindFirstObjectByType<HarpoonUI>();
+        harpoonUI?.UpdateUI();
+    }
+
     private void Update()
     {
         if (Keyboard.current != null && Keyboard.current.tabKey.wasPressedThisFrame)
@@ -106,6 +114,8 @@ public class PlayerAim : MonoBehaviour
             currentHarpoonType = currentHarpoonType == HarpoonType.Normal ? HarpoonType.Upgrade : HarpoonType.Normal;
 
             harpoonFire.SetHarpoonType(currentHarpoonType);
+
+            harpoonUI?.UpdateUI();
 
             Debug.Log($"현재 작살: {currentHarpoonType}");
         }
@@ -130,7 +140,7 @@ public class PlayerAim : MonoBehaviour
             wantToFire = true;
         }
 
-        
+
     }
 
 
