@@ -27,7 +27,6 @@ public sealed class MailboxUI : MonoBehaviour
         if (firstMailButton != null)
         {
             firstMailButton.onClick.AddListener(OnClickFirstMail);
-
         }
     }
 
@@ -36,7 +35,6 @@ public sealed class MailboxUI : MonoBehaviour
         if (firstMailButton != null)
         {
             firstMailButton.onClick.RemoveListener(OnClickFirstMail);
-
         }
     }
 
@@ -70,10 +68,10 @@ public sealed class MailboxUI : MonoBehaviour
         if (newBadge != null)
             newBadge.SetActive(mail.unlocked && !mail.isRead);
 
-        if (!mail.unlocked)
+
+        if(!mail.unlocked)
         {
-            viewerTitleText.text = "";
-            viewerBodyText.text = "";
+            HideViewer();
         }
     }
 

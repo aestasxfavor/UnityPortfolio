@@ -19,6 +19,8 @@ public class LandUIManager : MonoBehaviour
     private GameObject mailboxCanvasInstance;
     private GameObject codexCanvasInstance;
     private GameObject shopCanvasInstance;
+    private GameObject mailButtonBadge;
+    private GameObject codexButtonBadge;
 
     private StorageUI storageUI;
     private MailboxUI mailboxUI;
@@ -91,10 +93,12 @@ public class LandUIManager : MonoBehaviour
 
                     case "Mail Button":
                         btn.onClick.AddListener(ToggleMailBox);
+                        mailButtonBadge = btn.transform.Find("newBadge")?.gameObject;
                         break;
 
                     case "Codex Button":
                         btn.onClick.AddListener(ToggleCodex);
+                        codexButtonBadge = btn.transform.Find("newBadge")?.gameObject;
                         break;
                     case "Shop Button":
                         btn.onClick.AddListener(ToggleShop);
@@ -125,6 +129,9 @@ public class LandUIManager : MonoBehaviour
         {
             mailBoxService.Init(SaveManager.Instance.GetMailboxSaveData());
         }
+
+        RefreshMailboxBadge();
+        RefreshCodexBadge();
     }
 
     public void SetButtonUIActive(bool active)
@@ -160,6 +167,37 @@ public class LandUIManager : MonoBehaviour
         }
     }
 
+    private void RefreshMailboxBadge()
+    {
+        if (mailButtonBadge == null) return;
+
+        if (mailBoxService == null || !mailBoxService.IsInitialized)
+        {
+            mailButtonBadge.SetActive(false);
+            return;
+        }
+        bool hasUnreadMail = mailBoxService.HasUnreadMail();
+        mailButtonBadge.SetActive(mailBoxService.HasUnreadMail());
+
+        Debug.Log($"[LandUIManager] 메인 우편함 뱃지 = {hasUnreadMail}");
+    }
+
+    private void RefreshCodexBadge()
+    {
+        if(codexButtonBadge == null) return;
+
+        if(codexButtonBadge == null || !codexService.IsInitialized)
+        {
+            codexButtonBadge.SetActive(false);
+            return;
+        }
+
+        bool hasNewCodex = codexService.HasUnViewedNewFish();
+        codexButtonBadge.SetActive(codexService.HasUnViewedNewFish());
+
+        Debug.Log($"[LandUIManager] 메인 도감 뱃지 = {hasNewCodex}");
+    }
+
     #region Land UI Open API (리팩토링 4단계)
     public void CloseAllLandUI()
     {
@@ -183,7 +221,9 @@ public class LandUIManager : MonoBehaviour
         {
             shopCanvasInstance.SetActive(false);
         }
-        
+
+        RefreshMailboxBadge();
+        RefreshCodexBadge();
     }
 
     public void OpenMailbox()

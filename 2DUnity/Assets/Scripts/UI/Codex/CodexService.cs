@@ -42,25 +42,63 @@ public class CodexService : MonoBehaviour
         return discoveredFish != null && discoveredFish.Contains(type);
     }
 
+    public bool HasUnViewedNewFish()
+    {
+        if (!IsInitialized) return false;
+        return codexSaveData.hasUnViewedNewFish;
+    }
+
+    // Bang: 미국식 표현으로 느낌표
+    public void MarkAllBang()
+    {
+        if (!IsInitialized) return;
+        if (!codexSaveData.hasUnViewedNewFish) return;
+
+        codexSaveData.hasUnViewedNewFish = false;
+        SaveManager.Instance.SaveCodex();
+
+        Debug.Log("[CodexService] 도감 신규 알림 해제");
+    }
+
+    //public void RegisterFish(FishType type)
+    //{
+    //    //Debug.Log($"[CodexService] RegisterFish CALLED : {type}, initialized={IsInitialized}");
+
+    //    // 1. 이미 등록됐는지 체크
+    //    if(discoveredFish.Contains(type))
+    //    {
+    //        Debug.Log($"[CodexService] 이미 등록된 어종:{type}");
+    //        return;
+    //    }
+    //    if (!IsInitialized) return;
+    //    // 2. 새로 발견이면 상태 추가
+    //    if (!discoveredFish.Add(type)) return;
+
+    //    // 3. CodexSaveData에 반영
+    //    codexSaveData.codexFishID.Add(type.ToString());
+
+    //    // 4. SaveManager에게 “저장 요청”만 보내기
+    //    SaveManager.Instance.RequestSave();
+    //}
+
     public void RegisterFish(FishType type)
     {
-        //Debug.Log($"[CodexService] RegisterFish CALLED : {type}, initialized={IsInitialized}");
+        if (!IsInitialized) return;
 
-        // 1. 이미 등록됐는지 체크
-        if(discoveredFish.Contains(type))
+        if (discoveredFish.Contains(type))
         {
-            Debug.Log($"[CodexService] 이미 등록된 어종:{type}");
+            Debug.Log("이미 등록된 어종");
             return;
         }
-        if (!IsInitialized) return;
-        // 2. 새로 발견이면 상태 추가
+
         if (!discoveredFish.Add(type)) return;
 
-        // 3. CodexSaveData에 반영
         codexSaveData.codexFishID.Add(type.ToString());
+        codexSaveData.hasUnViewedNewFish = true;
 
-        // 4. SaveManager에게 “저장 요청”만 보내기
-        SaveManager.Instance.RequestSave();
+        SaveManager.Instance.SaveCodex();
+
+        Debug.Log($"[CodexService] 신규 어종 등록: {type}, hasUnViewNewFish ={codexSaveData.hasUnViewedNewFish}");
     }
 
     public List<CodexViewData> GetCodexViewList()

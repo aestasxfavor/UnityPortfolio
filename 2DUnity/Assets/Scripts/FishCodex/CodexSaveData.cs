@@ -6,4 +6,5 @@ using UnityEngine;
 public class CodexSaveData
 {
     public List<string> codexFishID  = new List<string>();
+    public bool hasUnViewedNewFish;
 }

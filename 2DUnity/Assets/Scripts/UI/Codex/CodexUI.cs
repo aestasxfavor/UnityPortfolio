@@ -16,7 +16,13 @@ public class CodexUI : MonoBehaviour
     public void Open()
     {
         Debug.Log("도감 열림");
+
+        if (codexService != null)
+        {
+            codexService.MarkAllBang();
+        }
         TryBuild();
+
     }
 
     public void Init(CodexService service)
