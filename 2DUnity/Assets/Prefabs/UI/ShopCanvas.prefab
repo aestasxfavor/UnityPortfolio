@@ -1273,6 +1273,7 @@ GameObject:
   - component: {fileID: 4246097528069690350}
   - component: {fileID: 2284080943086831417}
   - component: {fileID: 8145108312837229687}
+  - component: {fileID: 7072800466037567554}
   m_Layer: 5
   m_Name: ExchangeButton
   m_TagString: Untagged
@@ -1394,6 +1395,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &7072800466037567554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3063681541125007447}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aab436a38801754eb642e53d8c81fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLockedButton: 0
 --- !u!1 &3145265375632792665
 GameObject:
   m_ObjectHideFlags: 0
@@ -1481,6 +1495,7 @@ GameObject:
   - component: {fileID: 9099390869021943282}
   - component: {fileID: 3296297686939363373}
   - component: {fileID: 6723264963262638194}
+  - component: {fileID: 5830189068085390669}
   m_Layer: 5
   m_Name: CoinTabButton
   m_TagString: Untagged
@@ -1590,6 +1605,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &5830189068085390669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3393159339870039086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aab436a38801754eb642e53d8c81fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLockedButton: 0
 --- !u!1 &3747975920342033012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1602,6 +1630,7 @@ GameObject:
   - component: {fileID: 8440324075825947925}
   - component: {fileID: 3636954203226116931}
   - component: {fileID: 8547679290916099596}
+  - component: {fileID: 4604078618605972409}
   m_Layer: 5
   m_Name: 'ShopTabButton '
   m_TagString: Untagged
@@ -1711,6 +1740,19 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &4604078618605972409
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3747975920342033012}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aab436a38801754eb642e53d8c81fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLockedButton: 0
 --- !u!1 &4053845667950317075
 GameObject:
   m_ObjectHideFlags: 0
@@ -1799,6 +1841,7 @@ GameObject:
   - component: {fileID: 8886665772366246084}
   - component: {fileID: 6595992212918949087}
   - component: {fileID: 2146822872438409834}
+  - component: {fileID: 5003572694003877146}
   m_Layer: 5
   m_Name: ExchangeButton
   m_TagString: Untagged
@@ -1920,6 +1963,19 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &5003572694003877146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4722534258717871141}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aab436a38801754eb642e53d8c81fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLockedButton: 0
 --- !u!1 &4908092265482623821
 GameObject:
   m_ObjectHideFlags: 0
@@ -2207,6 +2263,7 @@ GameObject:
   - component: {fileID: 2597917356801434950}
   - component: {fileID: 6285815590358934018}
   - component: {fileID: 8919778131158965556}
+  - component: {fileID: 8990570503883867753}
   m_Layer: 5
   m_Name: CloseButton
   m_TagString: Untagged
@@ -2340,6 +2397,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcf2124c5d405014d9d7381f934abb60, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8990570503883867753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5116504016309538232}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7aab436a38801754eb642e53d8c81fd2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isLockedButton: 0
 --- !u!1 &5580709252325836150
 GameObject:
   m_ObjectHideFlags: 0
