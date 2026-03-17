@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public enum BGMType { Title, Sea, Land }
+public enum BGMType { Title, Ocean, Land }
 
 public class SoundManager : MonoBehaviour
 {
@@ -57,7 +57,7 @@ public class SoundManager : MonoBehaviour
         switch (sceneName)
         {
             case "Title": PlayBGM(BGMType.Title); break;
-            case "Ocean": PlayBGM(BGMType.Sea); break;
+            case "Ocean": PlayBGM(BGMType.Ocean); break;
             case "Land": PlayBGM(BGMType.Land); break;
         }
     }
@@ -72,7 +72,7 @@ public class SoundManager : MonoBehaviour
         switch (type)
         {
             case BGMType.Title: bgmSource.clip = titleBGM; break;
-            case BGMType.Sea: bgmSource.clip = seaBGM; break;
+            case BGMType.Ocean: bgmSource.clip = seaBGM; break;
             case BGMType.Land: bgmSource.clip = landBGM; break;
         }
 
@@ -95,7 +95,6 @@ public class SoundManager : MonoBehaviour
 
     public void PlaySwimSFX()
     {
-       // Debug.Log("[Sound] PlaySwimSFX called");
         if (swimSFX == null) return;
 
         if (loopSFXSource == null)
