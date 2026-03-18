@@ -19,7 +19,7 @@ public class OceanManager : MonoBehaviour
     private GameObject playerInstance;
     private GameObject oceanMapInstance;
 
-    public void ResetOcean()
+    public void ResetOcean() 
     {
         Debug.Log("ResetOcean 호출됨");
         oxygenManager?.ResetOxygen();
@@ -41,7 +41,9 @@ public class OceanManager : MonoBehaviour
 
         if (SoundManager.Instance != null)
         {
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.waterSplashSFX);
+            // SoundManager.Instance.PlaySwimSFX();
+            SoundManager.Instance.StopSwimSFX();
+            SoundManager.Instance.PlayWaterSplashSFX();
         }
     }
 

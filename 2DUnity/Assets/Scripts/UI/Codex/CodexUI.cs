@@ -75,23 +75,6 @@ public class CodexUI : MonoBehaviour
             }
 
         }
-
-        //foreach (var data in list)
-        //{
-        //    GameObject obj = Instantiate(slotPrefab, codexPannel);
-        //    CodexUISlot slot = obj.GetComponent<CodexUISlot>();
-
-        //    slots.Add(slot);
-
-        //    if(data.discovered)
-        //    {
-        //        slot.SetDiscovered(data.icon, data.index);
-        //    }
-        //    else
-        //    {
-        //        slot.SetUndiscovered(unknownIcon, data.index);
-        //    }
-        //}
     }
 
 }

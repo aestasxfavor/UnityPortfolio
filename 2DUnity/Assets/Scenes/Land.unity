@@ -349,6 +349,7 @@ MonoBehaviour:
   mailboxCanvasPrefab: {fileID: 3919849276970871258, guid: e1521cff76a204e4bb51d8251dbc58d8, type: 3}
   codexCanvasPrefab: {fileID: 3987628324191604693, guid: 0758abb1b81f56e459f76a212cdb4472, type: 3}
   shopCanvasPrefab: {fileID: 5690253132848414464, guid: f70e5ea4af7dbc4449c55258a78c1905, type: 3}
+  soundSettingPrefab: {fileID: 53920867583165251, guid: 2fb40d562f17f99429d79d2a766acaf0, type: 3}
 --- !u!1 &377667861
 GameObject:
   m_ObjectHideFlags: 0
@@ -379,6 +380,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   storageInventoryData: {fileID: 11400000, guid: fcdcd6419bdbcdb4ebed48837b8bcca3, type: 2}
+  mailboxSaveData:
+    firstReturnMailUnlocked: 0
+    firstReturnMailRead: 0
 --- !u!4 &377667863
 Transform:
   m_ObjectHideFlags: 0

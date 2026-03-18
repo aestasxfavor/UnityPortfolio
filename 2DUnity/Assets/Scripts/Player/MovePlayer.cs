@@ -44,7 +44,7 @@ public class MovePlayer : MonoBehaviour
 
             if(isSwimming)
             {
-                SoundManager.Instance?.PlaySwimSFX();
+                SoundManager.Instance?.StopSwimSFX();
                 isSwimming = false;
             }
             return;

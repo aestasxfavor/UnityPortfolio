@@ -8,20 +8,38 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     [Header("BGM")]
-    public AudioSource bgmSource;
-    public AudioClip titleBGM;
-    public AudioClip seaBGM;
-    public AudioClip landBGM;
+    [SerializeField] private AudioSource bgmSource;
+    [SerializeField] private AudioClip titleBGM;
+    [SerializeField] private AudioClip seaBGM;
+    [SerializeField] private AudioClip landBGM;
 
     [Header("SFX")]
-    public AudioSource sfxSource;
-    public AudioClip harpoonFireSFX;
-    public AudioClip swimSFX;
-    public AudioClip ButtonSFX;
-    public AudioClip UnLockButtonSFX;
-    public AudioClip waterSplashSFX;
+    [SerializeField] private AudioSource sfxSource;
+    [SerializeField] private AudioClip harpoonFireSFX;
+    [SerializeField] private AudioClip swimSFX;
+    [SerializeField] private AudioClip ButtonSFX;
+    [SerializeField] private AudioClip UnLockButtonSFX;
+    [SerializeField] private AudioClip waterSplashSFX;
 
     private AudioSource loopSFXSource;
+
+    [Header("Default Sound")]
+    [SerializeField, Range(0f, 1f)] private float defaultMasterVolume = 1f;
+    [SerializeField, Range(0f, 1f)] private float defaultBgmVolume = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float defaultSfxVolume = 1f;
+
+    [Header("Current Sound")]
+    [SerializeField, Range(0f, 1f)] private float masterVolume = 1f;
+    [SerializeField, Range(0f, 1f)] private float bgmVolume = 0.8f;
+    [SerializeField, Range(0f, 1f)] private float sfxVolume = 1f;
+
+    private const string MASTER_VOLUME_KEY = "Sound_MasterVolume";
+    private const string BGM_VOLUME_KEY = "Sound_BgmVolume";
+    private const string SFX_VOLUME_KEY = "Sound_SfxVolume";
+
+    public float MasterVolume => masterVolume;
+    public float BgmVolume => bgmVolume;
+    public float SfxVolume => sfxVolume;
 
     private void Awake()
     {
@@ -33,6 +51,10 @@ public class SoundManager : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+
+        InitLoopSFXSource();
+        LoadVolumeSettings();
+        ApplyVolumes();
     }
 
     private void Start()
@@ -44,21 +66,42 @@ public class SoundManager : MonoBehaviour
     private void OnDestroy()
     {
         if (Instance == this)
+        {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
+    }
+
+    private void InitLoopSFXSource()
+    {
+        if (loopSFXSource != null) return;
+
+        loopSFXSource = gameObject.AddComponent<AudioSource>();
+        loopSFXSource.loop = true;
+        loopSFXSource.playOnAwake = false;
+        loopSFXSource.spatialBlend = 0f;
     }
 
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         PlayBGMByScene(scene.name);
+        ApplyVolumes();
     }
 
     public void PlayBGMByScene(string sceneName)
     {
         switch (sceneName)
         {
-            case "Title": PlayBGM(BGMType.Title); break;
-            case "Ocean": PlayBGM(BGMType.Ocean); break;
-            case "Land": PlayBGM(BGMType.Land); break;
+            case "Title":
+                PlayBGM(BGMType.Title);
+                break;
+
+            case "Ocean":
+                PlayBGM(BGMType.Ocean);
+                break;
+
+            case "Land":
+                PlayBGM(BGMType.Land);
+                break;
         }
     }
 
@@ -66,26 +109,45 @@ public class SoundManager : MonoBehaviour
     {
         if (bgmSource == null) return;
 
-        if (bgmSource.isPlaying)
-            bgmSource.Stop();
+        AudioClip nextClip = null;
 
         switch (type)
         {
-            case BGMType.Title: bgmSource.clip = titleBGM; break;
-            case BGMType.Ocean: bgmSource.clip = seaBGM; break;
-            case BGMType.Land: bgmSource.clip = landBGM; break;
+            case BGMType.Title:
+                nextClip = titleBGM;
+                break;
+
+            case BGMType.Ocean:
+                nextClip = seaBGM;
+                break;
+
+            case BGMType.Land:
+                nextClip = landBGM;
+                break;
         }
 
-        if (bgmSource.clip == null) return;
+        if (nextClip == null) return;
 
+        if (bgmSource.clip == nextClip && bgmSource.isPlaying) return;
+
+        bgmSource.Stop();
+        bgmSource.clip = nextClip;
         bgmSource.loop = true;
+        ApplyVolumes();
         bgmSource.Play();
     }
 
-    public void PlaySFX(AudioClip clip)
+    public void StopBGM()
+    {
+        if (bgmSource == null) return;
+        bgmSource.Stop();
+    }
+
+    public void PlaySFX(AudioClip clip, float volumeScale = 1f)
     {
         if (clip == null || sfxSource == null) return;
-        sfxSource.PlayOneShot(clip);
+
+        sfxSource.PlayOneShot(clip, Mathf.Clamp01(volumeScale));
     }
 
     public void PlayHarpoonFireSFX()
@@ -93,20 +155,31 @@ public class SoundManager : MonoBehaviour
         PlaySFX(harpoonFireSFX);
     }
 
+    public void PlayButtonSFX()
+    {
+        PlaySFX(ButtonSFX);
+    }
+
+    public void PlayUnlockButtonSFX()
+    {
+        PlaySFX(UnLockButtonSFX);
+    }
+
+    public void PlayWaterSplashSFX()
+    {
+        PlaySFX(waterSplashSFX);
+    }
+
     public void PlaySwimSFX()
     {
         if (swimSFX == null) return;
 
-        if (loopSFXSource == null)
-        {
-            loopSFXSource = gameObject.AddComponent<AudioSource>();
-            loopSFXSource.loop = true;
-            loopSFXSource.playOnAwake = false;
-        }
+        InitLoopSFXSource();
 
         if (!loopSFXSource.isPlaying)
         {
             loopSFXSource.clip = swimSFX;
+            loopSFXSource.volume = masterVolume * sfxVolume;
             loopSFXSource.Play();
         }
     }
@@ -114,6 +187,67 @@ public class SoundManager : MonoBehaviour
     public void StopSwimSFX()
     {
         if (loopSFXSource != null && loopSFXSource.isPlaying)
+        {
             loopSFXSource.Stop();
+        }
+    }
+
+    public void SetMasterVolume(float value)
+    {
+        masterVolume = Mathf.Clamp01(value);
+        ApplyVolumes();
+    }
+
+    public void SetBgmVolume(float value)
+    {
+        bgmVolume = Mathf.Clamp01(value);
+        ApplyVolumes();
+    }
+
+    public void SetSfxVolume(float value)
+    {
+        sfxVolume = Mathf.Clamp01(value);
+        ApplyVolumes();
+    }
+
+    public void ResetToDefaultVolumes()
+    {
+        masterVolume = defaultMasterVolume;
+        bgmVolume = defaultBgmVolume;
+        sfxVolume = defaultSfxVolume;
+        ApplyVolumes();
+    }
+
+    public void ApplyVolumes()
+    {
+        if (bgmSource != null)
+        {
+            bgmSource.volume = masterVolume * bgmVolume;
+        }
+
+        if (sfxSource != null)
+        {
+            sfxSource.volume = masterVolume * sfxVolume;
+        }
+
+        if (loopSFXSource != null)
+        {
+            loopSFXSource.volume = masterVolume * sfxVolume;
+        }
+    }
+
+    public void SaveVolumeSettings()
+    {
+        PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, masterVolume);
+        PlayerPrefs.SetFloat(BGM_VOLUME_KEY, bgmVolume);
+        PlayerPrefs.SetFloat(SFX_VOLUME_KEY, sfxVolume);
+        PlayerPrefs.Save();
+    }
+
+    public void LoadVolumeSettings()
+    {
+        masterVolume = PlayerPrefs.GetFloat(MASTER_VOLUME_KEY, defaultMasterVolume);
+        bgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, defaultBgmVolume);
+        sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, defaultSfxVolume);
     }
 }

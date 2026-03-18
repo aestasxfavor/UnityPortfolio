@@ -15,8 +15,8 @@ public class ButtonSound : MonoBehaviour
         if (SoundManager.Instance == null) return;
 
         if (isLockedButton)
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.UnLockButtonSFX);
+            SoundManager.Instance.PlayUnlockButtonSFX();
         else
-            SoundManager.Instance.PlaySFX(SoundManager.Instance.ButtonSFX);
+            SoundManager.Instance.PlayButtonSFX();
     }
 }

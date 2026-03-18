@@ -1,5 +1,6 @@
-using UnityEngine.SceneManagement;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LandUIManager : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class LandUIManager : MonoBehaviour
     [SerializeField] private GameObject mailboxCanvasPrefab;
     [SerializeField] private GameObject codexCanvasPrefab;
     [SerializeField] private GameObject shopCanvasPrefab;
+    [SerializeField] private GameObject soundSettingPrefab;
 
     // Land 생성물 캐시
     private GameObject storageUICanvasInstance;
@@ -19,6 +21,7 @@ public class LandUIManager : MonoBehaviour
     private GameObject mailboxCanvasInstance;
     private GameObject codexCanvasInstance;
     private GameObject shopCanvasInstance;
+    private GameObject soundSettingInstance;
     private GameObject mailButtonBadge;
     private GameObject codexButtonBadge;
 
@@ -26,6 +29,7 @@ public class LandUIManager : MonoBehaviour
     private MailboxUI mailboxUI;
     private CodexUI codexUI;
     private ShopUI shopUI;
+    private SoundSettingUI soundSettingUI;
     private CodexService codexService;
     private MailboxService mailBoxService;
     private PopupManager popupManager;
@@ -56,8 +60,9 @@ public class LandUIManager : MonoBehaviour
 
         if (storageUICanvasInstance != null && storageUICanvasInstance.activeSelf) return true;
 
-        // Todo: 상점 오픈은 추후에 아마 리팩토링때 할 예정
         if (shopCanvasInstance != null && shopCanvasInstance.activeSelf) return true;
+
+        if (soundSettingInstance != null && soundSettingInstance.activeSelf) return true;
         return false;
     }
 
@@ -102,6 +107,9 @@ public class LandUIManager : MonoBehaviour
                         break;
                     case "Shop Button":
                         btn.onClick.AddListener(ToggleShop);
+                        break;
+                    case "Setting Button":
+                        btn.onClick.AddListener(ToggleSetting);
                         break;
                 }
             }                                     
@@ -216,10 +224,14 @@ public class LandUIManager : MonoBehaviour
             storageUICanvasInstance.SetActive(false);
         }
 
-        // Todo: 상점은 나중에 만들기 
         if (shopCanvasInstance != null)
         {
             shopCanvasInstance.SetActive(false);
+        }
+
+        if(soundSettingInstance != null)
+        {
+            soundSettingInstance.SetActive(false);
         }
 
         RefreshMailboxBadge();
@@ -264,6 +276,17 @@ public class LandUIManager : MonoBehaviour
 
         storageUICanvasInstance.SetActive(true);
         storageUI.Open();
+    }
+
+    public void OpenSetting()
+    {
+        SetSetting();
+        CloseAllLandUI();
+
+        if(soundSettingInstance == null) return;
+        soundSettingInstance.SetActive(true);
+        soundSettingUI.Open();
+       
     }
     #endregion
 
@@ -343,6 +366,17 @@ public class LandUIManager : MonoBehaviour
 
     }
 
+    private void SetSetting()
+    {
+        if (soundSettingInstance == null && soundSettingPrefab != null)
+        {
+            soundSettingInstance = Instantiate(soundSettingPrefab);
+            soundSettingUI = soundSettingInstance.GetComponentInChildren<SoundSettingUI>(true);
+        
+        }
+            soundSettingInstance.SetActive(false);
+    }
+
     public void ToggleMailBox()
     {
         OpenMailbox();
@@ -351,6 +385,11 @@ public class LandUIManager : MonoBehaviour
     public void ToggleShop()
     {
         OpenShop();
+    }
+
+    public void ToggleSetting()
+    {
+        OpenSetting();
     }
 
     public void ExitGame()
