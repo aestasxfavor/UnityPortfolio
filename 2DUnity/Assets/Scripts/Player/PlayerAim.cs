@@ -139,11 +139,7 @@ public class PlayerAim : MonoBehaviour
         {
             wantToFire = true;
         }
-
-
     }
-
-
 
     public void OnHarpoonFire()
     {

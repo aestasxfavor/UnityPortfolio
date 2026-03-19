@@ -3,15 +3,22 @@ using UnityEngine.UI;
 
 public class PlayButton : MonoBehaviour
 {
-    [SerializeField] Button button;
-    [SerializeField] GameObject sceneryManager;
+    [SerializeField] private Button button;
+   
 
     private void Awake()
     {
-        sceneryManager = GameObject.Find("Scenery Manager");
+        if(button == null)
+        {
+            button = GetComponent<Button>();
+        }
+        button.onClick.AddListener(OnClickPlay);
+      
     }
-    private void Start()
+
+    private void OnClickPlay()
     {
-        button.onClick.AddListener(() => sceneryManager.GetComponent<SceneryManager>().LoadScene("Ocean"));
+        SceneryManager.Instance.LoadScene("Ocean");
     }
+
 }

@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: SpawnerConfigSO
   m_EditorClassIdentifier: 
   fishInterval: 2
-  fishSpawnX: 20
-  fishSpawnY: -20
+  fishSpawnX: 30
+  fishSpawnY: -30
   maxFishSpawn: 40

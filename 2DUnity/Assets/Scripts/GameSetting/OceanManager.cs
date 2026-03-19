@@ -11,6 +11,9 @@ public class OceanManager : MonoBehaviour
     [SerializeField] private GameObject oceanMapPrefab;
     [SerializeField] private GameObject harpoonUIPrefab;
 
+    [Header("CameraRef")]
+    [SerializeField] private CameraBound cameraBound;
+
     private FishSpawner fishSpawner;
     private OxygenManager oxygenManager;
     private InventoryUI inventoryUI;
@@ -19,7 +22,7 @@ public class OceanManager : MonoBehaviour
     private GameObject playerInstance;
     private GameObject oceanMapInstance;
 
-    public void ResetOcean() 
+    public void ResetOcean()
     {
         Debug.Log("ResetOcean 호출됨");
         oxygenManager?.ResetOxygen();
@@ -31,17 +34,11 @@ public class OceanManager : MonoBehaviour
     {
         CleanUp();
         Initialize(seaData);
+        BindCamera();
         StartCoroutine(LateStart());
-
-        CameraBound cam = FindFirstObjectByType<CameraBound>();
-        if (cam != null && playerInstance != null)
-        {
-            cam.SetTarget(playerInstance.transform);
-        }
 
         if (SoundManager.Instance != null)
         {
-            // SoundManager.Instance.PlaySwimSFX();
             SoundManager.Instance.StopSwimSFX();
             SoundManager.Instance.PlayWaterSplashSFX();
         }
@@ -50,12 +47,12 @@ public class OceanManager : MonoBehaviour
 
     public void Initialize(FishInventoryData seaData)
     {
-        PlayerAim playerAim = null;
+        //PlayerAim playerAim = null;
 
         if (playerPrefab != null)
         {
             playerInstance = Instantiate(playerPrefab);
-            playerAim = playerInstance.GetComponent<PlayerAim>();
+            //playerAim = playerInstance.GetComponent<PlayerAim>();
         }
 
         if (oceanMapPrefab != null)
@@ -82,14 +79,27 @@ public class OceanManager : MonoBehaviour
         if (harpoonUIPrefab != null)
         {
             harpoonUI = Instantiate(harpoonUIPrefab).GetComponent<HarpoonUI>();
-           
+
         }
+    }
+
+    private void BindCamera()
+    {
+        if (cameraBound == null || playerInstance == null) return;
+
+        cameraBound.SetTarget(playerInstance.transform);
+
     }
 
     public void CleanUp()
     {
+        if (cameraBound != null)
+        {
+            cameraBound.ClearTarget();
+        }
         if (playerInstance != null)
         {
+            // 생각보다 Destory를 많이 쓰네 이거도 코드정리할때 생각해봐야겠다 GC많이 잡아먹을거같은데
             Destroy(playerInstance);
         }
 
@@ -131,7 +141,4 @@ public class OceanManager : MonoBehaviour
         yield return null;
         fishSpawner?.FishSpawn();
     }
-
-
-
 }
