@@ -36,7 +36,7 @@ public class ShopUI : MonoBehaviour
     {
         UpdateCoinUI();
     }
-
+    #region Debug Only (에디터 전용 테스트)
 #if UNITY_EDITOR
     private void Update()
     {
@@ -45,12 +45,6 @@ public class ShopUI : MonoBehaviour
             DebugAddCoin();
         }
     }
-#endif
-
-    public void Init(PopupManager _popupManager)
-    {
-        popupManager = _popupManager;
-    }
 
     private void DebugAddCoin()
     {
@@ -58,6 +52,14 @@ public class ShopUI : MonoBehaviour
         UpdateCoinUI();
         Debug.Log("테스트 코인 지급 완료");
     }
+#endif
+    #endregion
+
+    public void Init(PopupManager _popupManager)
+    {
+        popupManager = _popupManager;
+    }
+
 
     // 상점 열릴 때 기본 상태
     public void Open()
@@ -84,7 +86,6 @@ public class ShopUI : MonoBehaviour
 
     public void BuildInventorySlots()
     {
-       // Debug.Log($"FishType 개수: {System.Enum.GetValues(typeof(FishType)).Length}");
         // 1. 기존 슬롯 제거
         foreach (Transform child in coinGridRoot)
         {
@@ -159,9 +160,7 @@ public class ShopUI : MonoBehaviour
         amountText.text = $"{gained:N0}개";
 
         UpdateCoinUI();
-
-
-       // Debug.Log($"[교환 완료] {gained} 코인 획득");
+      
     }
 
     public void UpdateCoinUI()

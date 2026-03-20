@@ -37,7 +37,7 @@ public class MailboxService : MonoBehaviour
         if (mailboxSaveData.firstReturnMailUnlocked) return;
 
         mailboxSaveData.firstReturnMailUnlocked = true;
-        SaveManager.Instance.SaveMail();
+        SaveManager.Instance.SaveMailbox();
     }
 
     public void MarkAsRead(string mailID)
@@ -46,7 +46,7 @@ public class MailboxService : MonoBehaviour
         if (mailboxSaveData.firstReturnMailRead) return;
 
         mailboxSaveData.firstReturnMailRead = true;
-        SaveManager.Instance.SaveMail();
+        SaveManager.Instance.SaveMailbox();
     }
 
     public void SelectMail(string mailID)

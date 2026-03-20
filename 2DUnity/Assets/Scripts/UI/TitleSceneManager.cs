@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class TitleSceneManager : MonoBehaviour
 {
-    // Update is called once per frame
-
     private bool isLoading = false;
     void Update()
     {

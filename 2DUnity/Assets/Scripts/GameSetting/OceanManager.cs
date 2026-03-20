@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class OceanManager : MonoBehaviour
 {
+    #region Prefab References (프리팹)
     [Header("Ocean Prefabs")]
     [SerializeField] private GameObject fishSpawnerPrefab;
     [SerializeField] private GameObject oxygenUIPrefab;
@@ -10,32 +11,33 @@ public class OceanManager : MonoBehaviour
     [SerializeField] private GameObject playerPrefab;
     [SerializeField] private GameObject oceanMapPrefab;
     [SerializeField] private GameObject harpoonUIPrefab;
+    #endregion
 
-    [Header("CameraRef")]
+    #region Scene References (카메라 참조)
+    [Header("Camera Ref")]
     [SerializeField] private CameraBound cameraBound;
+    #endregion
 
+    #region Cached Components (캐시 생성물 컴포넌트)
     private FishSpawner fishSpawner;
     private OxygenManager oxygenManager;
     private InventoryUI inventoryUI;
     private HarpoonUI harpoonUI;
+    #endregion
 
+    #region Cached Instances (캐시 생성물)
     private GameObject playerInstance;
     private GameObject oceanMapInstance;
+    private GameObject inventoryUIInstance;
+    #endregion
 
-    public void ResetOcean()
+    #region Ocean Setup (바다 씬 초기 세팅)
+    public void SetUpOceanScene(FishInventoryData seaData)
     {
-        Debug.Log("ResetOcean 호출됨");
-        oxygenManager?.ResetOxygen();
-        inventoryUI?.Close();
-        fishSpawner?.ResetSpawn();
-    }
-
-    public void SetUpOcean(FishInventoryData seaData)
-    {
-        CleanUp();
-        Initialize(seaData);
+        DestroyOceanObjects();
+        CreateOceanObjects(seaData);
         BindCamera();
-        StartCoroutine(LateStart());
+        StartCoroutine(SpawnFishNextFrame());
 
         if (SoundManager.Instance != null)
         {
@@ -44,62 +46,98 @@ public class OceanManager : MonoBehaviour
         }
     }
 
-
-    public void Initialize(FishInventoryData seaData)
+    private void CreateOceanObjects(FishInventoryData seaData)
     {
-        //PlayerAim playerAim = null;
+        CreatePlayerIfNeeded();
+        CreateOceanMapIfNeeded();
+        CreateFishSpawnerIfNeeded();
+        CreateOxygenUIIfNeeded();
+        CreateInventoryUIIfNeeded(seaData);
+        CreateHarpoonUIIfNeeded();
+    }
 
+    private void CreatePlayerIfNeeded()
+    {
         if (playerPrefab != null)
         {
             playerInstance = Instantiate(playerPrefab);
-            //playerAim = playerInstance.GetComponent<PlayerAim>();
         }
+    }
 
+    private void CreateOceanMapIfNeeded()
+    {
         if (oceanMapPrefab != null)
         {
             oceanMapInstance = Instantiate(oceanMapPrefab);
         }
+    }
 
+    private void CreateFishSpawnerIfNeeded()
+    {
         if (fishSpawnerPrefab != null)
         {
             fishSpawner = Instantiate(fishSpawnerPrefab).GetComponent<FishSpawner>();
         }
+    }
 
+    private void CreateOxygenUIIfNeeded()
+    {
         if (oxygenUIPrefab != null)
         {
             oxygenManager = Instantiate(oxygenUIPrefab).GetComponent<OxygenManager>();
         }
+    }
 
+    private void CreateInventoryUIIfNeeded(FishInventoryData seaData)
+    {
         if (inventoryUIPrefab != null)
         {
-            inventoryUI = Instantiate(inventoryUIPrefab).GetComponentInChildren<InventoryUI>(true);
+            inventoryUIInstance = Instantiate(inventoryUIPrefab);
+            inventoryUI = inventoryUIInstance.GetComponentInChildren<InventoryUI>(true);
             inventoryUI?.SetInventoryData(seaData);
         }
+    }
 
+    private void CreateHarpoonUIIfNeeded()
+    {
         if (harpoonUIPrefab != null)
         {
             harpoonUI = Instantiate(harpoonUIPrefab).GetComponent<HarpoonUI>();
-
         }
     }
 
     private void BindCamera()
     {
-        if (cameraBound == null || playerInstance == null) return;
+        if (cameraBound == null || playerInstance == null)
+            return;
 
         cameraBound.SetTarget(playerInstance.transform);
-
     }
 
-    public void CleanUp()
+    private IEnumerator SpawnFishNextFrame()
+    {
+        yield return null;
+        fishSpawner?.FishSpawn();
+    }
+    #endregion
+
+    #region Ocean Reset & Cleanup (바다씬 리셋 & 정리)
+    public void ResetOcean()
+    {
+        oxygenManager?.ResetOxygen();
+        inventoryUI?.Close();
+        fishSpawner?.ResetSpawn();
+    }
+
+    public void DestroyOceanObjects()
     {
         if (cameraBound != null)
         {
             cameraBound.ClearTarget();
         }
+
         if (playerInstance != null)
         {
-            // 생각보다 Destory를 많이 쓰네 이거도 코드정리할때 생각해봐야겠다 GC많이 잡아먹을거같은데
             Destroy(playerInstance);
         }
 
@@ -118,9 +156,9 @@ public class OceanManager : MonoBehaviour
             Destroy(oxygenManager.gameObject);
         }
 
-        if (inventoryUI != null)
+        if (inventoryUIInstance != null)
         {
-            Destroy(inventoryUI.gameObject);
+            Destroy(inventoryUIInstance);
         }
 
         if (harpoonUI != null)
@@ -130,15 +168,12 @@ public class OceanManager : MonoBehaviour
 
         playerInstance = null;
         oceanMapInstance = null;
+        inventoryUIInstance = null;
+
         fishSpawner = null;
         oxygenManager = null;
         inventoryUI = null;
         harpoonUI = null;
     }
-
-    private IEnumerator LateStart()
-    {
-        yield return null;
-        fishSpawner?.FishSpawn();
-    }
+    #endregion
 }

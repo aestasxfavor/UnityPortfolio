@@ -129,13 +129,22 @@ public partial class @PlayerCtrls: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Storage"",
-                    ""type"": ""Button"",
-                    ""id"": ""f818ab5f-acb7-4317-a883-1aa72fe5576e"",
+                    ""name"": ""Cancel"",
+                    ""type"": ""Value"",
+                    ""id"": ""bc45f00e-a42d-4fb1-8df5-9444bd3c458b"",
                     ""expectedControlType"": """",
                     ""processors"": """",
                     ""interactions"": """",
-                    ""initialStateCheck"": false
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""SwitchHarpoon"",
+                    ""type"": ""Value"",
+                    ""id"": ""c1dbb6b5-3719-4f7c-a464-6a3f6e4fd8bc"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -229,12 +238,23 @@ public partial class @PlayerCtrls: IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""0c4a6b0b-5efc-444a-a6c7-c73586ba108b"",
+                    ""id"": ""75ba02c4-1319-4eb4-9bc4-7bbbf3c3a625"",
                     ""path"": ""<Keyboard>/escape"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""Storage"",
+                    ""action"": ""Cancel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""07e1f579-c142-42f8-9b3b-e10e32657a7e"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SwitchHarpoon"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -249,7 +269,8 @@ public partial class @PlayerCtrls: IInputActionCollection2, IDisposable
         m_Player_Hold = m_Player.FindAction("Hold", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Inventory = m_Player.FindAction("Inventory", throwIfNotFound: true);
-        m_Player_Storage = m_Player.FindAction("Storage", throwIfNotFound: true);
+        m_Player_Cancel = m_Player.FindAction("Cancel", throwIfNotFound: true);
+        m_Player_SwitchHarpoon = m_Player.FindAction("SwitchHarpoon", throwIfNotFound: true);
     }
 
     ~@PlayerCtrls()
@@ -334,7 +355,8 @@ public partial class @PlayerCtrls: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Hold;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Inventory;
-    private readonly InputAction m_Player_Storage;
+    private readonly InputAction m_Player_Cancel;
+    private readonly InputAction m_Player_SwitchHarpoon;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -363,9 +385,13 @@ public partial class @PlayerCtrls: IInputActionCollection2, IDisposable
         /// </summary>
         public InputAction @Inventory => m_Wrapper.m_Player_Inventory;
         /// <summary>
-        /// Provides access to the underlying input action "Player/Storage".
+        /// Provides access to the underlying input action "Player/Cancel".
         /// </summary>
-        public InputAction @Storage => m_Wrapper.m_Player_Storage;
+        public InputAction @Cancel => m_Wrapper.m_Player_Cancel;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/SwitchHarpoon".
+        /// </summary>
+        public InputAction @SwitchHarpoon => m_Wrapper.m_Player_SwitchHarpoon;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -404,9 +430,12 @@ public partial class @PlayerCtrls: IInputActionCollection2, IDisposable
             @Inventory.started += instance.OnInventory;
             @Inventory.performed += instance.OnInventory;
             @Inventory.canceled += instance.OnInventory;
-            @Storage.started += instance.OnStorage;
-            @Storage.performed += instance.OnStorage;
-            @Storage.canceled += instance.OnStorage;
+            @Cancel.started += instance.OnCancel;
+            @Cancel.performed += instance.OnCancel;
+            @Cancel.canceled += instance.OnCancel;
+            @SwitchHarpoon.started += instance.OnSwitchHarpoon;
+            @SwitchHarpoon.performed += instance.OnSwitchHarpoon;
+            @SwitchHarpoon.canceled += instance.OnSwitchHarpoon;
         }
 
         /// <summary>
@@ -430,9 +459,12 @@ public partial class @PlayerCtrls: IInputActionCollection2, IDisposable
             @Inventory.started -= instance.OnInventory;
             @Inventory.performed -= instance.OnInventory;
             @Inventory.canceled -= instance.OnInventory;
-            @Storage.started -= instance.OnStorage;
-            @Storage.performed -= instance.OnStorage;
-            @Storage.canceled -= instance.OnStorage;
+            @Cancel.started -= instance.OnCancel;
+            @Cancel.performed -= instance.OnCancel;
+            @Cancel.canceled -= instance.OnCancel;
+            @SwitchHarpoon.started -= instance.OnSwitchHarpoon;
+            @SwitchHarpoon.performed -= instance.OnSwitchHarpoon;
+            @SwitchHarpoon.canceled -= instance.OnSwitchHarpoon;
         }
 
         /// <summary>
@@ -502,11 +534,18 @@ public partial class @PlayerCtrls: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnInventory(InputAction.CallbackContext context);
         /// <summary>
-        /// Method invoked when associated input action "Storage" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// Method invoked when associated input action "Cancel" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
         /// </summary>
         /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
-        void OnStorage(InputAction.CallbackContext context);
+        void OnCancel(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "SwitchHarpoon" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnSwitchHarpoon(InputAction.CallbackContext context);
     }
 }

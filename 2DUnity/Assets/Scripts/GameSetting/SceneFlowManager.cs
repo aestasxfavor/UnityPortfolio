@@ -6,74 +6,81 @@ public class SceneFlowManager : MonoBehaviour
 {
     public static SceneFlowManager Instance;
 
-    private bool isRunning = false;
+    private readonly List<UIClosable> oceanClosables = new();
 
-    private readonly List<UIClosable> oceanClosable = new();
-
+    #region Singleton & Lifecycle (½Ì±ÛÅæ ¹× »ý¸íÁÖ±â)
     private void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
     }
 
     private void OnDestroy()
     {
-        if (Instance == this) Instance = null;
+        if (Instance == this)
+        {
+            Instance = null;
+        }
     }
+    #endregion
 
-    public void OnOxygenDepleted()
-    {
-
-        ChangeScene(SceneType.Land);
-    }
-
+    #region Ocean UI Registration (¹Ù´Ù UI µî·Ï)
     public void Register(UIClosable closable)
     {
         if (closable == null) return;
 
-        if (!oceanClosable.Contains(closable))
+        if (!oceanClosables.Contains(closable))
         {
-            oceanClosable.Add(closable);
+            oceanClosables.Add(closable);
         }
     }
 
-    public void UnRegister(UIClosable closable)
+    public void Unregister(UIClosable closable)
     {
         if (closable == null) return;
-        oceanClosable.Remove(closable);
+
+        oceanClosables.Remove(closable);
     }
 
-    void CloseAllOceanUI()
+    private void CloseAllOceanUI()
     {
-        for(int i = oceanClosable.Count - 1; i >= 0; i--)
+        for (int i = oceanClosables.Count - 1; i >= 0; i--)
         {
-            oceanClosable[i]?.Close();
+            if (oceanClosables[i] == null)
+            {
+                oceanClosables.RemoveAt(i);
+
+                continue;
+            }
+
+            oceanClosables[i].Close();
         }
     }
+    #endregion
 
-   public void ChangeScene(SceneType type)
+    #region Scene Flow (¾À Èå¸§)
+    public void OnOxygenDepleted()
     {
-        if (isRunning) return;
-        isRunning = true;
+        ChangeScene(SceneType.Land);
+    }
 
+    public void ChangeScene(SceneType type)
+    {
         StartCoroutine(ChangeSceneRoutine(type));
     }
 
     private IEnumerator ChangeSceneRoutine(SceneType type)
     {
-        // ¹Ù´Ù¾À UI Á¾·á
         CloseAllOceanUI();
         yield return null;
 
-      GameManager.Instance.GoToFadeScene(type);
-
-      
-
-        isRunning = false;
+        GameManager.Instance?.GoToFadeScene(type);
     }
+    #endregion
 }

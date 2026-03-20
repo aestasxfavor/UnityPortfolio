@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class PlayButton : MonoBehaviour
 {
     [SerializeField] private Button button;
-   
 
     private void Awake()
     {
@@ -12,6 +11,7 @@ public class PlayButton : MonoBehaviour
         {
             button = GetComponent<Button>();
         }
+
         button.onClick.AddListener(OnClickPlay);
       
     }

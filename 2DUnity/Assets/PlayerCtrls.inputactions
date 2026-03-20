@@ -43,13 +43,22 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Storage",
-                    "type": "Button",
-                    "id": "f818ab5f-acb7-4317-a883-1aa72fe5576e",
+                    "name": "Cancel",
+                    "type": "Value",
+                    "id": "bc45f00e-a42d-4fb1-8df5-9444bd3c458b",
                     "expectedControlType": "",
                     "processors": "",
                     "interactions": "",
-                    "initialStateCheck": false
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "SwitchHarpoon",
+                    "type": "Value",
+                    "id": "c1dbb6b5-3719-4f7c-a464-6a3f6e4fd8bc",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -143,12 +152,23 @@
                 },
                 {
                     "name": "",
-                    "id": "0c4a6b0b-5efc-444a-a6c7-c73586ba108b",
+                    "id": "75ba02c4-1319-4eb4-9bc4-7bbbf3c3a625",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Storage",
+                    "action": "Cancel",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "07e1f579-c142-42f8-9b3b-e10e32657a7e",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "SwitchHarpoon",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

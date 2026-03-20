@@ -14,8 +14,8 @@ public class PlayerAim : MonoBehaviour
     [SerializeField] private Transform harpoon;
     [SerializeField] private MovePlayer movePlayer;
     [SerializeField] private HarpoonFire harpoonFire;
-    private HarpoonUI harpoonUI;
 
+    private HarpoonUI harpoonUI;
     private PlayerCtrls ctrls;
     private SpriteRenderer harpoonSR;
 
@@ -30,7 +30,6 @@ public class PlayerAim : MonoBehaviour
     private HarpoonType currentHarpoonType = HarpoonType.Normal;
     public HarpoonType CurrentHarpoonType => currentHarpoonType;
 
-    // Todo: MVP가 다 완성되고 나서 SO로 분리할 예정
     #region Visual Data
     [System.Serializable]
     private struct HarpoonVisual
@@ -63,35 +62,17 @@ public class PlayerAim : MonoBehaviour
         ctrls.Enable();
         ctrls.Player.Hold.performed += OnHold;
         ctrls.Player.Hold.canceled += OnRelease;
+        ctrls.Player.SwitchHarpoon.performed += OnSwitchHarpoon;
+        ctrls.Player.Fire.performed += OnFire;
     }
 
     private void OnDisable()
     {
         ctrls.Player.Hold.performed -= OnHold;
         ctrls.Player.Hold.canceled -= OnRelease;
+        ctrls.Player.SwitchHarpoon.performed -= OnSwitchHarpoon;
+        ctrls.Player.Fire.performed -= OnFire;
         ctrls.Disable();
-    }
-
-    private void OnHold(InputAction.CallbackContext _)
-    {
-        IsHarpoonReady = true;
-        movePlayer.IsHarpoonReady = true;
-        harpoon.gameObject.SetActive(true);
-
-        wantToFire = false;
-
-        animator.SetBool("IsHoldingHarpoon", true);
-    }
-
-    private void OnRelease(InputAction.CallbackContext _)
-    {
-        IsHarpoonReady = false;
-        movePlayer.IsHarpoonReady = false;
-        animator.SetInteger("AimDir", 0);
-        harpoon.gameObject.SetActive(false);
-        wantToFire = false;
-
-        animator.SetBool("IsHoldingHarpoon", false);
     }
 
     private void Start()
@@ -102,77 +83,87 @@ public class PlayerAim : MonoBehaviour
 
     private void Update()
     {
-        if (Keyboard.current != null && Keyboard.current.tabKey.wasPressedThisFrame)
-        {
-            Debug.Log("TAB 감지됨");
-        }
-
-        if (Keyboard.current.tabKey.wasPressedThisFrame)
-        {
-            if (!SaveManager.Instance.HasHarpoonUpgrade()) return;
-
-            currentHarpoonType = currentHarpoonType == HarpoonType.Normal ? HarpoonType.Upgrade : HarpoonType.Normal;
-
-            harpoonFire.SetHarpoonType(currentHarpoonType);
-
-            harpoonUI?.UpdateUI();
-
-            Debug.Log($"현재 작살: {currentHarpoonType}");
-        }
-
         if (!IsHarpoonReady)
             return;
 
         Vector2 rawInput = ctrls.Player.Move.ReadValue<Vector2>();
 
-        // 유효 입력일 때만 조준 상태 갱신
         if (rawInput.sqrMagnitude > 0.01f)
         {
             lastAimInput = rawInput.normalized;
             lastAimState = GetAimState(lastAimInput);
         }
 
-        // 입력 없어도 마지막 조준 유지
         UpdateAimVisual(lastAimState);
+    }
 
-        if (Keyboard.current.shiftKey.wasPressedThisFrame)
-        {
-            wantToFire = true;
-        }
+    private void OnHold(InputAction.CallbackContext _)
+    {
+        IsHarpoonReady = true;
+        movePlayer.IsHarpoonReady = true;
+        harpoon.gameObject.SetActive(true);
+        wantToFire = false;
+
+        animator.SetBool("IsHoldingHarpoon", true);
+    }
+
+    private void OnRelease(InputAction.CallbackContext _)
+    {
+        IsHarpoonReady = false;
+        movePlayer.IsHarpoonReady = false;
+        harpoon.gameObject.SetActive(false);
+        wantToFire = false;
+
+        animator.SetBool("IsHoldingHarpoon", false);
+        animator.SetInteger("AimDir", 0);
+    }
+
+    private void OnSwitchHarpoon(InputAction.CallbackContext _)
+    {
+        if (!SaveManager.Instance.HasHarpoonUpgrade())
+            return;
+
+        currentHarpoonType = currentHarpoonType == HarpoonType.Normal
+            ? HarpoonType.Upgrade
+            : HarpoonType.Normal;
+
+        harpoonFire.SetHarpoonType(currentHarpoonType);
+        harpoonUI?.UpdateUI();
+    }
+
+    private void OnFire(InputAction.CallbackContext _)
+    {
+        if (!IsHarpoonReady)
+            return;
+
+        wantToFire = true;
     }
 
     public void OnHarpoonFire()
     {
-        if (!wantToFire) return;
+        if (!wantToFire)
+            return;
+
         harpoonFire.FireHarpoon(HarpoonDirection);
         wantToFire = false;
-
-        //Debug.Log("OnHarpoonFire CALLED on " + gameObject.name);
     }
 
     private AimState GetAimState(Vector2 input)
     {
         if (Mathf.Abs(input.x) < 0.5f)
-        {
             return AimState.Front;
-        }
 
         if (input.y > 0.5f)
-        {
             return AimState.Up;
-        }
 
         if (input.y < -0.5f)
-        {
             return AimState.Down;
-        }
 
         return AimState.Front;
     }
 
     private void UpdateAimVisual(AimState state)
     {
-
         bool facingRight = movePlayer.LastMoveDir.x >= 0f;
 
         animator.SetInteger("AimDir",
@@ -180,25 +171,18 @@ public class PlayerAim : MonoBehaviour
             state == AimState.Down ? 2 : 0);
 
         HarpoonVisual visual = GetVisual(state, facingRight);
-
         ApplyVisual(visual);
-
     }
 
     private HarpoonVisual GetVisual(AimState state, bool facingRight)
     {
         if (state == AimState.Up)
-        {
             return facingRight ? rightUp : leftUp;
-        }
-        else if (state == AimState.Down)
-        {
+
+        if (state == AimState.Down)
             return facingRight ? rightDown : leftDown;
-        }
-        else
-        {
-            return facingRight ? rightFront : leftFront;
-        }
+
+        return facingRight ? rightFront : leftFront;
     }
 
     private void ApplyVisual(HarpoonVisual visual)
@@ -206,16 +190,6 @@ public class PlayerAim : MonoBehaviour
         harpoon.localPosition = visual.localPos;
         harpoon.localRotation = Quaternion.Euler(0, 0, visual.rotationZ);
         harpoonSR.flipX = visual.flipX;
-
-        bool facingRight = movePlayer.LastMoveDir.x >= 0f;
-        Vector2 dir = facingRight ? Vector2.right : Vector2.left;
-
-        if (lastAimState == AimState.Up)
-            dir += Vector2.up;
-
-        else if (lastAimState == AimState.Down)
-            dir += Vector2.down;
-
         HarpoonDirection = visual.direction.normalized;
     }
 }

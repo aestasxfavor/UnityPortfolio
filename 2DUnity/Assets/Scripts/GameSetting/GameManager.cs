@@ -2,33 +2,36 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// Todo: FindFirstObjectByType를 5-6개 쓰고 있음 나중에 디테일 작업할 때 다시 고려해보기
-/// </summary>
-
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
+    #region Prefab References (프리팹 참조)
     [Header("Prefabs")]
-    public GameObject fishDataLoaderPrefab;
+    [SerializeField] private GameObject fishDataLoaderPrefab;
+    #endregion
 
+    #region Cached Instances (캐시된 인스턴스)
     private GameObject fishDataLoaderInstance;
+    #endregion
 
-    [Header("공용 인벤토리 데이터 (씬 공통 사용)")]
+    #region Shared Inventory Data (공용 인벤토리 데이터)
+    [Header("공용 인벤토리 데이터")]
     [SerializeField] private FishInventoryData storageInventoryData;
     [SerializeField] private FishInventoryData seaInventoryData;
 
     public FishInventoryData GetStorageInventoryData() => storageInventoryData;
     public FishInventoryData GetSeaInventoryData() => seaInventoryData;
+    #endregion
 
+    #region State (상태)
     public bool IsSceneLoading { get; private set; }
+    #endregion
 
-
+    #region Singleton & Lifecycle (싱글톤 및 생명주기)
     private void Awake()
     {
-
-        if (Instance != null)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -37,132 +40,139 @@ public class GameManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        EnsureFishDataLoader();
-
+        CreateFishDataLoaderIfNeeded();
         SceneManager.sceneLoaded += OnSceneLoaded;
     }
 
     private void OnDestroy()
     {
         if (Instance == this)
+        {
             SceneManager.sceneLoaded -= OnSceneLoaded;
+        }
     }
+    #endregion
 
-    private void EnsureFishDataLoader()
+    #region Loader Setup (로더 세팅)
+    private void CreateFishDataLoaderIfNeeded()
     {
-        if (FishDataLoader.Instance != null) return;
+        if (FishDataLoader.Instance != null)
+            return;
 
         if (fishDataLoaderPrefab == null)
-        {
             return;
-        }
 
         if (fishDataLoaderInstance == null)
         {
             fishDataLoaderInstance = Instantiate(fishDataLoaderPrefab);
         }
     }
+    #endregion
 
+    #region Scene Setup (씬 세팅)
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         IsSceneLoading = false;
-        StartCoroutine(SetupSceneDelayed(scene));
+        StartCoroutine(SetUpSceneAfterLoad(scene));
     }
 
-    private IEnumerator SetupSceneDelayed(Scene scene)
+    private IEnumerator SetUpSceneAfterLoad(Scene scene)
     {
-        yield return null; // 한 프레임 대기
+        yield return null;
 
-        if(scene.name == "Ocean")
+        if (scene.name == "Ocean")
         {
-            var seaData = GetSeaInventoryData();
-            seaData.Clear();
-
-            FishInventoryService.Instance?.SetInventoryData(seaData);
-
-            var ocean = FindFirstObjectByType<OceanManager>();
-            ocean?.SetUpOcean(seaData);
+            SetUpOceanScene();
         }
-        else if(scene.name =="Land")
+        else if (scene.name == "Land")
         {
-            SetupLandScene();
+            SetUpLandScene();
         }
     }
 
-    // -------------------------
-    // Land Scene 세팅 나중에 landUIManager로 옮기던지 LandManager로 옮기던지 둘중 하나할 예정
-    // -------------------------
-    private void SetupLandScene()
+    private void SetUpOceanScene()
+    {
+        var currentSeaInventoryData = GetSeaInventoryData();
+        if (currentSeaInventoryData == null)
+            return;
+
+        currentSeaInventoryData.Clear();
+
+        FishInventoryService.Instance?.SetInventoryData(currentSeaInventoryData);
+
+        var oceanManager = FindFirstObjectByType<OceanManager>();
+        oceanManager?.SetUpOceanScene(currentSeaInventoryData);
+    }
+
+    private void SetUpLandScene()
     {
         if (seaInventoryData == null || storageInventoryData == null)
-        {
-            // Debug.LogError("[GameManager] sea/storage InventoryData가 null입니다 (Inspector 연결 확인)");
             return;
-        }
 
-        // 바다 인벤 → 보관함 누적
         seaInventoryData.TransferTo(storageInventoryData);
 
         if (SaveManager.Instance != null)
+        {
             SaveManager.Instance.Save();
+        }
 
-        // 서비스가 storage 물게 하기
         if (FishInventoryService.Instance != null)
+        {
             FishInventoryService.Instance.SetInventoryData(storageInventoryData);
+        }
 
-        var landUI = FindFirstObjectByType<LandUIManager>();
-        if (landUI != null)
-            landUI.SetUpLand(storageInventoryData);
+        var landUIManager = FindFirstObjectByType<LandUIManager>();
+        landUIManager?.SetUpLand();
     }
+    #endregion
 
-    // -------------------------
-    // 씬 이동
-    // -------------------------
+    #region Scene Navigation (씬 이동)
     public void GoToOcean()
     {
-        if (SceneryManager.Instance != null)
-            SceneryManager.Instance.LoadScene("Ocean");
-        else
-            SceneManager.LoadScene("Ocean");
+        LoadScene("Ocean");
     }
 
     public void GoToLand()
     {
-
-        if (SceneryManager.Instance != null)
-            SceneryManager.Instance.LoadScene("Land");
-        else
-            SceneManager.LoadScene("Land");
+        LoadScene("Land");
     }
 
     public void GoToFadeScene(SceneType targetScene)
     {
-        Debug.Log($"[GameManager] 페이드 씬 전환 요청 → {targetScene}");
-
         if (IsSceneLoading) return;
+
         IsSceneLoading = true;
 
-        // Todo: MailBoxService로 이동 예정 -> 교환상점까지 다하고 나서 수정하든지 할 예정
-        if (targetScene == SceneType.Land && SaveManager.Instance != null)
-        {
-            var mail = SaveManager.Instance.GetMailboxSaveData();
-
-            Debug.Log($"[MAIL] unlocked(before)={mail.firstReturnMailUnlocked}");
-
-            if (!mail.firstReturnMailUnlocked)
-            {
-                mail.firstReturnMailUnlocked = true;
-                SaveManager.Instance.RequestSave();
-                Debug.Log($"[MAIL] unlocked(after)={mail.firstReturnMailUnlocked}");
-            }
-        }
-
-        string sceneName = targetScene.ToString();
-
-        var sceneryManager = FindFirstObjectByType<SceneryManager>();
-        if (sceneryManager != null)
-            sceneryManager.LoadScene(sceneName);
-        else
-            SceneManager.LoadScene(sceneName);
+        UnlockFirstReturnMailIfNeeded(targetScene);
+        LoadScene(targetScene.ToString());
     }
+
+    private void UnlockFirstReturnMailIfNeeded(SceneType targetScene)
+    {
+        if (targetScene != SceneType.Land)
+            return;
+
+        if (SaveManager.Instance == null)
+            return;
+
+        var mailboxSaveData = SaveManager.Instance.GetMailboxSaveData();
+        if (mailboxSaveData.firstReturnMailUnlocked)
+            return;
+
+        mailboxSaveData.firstReturnMailUnlocked = true;
+        SaveManager.Instance.RequestSave();
+    }
+
+    private void LoadScene(string sceneName)
+    {
+        if (SceneryManager.Instance != null)
+        {
+            SceneryManager.Instance.LoadScene(sceneName);
+        }
+        else
+        {
+            SceneManager.LoadScene(sceneName);
+        }
+    }
+    #endregion
 }

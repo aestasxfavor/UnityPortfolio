@@ -1,31 +1,31 @@
-using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using System;
 
 public class SaveManager : MonoBehaviour
 {
     public static SaveManager Instance { get; private set; }
 
+    #region Save Data References (세이브 데이터 참조)
     [SerializeField] private FishInventoryData storageInventoryData;
     [SerializeField] private MailboxSaveData mailboxSaveData = new();
 
-    private CodexSaveData codexSaveData = new CodexSaveData();
-    private CoinSaveData coinSaveData = new CoinSaveData();
+    private CodexSaveData codexSaveData = new();
+    private CoinSaveData coinSaveData = new();
+    #endregion
 
-    private string savePath;
-    private string mailPath;
-    private string codexPath;
-    private string coinPath;
+    #region Save Paths (세이브 경로)
+    private string inventorySavePath;
+    private string mailboxSavePath;
+    private string codexSavePath;
+    private string coinSavePath;
+    #endregion
 
-    private float saveTimer;
-    private float saveCoolDown = 10f;
-
-    private bool saveRequest;
-
+    #region Upgrade State (업그레이드 상태)
     private bool hasHarpoonUpgrade;
+    #endregion
 
-    void Awake()
+    #region Singleton & Lifecycle (싱글톤 및 생명주기)
+    private void Awake()
     {
         if (Instance != null && Instance != this)
         {
@@ -36,132 +36,162 @@ public class SaveManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        savePath = Path.Combine(Application.persistentDataPath, "fish_save.json");
-        mailPath = Path.Combine(Application.persistentDataPath, "mail_save.json");
-        codexPath = Path.Combine(Application.persistentDataPath, "codex_save.json");
-        coinPath = Path.Combine(Application.persistentDataPath, "coin_save.json");
-        Debug.Log($"세이브 경로 : " + savePath);
-
-        if (mailboxSaveData == null)
-            mailboxSaveData = new MailboxSaveData();
-
+        InitializeSavePaths();
+        EnsureSaveDataObjects();
     }
 
-    void Start()
+    private void Start()
+    {
+        ConnectStorageInventoryData();
+        LoadAll();
+    }
+    #endregion
+
+    #region Initialization (초기화)
+    private void InitializeSavePaths()
+    {
+        inventorySavePath = Path.Combine(Application.persistentDataPath, "fish_save.json");
+        mailboxSavePath = Path.Combine(Application.persistentDataPath, "mail_save.json");
+        codexSavePath = Path.Combine(Application.persistentDataPath, "codex_save.json");
+        coinSavePath = Path.Combine(Application.persistentDataPath, "coin_save.json");
+    }
+
+    private void EnsureSaveDataObjects()
+    {
+        if (mailboxSaveData == null)
+        {
+            mailboxSaveData = new MailboxSaveData();
+        }
+
+        if (codexSaveData == null)
+        {
+            codexSaveData = new CodexSaveData();
+        }
+
+        if (coinSaveData == null)
+        {
+            coinSaveData = new CoinSaveData();
+        }
+    }
+
+    private void ConnectStorageInventoryData()
     {
         if (GameManager.Instance != null)
         {
             storageInventoryData = GameManager.Instance.GetStorageInventoryData();
         }
+    }
+    #endregion
 
-        if (storageInventoryData == null) return;
-
-        Load();
-        LoadMail();
-        LoadCodex();
-        LoadCoin();
+    #region Save All / Load All (전체 저장 / 전체 불러오기)
+    public void RequestSave()
+    {
+        SaveAll();
     }
 
-    private void Update()
+    public void SaveAll()
     {
-        if (!saveRequest) return;
-
-        saveTimer += Time.unscaledDeltaTime;
-        if (saveTimer < saveCoolDown) return;
-
-        saveTimer = 0f;
-        saveRequest = false;
-
         Save();
-        SaveMail();
+        SaveMailbox();
         SaveCodex();
         SaveCoin();
     }
 
-    public void RequestSave()
+    public void LoadAll()
     {
-        saveRequest = true;
+        Load();
+        LoadMailbox();
+        LoadCodex();
+        LoadCoin();
     }
+    #endregion
 
+    #region Inventory Save (인벤토리 저장)
     public void Save()
     {
         if (storageInventoryData == null)
-        {
             return;
-        }
 
-        SaveData saveData = new SaveData();
-        saveData.hasHarpoonUpgrade = hasHarpoonUpgrade;
+        SaveData saveData = new SaveData
+        {
+            hasHarpoonUpgrade = hasHarpoonUpgrade
+        };
 
         foreach (var fish in storageInventoryData.caughtFishList)
         {
-            if (fish == null) continue;
-            saveData.caughtFishList.Add(new FishSaveSlot { fishType = fish.fishType.ToString(), count = fish.count });
+            if (fish == null)
+                continue;
+
+            saveData.caughtFishList.Add(new FishSaveSlot
+            {
+                fishType = fish.fishType.ToString(),
+                count = fish.count
+            });
         }
 
         string json = JsonUtility.ToJson(saveData, true);
-
-        File.WriteAllText(savePath, json);
-        Debug.Log("게임 저장 완료");
+        File.WriteAllText(inventorySavePath, json);
     }
 
     public void Load()
     {
-        if (!File.Exists(savePath))
-        {
+        if (storageInventoryData == null)
             return;
-        }
 
-        string json = File.ReadAllText(savePath);
+        if (!File.Exists(inventorySavePath))
+            return;
 
+        string json = File.ReadAllText(inventorySavePath);
         SaveData loadedData = JsonUtility.FromJson<SaveData>(json);
 
         if (loadedData == null)
-        {
             return;
-        }
 
         hasHarpoonUpgrade = loadedData.hasHarpoonUpgrade;
 
-        storageInventoryData.caughtFishList.
-        Clear();
+        storageInventoryData.caughtFishList.Clear();
 
         foreach (var slot in loadedData.caughtFishList)
         {
             storageInventoryData.AddFishSave(slot.fishType, slot.count);
         }
     }
-    #region 메일 Json
+    #endregion
+
+    #region Mailbox Save (우편함 저장)
     public MailboxSaveData GetMailboxSaveData()
     {
         return mailboxSaveData;
     }
-    public void SaveMail()
+
+    public void SaveMailbox()
     {
         if (mailboxSaveData == null)
             mailboxSaveData = new MailboxSaveData();
 
         string json = JsonUtility.ToJson(mailboxSaveData, true);
-        File.WriteAllText(mailPath, json);
+        File.WriteAllText(mailboxSavePath, json);
     }
 
-    public void LoadMail()
+    public void LoadMailbox()
     {
-        if (!File.Exists(mailPath))
+        if (!File.Exists(mailboxSavePath))
         {
             mailboxSaveData = new MailboxSaveData();
             return;
         }
 
-        string json = File.ReadAllText(mailPath);
+        string json = File.ReadAllText(mailboxSavePath);
         mailboxSaveData = JsonUtility.FromJson<MailboxSaveData>(json);
 
         if (mailboxSaveData == null)
+        {
             mailboxSaveData = new MailboxSaveData();
+        }
     }
     #endregion
 
-    #region 도감 Json
+    #region Codex Save (도감 저장)
     public CodexSaveData GetCodexSaveData()
     {
         return codexSaveData;
@@ -170,29 +200,28 @@ public class SaveManager : MonoBehaviour
     public void SaveCodex()
     {
         string json = JsonUtility.ToJson(codexSaveData, true);
-        File.WriteAllText(codexPath, json);
+        File.WriteAllText(codexSavePath, json);
     }
 
     public void LoadCodex()
     {
-        if (!File.Exists(codexPath))
+        if (!File.Exists(codexSavePath))
         {
             codexSaveData = new CodexSaveData();
             return;
         }
 
-        string json = File.ReadAllText(codexPath);
+        string json = File.ReadAllText(codexSavePath);
         codexSaveData = JsonUtility.FromJson<CodexSaveData>(json);
 
         if (codexSaveData == null)
         {
             codexSaveData = new CodexSaveData();
         }
-
     }
     #endregion
 
-    #region 코인 Json
+    #region Coin Save (코인 저장)
     public CoinSaveData GetCoinSaveData()
     {
         return coinSaveData;
@@ -201,18 +230,18 @@ public class SaveManager : MonoBehaviour
     public void SaveCoin()
     {
         string json = JsonUtility.ToJson(coinSaveData, true);
-        File.WriteAllText(coinPath, json);
+        File.WriteAllText(coinSavePath, json);
     }
 
     public void LoadCoin()
     {
-        if (!File.Exists(coinPath))
+        if (!File.Exists(coinSavePath))
         {
             coinSaveData = new CoinSaveData { currentCoin = 0 };
             return;
         }
 
-        string json = File.ReadAllText(coinPath);
+        string json = File.ReadAllText(coinSavePath);
         coinSaveData = JsonUtility.FromJson<CoinSaveData>(json);
 
         if (coinSaveData == null)
@@ -220,16 +249,18 @@ public class SaveManager : MonoBehaviour
             coinSaveData = new CoinSaveData { currentCoin = 0 };
         }
     }
+    #endregion
 
+    #region Harpoon Upgrade State (작살 업그레이드 상태)
     public bool HasHarpoonUpgrade()
     {
         return hasHarpoonUpgrade;
     }
 
-    public void SetHarpoonUpgrade(bool _hasHarpoonUpgrade)
+    public void SetHarpoonUpgrade(bool hasUpgrade)
     {
-        hasHarpoonUpgrade = _hasHarpoonUpgrade;
-        RequestSave();
+        hasHarpoonUpgrade = hasUpgrade;
+        Save();
     }
     #endregion
 }

@@ -7,22 +7,25 @@ public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }
 
+    #region Audio References (오디오 참조)
     [Header("BGM")]
     [SerializeField] private AudioSource bgmSource;
     [SerializeField] private AudioClip titleBGM;
-    [SerializeField] private AudioClip seaBGM;
+    [SerializeField] private AudioClip oceanBGM;
     [SerializeField] private AudioClip landBGM;
 
     [Header("SFX")]
     [SerializeField] private AudioSource sfxSource;
     [SerializeField] private AudioClip harpoonFireSFX;
     [SerializeField] private AudioClip swimSFX;
-    [SerializeField] private AudioClip ButtonSFX;
-    [SerializeField] private AudioClip UnLockButtonSFX;
+    [SerializeField] private AudioClip buttonSFX;
+    [SerializeField] private AudioClip unlockButtonSFX;
     [SerializeField] private AudioClip waterSplashSFX;
 
     private AudioSource loopSFXSource;
+    #endregion
 
+    #region Volume Settings (볼륨 설정값)
     [Header("Default Sound")]
     [SerializeField, Range(0f, 1f)] private float defaultMasterVolume = 1f;
     [SerializeField, Range(0f, 1f)] private float defaultBgmVolume = 0.8f;
@@ -32,15 +35,21 @@ public class SoundManager : MonoBehaviour
     [SerializeField, Range(0f, 1f)] private float masterVolume = 1f;
     [SerializeField, Range(0f, 1f)] private float bgmVolume = 0.8f;
     [SerializeField, Range(0f, 1f)] private float sfxVolume = 1f;
+    #endregion
 
+    #region Save Keys (저장 키)
     private const string MASTER_VOLUME_KEY = "Sound_MasterVolume";
     private const string BGM_VOLUME_KEY = "Sound_BgmVolume";
     private const string SFX_VOLUME_KEY = "Sound_SfxVolume";
+    #endregion
 
+    #region Properties (프로퍼티)
     public float MasterVolume => masterVolume;
     public float BgmVolume => bgmVolume;
     public float SfxVolume => sfxVolume;
+    #endregion
 
+    #region Singleton & Lifecycle (싱글톤 및 생명주기)
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -70,7 +79,9 @@ public class SoundManager : MonoBehaviour
             SceneManager.sceneLoaded -= OnSceneLoaded;
         }
     }
+    #endregion
 
+    #region Initialization (초기화)
     private void InitLoopSFXSource()
     {
         if (loopSFXSource != null) return;
@@ -80,7 +91,9 @@ public class SoundManager : MonoBehaviour
         loopSFXSource.playOnAwake = false;
         loopSFXSource.spatialBlend = 0f;
     }
+    #endregion
 
+    #region Scene BGM Control (씬별 배경음 제어)
     private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
     {
         PlayBGMByScene(scene.name);
@@ -118,7 +131,7 @@ public class SoundManager : MonoBehaviour
                 break;
 
             case BGMType.Ocean:
-                nextClip = seaBGM;
+                nextClip = oceanBGM;
                 break;
 
             case BGMType.Land:
@@ -142,7 +155,9 @@ public class SoundManager : MonoBehaviour
         if (bgmSource == null) return;
         bgmSource.Stop();
     }
+    #endregion
 
+    #region SFX Playback (효과음 재생)
     public void PlaySFX(AudioClip clip, float volumeScale = 1f)
     {
         if (clip == null || sfxSource == null) return;
@@ -157,12 +172,12 @@ public class SoundManager : MonoBehaviour
 
     public void PlayButtonSFX()
     {
-        PlaySFX(ButtonSFX);
+        PlaySFX(buttonSFX);
     }
 
     public void PlayUnlockButtonSFX()
     {
-        PlaySFX(UnLockButtonSFX);
+        PlaySFX(unlockButtonSFX);
     }
 
     public void PlayWaterSplashSFX()
@@ -191,7 +206,9 @@ public class SoundManager : MonoBehaviour
             loopSFXSource.Stop();
         }
     }
+    #endregion
 
+    #region Volume Control (볼륨 제어)
     public void SetMasterVolume(float value)
     {
         masterVolume = Mathf.Clamp01(value);
@@ -235,7 +252,9 @@ public class SoundManager : MonoBehaviour
             loopSFXSource.volume = masterVolume * sfxVolume;
         }
     }
+    #endregion
 
+    #region Volume Save & Load (볼륨 저장 및 불러오기)
     public void SaveVolumeSettings()
     {
         PlayerPrefs.SetFloat(MASTER_VOLUME_KEY, masterVolume);
@@ -250,4 +269,5 @@ public class SoundManager : MonoBehaviour
         bgmVolume = PlayerPrefs.GetFloat(BGM_VOLUME_KEY, defaultBgmVolume);
         sfxVolume = PlayerPrefs.GetFloat(SFX_VOLUME_KEY, defaultSfxVolume);
     }
+    #endregion
 }

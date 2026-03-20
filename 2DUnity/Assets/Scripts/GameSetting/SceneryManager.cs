@@ -6,92 +6,144 @@ using UnityEngine.UI;
 public class SceneryManager : MonoBehaviour
 {
     public static SceneryManager Instance;
-    [SerializeField] GameObject screen;
-    [SerializeField] Slider progress;
 
-    private Coroutine transitionRoutine;
+    #region UI References (UI 참조)
+    [SerializeField] private GameObject loadingScreen;
+    [SerializeField] private Slider loadingProgressBar;
+    #endregion
+
+    #region State (상태)
+    private Coroutine sceneTransitionRoutine;
     private bool isLoading;
+    #endregion
 
+    #region Singleton & Lifecycle (싱글톤 및 생명주기)
     private void Awake()
     {
-        // 싱글톤 처리
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // 시작 시에는 무조건 비활성화
-        if (screen != null)
-            screen.SetActive(false);
+        HideLoadingScreen();
     }
+    #endregion
 
+    #region Scene Transition (씬 전환)
     public void LoadScene(string sceneName)
     {
-        if (isLoading) return;
+        if (isLoading)
+            return;
 
-        if (transitionRoutine != null)
-        {
-            StopCoroutine(transitionRoutine);
-
-        }
-
-        transitionRoutine = StartCoroutine(TransitionScene(sceneName));
+        StopSceneTransitionRoutineIfRunning();
+        sceneTransitionRoutine = StartCoroutine(LoadSceneRoutine(sceneName));
     }
 
-    // SceneryManager.cs 내부
-
-    public IEnumerator TransitionScene(string sceneName)
+    private IEnumerator LoadSceneRoutine(string sceneName)
     {
         isLoading = true;
 
-        var landUI = FindFirstObjectByType<LandUIManager>();
-        if (landUI != null)
-            landUI.SetButtonUIActive(false);
+        DisableLandButtonsIfNeeded();
+        ResetLoadingProgress();
+        ShowLoadingScreen();
 
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName);
+        loadOperation.allowSceneActivation = false;
 
-        if (progress != null) progress.value = 0f;
-
-        if (screen != null) screen.SetActive(true);
-
-        AsyncOperation asyncOperation = SceneManager.LoadSceneAsync(sceneName);
-        asyncOperation.allowSceneActivation = false;
-
-        while (!asyncOperation.isDone)
+        while (!loadOperation.isDone)
         {
-            if (asyncOperation.progress >= 0.9f)
+            UpdateLoadingProgress(loadOperation);
+
+            if (IsSceneReadyToActivate(loadOperation))
             {
-                progress.value = Mathf.Lerp(progress.value, 1.0f, Time.deltaTime);
+                loadOperation.allowSceneActivation = true;
+                yield return null;
 
-                if (progress.value >= 0.99f)
-                {
-                    asyncOperation.allowSceneActivation = true;
-
-                    yield return null;
-
-                    if (screen != null) screen.SetActive(false);
-
-                    if (sceneName == "Land" && landUI != null)
-                    {
-                        landUI.SetButtonUIActive(true);
-                    }
-
-
-                    break;
-                }
-            }
-            else
-            {
-                progress.value = asyncOperation.progress;
+                HideLoadingScreen();
+                break;
             }
 
             yield return null;
         }
 
         isLoading = false;
-        transitionRoutine = null;
+        sceneTransitionRoutine = null;
+    }
+    #endregion
+
+    #region Scene Transition Helpers (씬 전환 보조)
+    private void StopSceneTransitionRoutineIfRunning()
+    {
+        if (sceneTransitionRoutine == null)
+            return;
+
+        StopCoroutine(sceneTransitionRoutine);
+        sceneTransitionRoutine = null;
     }
 
+    private void DisableLandButtonsIfNeeded()
+    {
+        var landUIManager = FindFirstObjectByType<LandUIManager>();
+        if (landUIManager != null)
+        {
+            landUIManager.SetButtonUIActive(false);
+        }
+    }
+
+    private void ResetLoadingProgress()
+    {
+        if (loadingProgressBar != null)
+        {
+            loadingProgressBar.value = 0f;
+        }
+    }
+
+    private void UpdateLoadingProgress(AsyncOperation loadOperation)
+    {
+        if (loadingProgressBar == null)
+            return;
+
+        if (loadOperation.progress >= 0.9f)
+        {
+            loadingProgressBar.value = Mathf.Lerp(loadingProgressBar.value, 1.0f, Time.deltaTime);
+        }
+        else
+        {
+            loadingProgressBar.value = loadOperation.progress;
+        }
+    }
+
+    private bool IsSceneReadyToActivate(AsyncOperation loadOperation)
+    {
+        if (loadOperation.progress < 0.9f)
+            return false;
+
+        if (loadingProgressBar == null)
+            return true;
+
+        return loadingProgressBar.value >= 0.99f;
+    }
+    #endregion
+
+    #region Loading Screen Control (로딩 화면 제어)
+    private void ShowLoadingScreen()
+    {
+        if (loadingScreen != null)
+        {
+            loadingScreen.SetActive(true);
+        }
+    }
+
+    private void HideLoadingScreen()
+    {
+        if (loadingScreen != null)
+        {
+            loadingScreen.SetActive(false);
+        }
+    }
+    #endregion
 }

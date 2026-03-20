@@ -18,7 +18,7 @@ public class OxygenManager : MonoBehaviour, UIClosable
 
     private void OnDisable()
     {
-        SceneFlowManager.Instance?.UnRegister(this);
+        SceneFlowManager.Instance?.Unregister(this);
     }
     void Start()
     {

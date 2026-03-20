@@ -58,7 +58,7 @@ public class InventoryUI : MonoBehaviour, UIClosable
 
     private void OnDisable()
     {
-        SceneFlowManager.Instance?.UnRegister(this);
+        SceneFlowManager.Instance?.Unregister(this);
 
         if (FishInventoryService.Instance != null)
             FishInventoryService.Instance.OnInventoryChanged -= RefreshUI; // 이벤트 해제
