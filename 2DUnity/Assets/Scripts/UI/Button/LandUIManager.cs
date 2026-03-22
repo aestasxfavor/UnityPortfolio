@@ -55,7 +55,7 @@ public class LandUIManager : MonoBehaviour
 
     private void OnDisable()
     {
-        ctrls.Enable();
+        ctrls.Disable();
         ctrls.Player.Cancel.performed -= OnCancelPerformed;
     }
     private void Start()

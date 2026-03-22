@@ -64,6 +64,7 @@ public class PlayerAim : MonoBehaviour
         ctrls.Player.Hold.canceled += OnRelease;
         ctrls.Player.SwitchHarpoon.performed += OnSwitchHarpoon;
         ctrls.Player.Fire.performed += OnFire;
+        
     }
 
     private void OnDisable()

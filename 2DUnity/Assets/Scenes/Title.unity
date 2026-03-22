@@ -844,9 +844,29 @@ PrefabInstance:
       value: 0.25
       objectReference: {fileID: 0}
     - target: {fileID: 4558050739207605059, guid: 738f930a97405fd46b5d7ec17351a072, type: 3}
+      propertyPath: landBGM
+      value: 
+      objectReference: {fileID: 8300000, guid: 0d42a8ecea593eb40af5b62882092603, type: 3}
+    - target: {fileID: 4558050739207605059, guid: 738f930a97405fd46b5d7ec17351a072, type: 3}
+      propertyPath: oceanBGM
+      value: 
+      objectReference: {fileID: 8300000, guid: 17d5cdb8a6415234984681fefa5e8b16, type: 3}
+    - target: {fileID: 4558050739207605059, guid: 738f930a97405fd46b5d7ec17351a072, type: 3}
+      propertyPath: titleBGM
+      value: 
+      objectReference: {fileID: 8300000, guid: 6ac42adedac3f1c4a93b60b86362e3b1, type: 3}
+    - target: {fileID: 4558050739207605059, guid: 738f930a97405fd46b5d7ec17351a072, type: 3}
+      propertyPath: buttonSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: 2b94b95a9712d9b48a54df03f2215e48, type: 3}
+    - target: {fileID: 4558050739207605059, guid: 738f930a97405fd46b5d7ec17351a072, type: 3}
       propertyPath: waterSplashSFX
       value: 
       objectReference: {fileID: 8300000, guid: 88cc41f9ac637c844b9d6f513e8c2321, type: 3}
+    - target: {fileID: 4558050739207605059, guid: 738f930a97405fd46b5d7ec17351a072, type: 3}
+      propertyPath: unlockButtonSFX
+      value: 
+      objectReference: {fileID: 8300000, guid: dddd7d0d8f7825148b994903121e748b, type: 3}
     - target: {fileID: 6834448682621671743, guid: 738f930a97405fd46b5d7ec17351a072, type: 3}
       propertyPath: m_Volume
       value: 0.3
