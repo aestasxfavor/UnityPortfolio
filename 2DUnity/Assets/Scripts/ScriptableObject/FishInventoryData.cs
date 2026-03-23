@@ -2,13 +2,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "FishInventoryData", menuName = "Game/Fish Inventory Data")]
-public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정
+public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정 => 분리해도되나? 
 {
     [System.Serializable]
     public class FishSlot
     {
         public FishType fishType;
-        //public Sprite fishIcon;
         public int count;
     }
 
@@ -31,7 +30,7 @@ public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정
 
         caughtFishList.Add(new FishSlot  { fishType = type, count = 1 });
 
-        // Debug.Log($"FishInventoryData: {type} ");
+        
         SaveManager.Instance.RequestSave();
     }
 
@@ -48,11 +47,10 @@ public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정
     /// <summary>
     /// 바다 → 육지 전송용 (공유 인벤토리 ↔ 보관함)
     /// </summary>
-    public void TransferTo(FishInventoryData targetInventory)
+    public void TransferTo(FishInventoryData otherInventory)
     {
-        if (targetInventory == null)
+        if (otherInventory == null)
         {
-           // Debug.LogWarning("[FishInventoryData] TransferTo 실패 - targetInventory 없음");
             return;
         }
 
@@ -60,29 +58,28 @@ public class FishInventoryData : ScriptableObject // 일반 c# 클래스로 분리 예정
         {
             if (fish == null) continue;
 
-            FishSlot exist = null;
+            FishSlot sameSlot = null;
 
-            for (int i = 0; i < targetInventory.caughtFishList.Count; i++)
+            for (int i = 0; i < otherInventory.caughtFishList.Count; i++)
             {
-                var t = targetInventory.caughtFishList[i];
-                if(t != null && t.fishType == fish.fishType)
+                var slot = otherInventory.caughtFishList[i];
+                if(slot != null && slot.fishType == fish.fishType)
                 {
-                    exist = t;
+                    sameSlot = slot;
                     break;
                 }
             }
 
-            if (exist != null)
+            if (sameSlot != null)
             {
-                exist.count += fish.count;
+                sameSlot.count += fish.count;
             }
             else
             {
-                targetInventory.caughtFishList.Add(new FishSlot { fishType = fish.fishType, count = fish.count });
+                otherInventory.caughtFishList.Add(new FishSlot { fishType = fish.fishType, count = fish.count });
             }
         }
 
-       // Debug.Log($"[FishInventoryData] {targetInventory.name}으로 {movedCount}종 이동 완료");
         Clear(); // 이동 후 초기화
     }
 

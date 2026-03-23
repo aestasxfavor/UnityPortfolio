@@ -15,7 +15,7 @@ public class CodexService : MonoBehaviour
         Debug.Log("[CodexService] Init CALLED");
         codexSaveData = saveData ?? new CodexSaveData();
 
-        if(codexSaveData.codexFishID == null)
+        if (codexSaveData.codexFishID == null)
         {
             codexSaveData.codexFishID = new List<string>();
         }
@@ -64,20 +64,20 @@ public class CodexService : MonoBehaviour
     //{
     //    //Debug.Log($"[CodexService] RegisterFish CALLED : {type}, initialized={IsInitialized}");
 
-    //    // 1. 이미 등록됐는지 체크
+    //   
     //    if(discoveredFish.Contains(type))
     //    {
     //        Debug.Log($"[CodexService] 이미 등록된 어종:{type}");
     //        return;
     //    }
     //    if (!IsInitialized) return;
-    //    // 2. 새로 발견이면 상태 추가
+    //    
     //    if (!discoveredFish.Add(type)) return;
 
-    //    // 3. CodexSaveData에 반영
+    //    
     //    codexSaveData.codexFishID.Add(type.ToString());
 
-    //    // 4. SaveManager에게 “저장 요청”만 보내기
+    //   
     //    SaveManager.Instance.RequestSave();
     //}
 
@@ -85,17 +85,20 @@ public class CodexService : MonoBehaviour
     {
         if (!IsInitialized) return;
 
+        // 1. 이미 등록됐는지 체크
         if (discoveredFish.Contains(type))
         {
             Debug.Log("이미 등록된 어종");
             return;
         }
 
+        // 2. 새로 발견이면 상태 추가
         if (!discoveredFish.Add(type)) return;
 
+        // 3. CodexSaveData에 반영
         codexSaveData.codexFishID.Add(type.ToString());
         codexSaveData.hasUnViewedNewFish = true;
-
+        // 4. SaveManager에 저장
         SaveManager.Instance.SaveCodex();
 
         Debug.Log($"[CodexService] 신규 어종 등록: {type}, hasUnViewNewFish ={codexSaveData.hasUnViewedNewFish}");
@@ -103,8 +106,9 @@ public class CodexService : MonoBehaviour
 
     public List<CodexViewData> GetCodexViewList()
     {
-        var list = new List<CodexViewData>();
-        if(!IsInitialized) return list;
+        var codexViewList = new List<CodexViewData>();
+
+        if (!IsInitialized) return codexViewList;
 
         int index = 1;
 
@@ -113,14 +117,17 @@ public class CodexService : MonoBehaviour
             bool discovered = IsDiscovered(type);
 
             Sprite icon = null;
-            if (discovered)
-                icon = FishInventoryService.Instance.GetFishSprite(type);
 
-            list.Add(new CodexViewData(type, icon, discovered, index));
+            if (discovered)
+            {
+                icon = FishInventoryService.Instance.GetFishSprite(type);
+            }
+
+            codexViewList.Add(new CodexViewData(type, icon, discovered, index));
             index++;
         }
 
-        return list;
+        return codexViewList;
     }
 
 }

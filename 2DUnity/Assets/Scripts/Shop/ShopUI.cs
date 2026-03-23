@@ -160,7 +160,7 @@ public class ShopUI : MonoBehaviour
         amountText.text = $"{gained:N0}°³";
 
         UpdateCoinUI();
-      
+
     }
 
     public void UpdateCoinUI()

@@ -129,8 +129,8 @@ public class InventoryUI : MonoBehaviour, UIClosable
             return;
         }
 
-        foreach (var s in quickbarSlots) s.Clear();
-        foreach (var s in inventorySlots) s.Clear();
+        foreach (var quickSlot in quickbarSlots) quickSlot.Clear();
+        foreach (var inventorySlot in inventorySlots) inventorySlot.Clear();
 
         int index = 0;
 
@@ -150,10 +150,10 @@ public class InventoryUI : MonoBehaviour, UIClosable
             }
             else
             {
-                int invenIdx = index - quickbarSlots.Count;
-                if (invenIdx >= inventorySlots.Count) break;
+                int inventoryIndex = index - quickbarSlots.Count;
+                if (inventoryIndex >= inventorySlots.Count) break;
 
-                inventorySlots[invenIdx].SetItem(icon, fish.fishType, fish.count);
+                inventorySlots[inventoryIndex].SetItem(icon, fish.fishType, fish.count);
             }
 
             index++;

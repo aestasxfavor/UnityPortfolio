@@ -64,12 +64,13 @@ public sealed class MailboxUI : MonoBehaviour
         firstMailTitleText.text = mail.unlocked
             ? mail.listTitle : "새 편지가 없습니다";
 
-        // Todo: NewBage는 상점까지 싹 다하고 디테일 작업때 할 예정
+
         if (newBadge != null)
+        {
             newBadge.SetActive(mail.unlocked && !mail.isRead);
+        }
 
-
-        if(!mail.unlocked)
+        if (!mail.unlocked)
         {
             HideViewer();
         }
@@ -77,15 +78,17 @@ public sealed class MailboxUI : MonoBehaviour
 
     private void OnClickFirstMail()
     {
-        if(mailboxService == null) return;
+        if (mailboxService == null) return;
+
         if (!mailboxService.IsMailUnlocked(null)) return;
 
-        if(isMailSelected)
+        if (isMailSelected)
         {
             isMailSelected = false;
             HideViewer();
             return;
         }
+
         isMailSelected = true;
 
         mailboxService.SelectMail(null);
@@ -102,20 +105,24 @@ public sealed class MailboxUI : MonoBehaviour
         var mail = mailboxService.GetFirstMailViewData();
 
         if (viewerTitleText != null)
+        {
             viewerTitleText.text = mail.title;
+        }
 
         if (viewerBodyText != null)
+        {
             viewerBodyText.text = mail.body;
+        }
     }
 
     private void HideViewer()
     {
-        if(viewerTitleText !=null)
+        if (viewerTitleText != null)
         {
             viewerTitleText.text = "";
         }
 
-        if(viewerBodyText != null)
+        if (viewerBodyText != null)
         {
             viewerBodyText.text = "";
         }

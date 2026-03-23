@@ -50,13 +50,13 @@ public class FishInventoryService : MonoBehaviour
 
     public void AddFish(FishType fishType)
     {
-        var data = Data;
-        if (data == null)
+        var storageData = Data;
+        if (storageData == null)
         {
             return;
         }
 
-        data.AddFish(fishType);
+        storageData.AddFish(fishType);
 
         codexService?.RegisterFish(fishType);
 
@@ -83,30 +83,29 @@ public class FishInventoryService : MonoBehaviour
         var loader = FishDataLoader.Instance;
         if (loader == null) return null;
 
-        var info = loader.GetFishInfo(fishType);
-        if (info == null) return null;
+        var fishInfo = loader.GetFishInfo(fishType);
+        if (fishInfo == null) return null;
 
-        if (string.IsNullOrEmpty(info.worldSpritePath))
+        if (string.IsNullOrEmpty(fishInfo.worldSpritePath))
             return null;
 
-        var sprites = Resources.LoadAll<Sprite>(info.worldSpritePath);
+        var sprites = Resources.LoadAll<Sprite>(fishInfo.worldSpritePath);
         if (sprites == null || sprites.Length == 0)
-        {
-            // Debug.LogError($"[FishInventoryService] LoadAll<Sprite> fail path={info.worldSpritePath} (fishType={fishType})");
+        { 
             return null;
         }
 
         // JSON에 iconSpriteName이 있으면 그걸로 고정 매핑
-        if (!string.IsNullOrEmpty(info.iconSpriteName))
+        if (!string.IsNullOrEmpty(fishInfo.iconSpriteName))
         {
             for (int i = 0; i < sprites.Length; i++)
             {
-                var s = sprites[i];
-                if (s != null && s.name == info.iconSpriteName)
-                    return s;
+                var sprite = sprites[i];
+                if (sprite != null && sprite.name == fishInfo.iconSpriteName)
+                    return sprite;
             }
 
-            // Debug.LogError($"[FishInventoryService] target sprite not found: {info.iconSpriteName} / path={info.worldSpritePath}");
+            // Debug.LogError($"[FishInventoryService] target sprite not found: {fishInfo.iconSpriteName} / path={fishInfo.worldSpritePath}");
             return null;
         }
 
@@ -121,15 +120,19 @@ public class FishInventoryService : MonoBehaviour
         OnInventoryChanged?.Invoke();
     }
 
-    // IReadOnlyList 이게 머여 
+    /// <summary>
+    /// IReadOnlyList: 읽기 전용 리스트 인터페이스 
+    /// 물고기 목록을 보여주기 위한 데이터를 넘기기 위해 사용
+    /// </summary>
+    /// <returns></returns>
     public IReadOnlyList<FishViewData> GetFishViewList()
     {
-        var data = Data;
-        if (data == null) return null;
+        var inventoryData = Data;
+        if (inventoryData == null) return null;
 
         var result = new List<FishViewData>();
 
-        foreach (var slot in data.caughtFishList)
+        foreach (var slot in inventoryData.caughtFishList)
         {
             if (slot == null) continue;
 
@@ -142,6 +145,8 @@ public class FishInventoryService : MonoBehaviour
     #region 물고기 코인 교환 로직
     public int CalculateTotalCoin()  // 물고기 계산함수
     {
+        var inventoryData = Data;
+        if (inventoryData == null) return 0;
         int total = 0;
         foreach (var fish in inventoryData.caughtFishList)
         {

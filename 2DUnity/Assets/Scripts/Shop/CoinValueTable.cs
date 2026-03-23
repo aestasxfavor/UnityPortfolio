@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
 public class CoinValueTable
@@ -18,12 +17,13 @@ public class CoinValueTable
             return;
         }
 
-        var lines = csv.text.Split('\n');
+        string[] lines = csv.text.Split('\n');
         for (int i = 0; i < lines.Length; i++)
         {
             if (string.IsNullOrWhiteSpace(lines[i])) continue;
 
-            var cols = lines[i].Split(',');
+            string[] cols = lines[i].Split(',');
+
             if (!System.Enum.TryParse(cols[0], out FishType fishType))
             {
                 continue;

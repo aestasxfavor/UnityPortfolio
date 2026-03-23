@@ -33,7 +33,7 @@ public class StorageUI : MonoBehaviour
 
     private void OnEnable()
     {
-        if(FishInventoryService.Instance != null)
+        if (FishInventoryService.Instance != null)
         {
             FishInventoryService.Instance.OnInventoryChanged += OnInventoryChanged;
         }
@@ -41,7 +41,7 @@ public class StorageUI : MonoBehaviour
 
     private void OnDisable()
     {
-        if(FishInventoryService.Instance != null)
+        if (FishInventoryService.Instance != null)
         {
             FishInventoryService.Instance.OnInventoryChanged -= OnInventoryChanged;
         }
@@ -49,7 +49,7 @@ public class StorageUI : MonoBehaviour
 
     private void OnInventoryChanged()
     {
-        if(inventoryPanelRoot != null && inventoryPanelRoot.activeSelf)
+        if (inventoryPanelRoot != null && inventoryPanelRoot.activeSelf)
         {
             LoadFishData();
         }
@@ -71,7 +71,7 @@ public class StorageUI : MonoBehaviour
         }
         if (inventoryParent == null || slotPrefab == null)
         {
-           // Debug.LogError("[StorageUI] 슬롯 생성 실패 (부모나 프리팹이 비어 있음)");
+            // Debug.LogError("[StorageUI] 슬롯 생성 실패 (부모나 프리팹이 비어 있음)");
             return;
         }
 
@@ -85,7 +85,7 @@ public class StorageUI : MonoBehaviour
         for (int i = 0; i < storageConfig.slotFishOrder.Count && i < allSlots.Count; i++)
         {
             slotMap[storageConfig.slotFishOrder[i]] = allSlots[i];
-           // Debug.Log($"[StorageUI] {storageConfig.slotFishOrder[i]} → {i + 1}번 슬롯 매핑 완료");
+            // Debug.Log($"[StorageUI] {storageConfig.slotFishOrder[i]} → {i + 1}번 슬롯 매핑 완료");
         }
 
         Debug.Log($"[StorageUI] 총 {slotMap.Count}/{storageConfig.totalSlots} 슬롯 매핑 완료");
@@ -95,7 +95,9 @@ public class StorageUI : MonoBehaviour
     private void ClearSlots()
     {
         foreach (var slot in allSlots)
+        {
             slot.Clear();
+        }
     }
 
     // 인벤토리 데이터 로드
@@ -115,7 +117,7 @@ public class StorageUI : MonoBehaviour
             Sprite icon = service.GetFishSprite(fish.fishType);
             if (icon == null) continue;
 
-            if(slotMap.TryGetValue(fish.fishType, out UISlot slot))
+            if (slotMap.TryGetValue(fish.fishType, out UISlot slot))
             {
                 slot.SetItem(icon, fish.fishType, fish.count);
             }
@@ -125,12 +127,12 @@ public class StorageUI : MonoBehaviour
 
                 for (int i = 0; i < allSlots.Count; i++)
                 {
-                    var s = allSlots[i];
-                    if (!s.IsEmpty) continue;
+                    var currentSlot = allSlots[i];
+                    if (!currentSlot.IsEmpty) continue;
 
-                    if (slotMap.ContainsValue(s)) continue;
+                    if (slotMap.ContainsValue(currentSlot)) continue;
 
-                    emptySlot = s;
+                    emptySlot = currentSlot;
                     break;
 
                 }
@@ -143,7 +145,7 @@ public class StorageUI : MonoBehaviour
         }
 
         LayoutRebuilder.ForceRebuildLayoutImmediate(inventoryParent.GetComponent<RectTransform>());
-       // Debug.Log("[StorageUI] 보관함 UI 갱신 완료");
+        // Debug.Log("[StorageUI] 보관함 UI 갱신 완료");
     }
 
     public void Open()

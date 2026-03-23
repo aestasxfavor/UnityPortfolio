@@ -40,9 +40,9 @@ public class PopupManager : MonoBehaviour
     {
         Debug.Log("Yes Clicked");
 
-        var action = yesAction;
+        var confirmAction = yesAction;
         CloseAll();
-        action?.Invoke();
+        confirmAction?.Invoke();
     }
 
     private void BuyCheckPopup()

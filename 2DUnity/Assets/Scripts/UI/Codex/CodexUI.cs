@@ -47,26 +47,26 @@ public class CodexUI : MonoBehaviour
         }
         slots.Clear();
 
-        var list = codexService.GetCodexViewList();
-        int totalSlotList = 18;     // Todo: 리팩토링할 때 SO로 분리가능
+        var codexViewList = codexService.GetCodexViewList();
+        int totalSlotCount = 18;     // Todo: 리팩토링할 때 SO로 분리가능
 
-        for (int i = 0; i < totalSlotList; i++)
+        for (int i = 0; i < totalSlotCount; i++)
         {
             GameObject obj = Instantiate(slotPrefab, codexPannel);
             CodexUISlot slot = obj.GetComponent<CodexUISlot>();
             slots.Add(slot);
 
-            if (i < list.Count)
+            if (i < codexViewList.Count)
             {
-                var data = list[i];
+                var codexViewData = codexViewList[i];
 
-                if (data.discovered)
+                if (codexViewData.discovered)
                 {
-                    slot.SetDiscovered(data.icon, data.index);
+                    slot.SetDiscovered(codexViewData.icon, codexViewData.index);
                 }
                 else
                 {
-                    slot.SetUndiscovered(unknownIcon, data.index);
+                    slot.SetUndiscovered(unknownIcon, codexViewData.index);
                 }
             }
             else

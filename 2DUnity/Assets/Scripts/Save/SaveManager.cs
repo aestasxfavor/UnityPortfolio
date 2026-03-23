@@ -119,8 +119,7 @@ public class SaveManager : MonoBehaviour
 
         foreach (var fish in storageInventoryData.caughtFishList)
         {
-            if (fish == null)
-                continue;
+            if (fish == null) continue;
 
             saveData.caughtFishList.Add(new FishSaveSlot
             {
@@ -135,17 +134,15 @@ public class SaveManager : MonoBehaviour
 
     public void Load()
     {
-        if (storageInventoryData == null)
-            return;
+        if (storageInventoryData == null) return;
 
-        if (!File.Exists(inventorySavePath))
-            return;
+
+        if (!File.Exists(inventorySavePath)) return;
 
         string json = File.ReadAllText(inventorySavePath);
         SaveData loadedData = JsonUtility.FromJson<SaveData>(json);
 
-        if (loadedData == null)
-            return;
+        if (loadedData == null) return;
 
         hasHarpoonUpgrade = loadedData.hasHarpoonUpgrade;
 
@@ -167,7 +164,10 @@ public class SaveManager : MonoBehaviour
     public void SaveMailbox()
     {
         if (mailboxSaveData == null)
+        {
             mailboxSaveData = new MailboxSaveData();
+
+        }
 
         string json = JsonUtility.ToJson(mailboxSaveData, true);
         File.WriteAllText(mailboxSavePath, json);
