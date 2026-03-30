@@ -990,7 +990,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   button: {fileID: 2934874523083912724}
-  sceneryManager: {fileID: 0}
 --- !u!114 &2590754923183688000
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2165,7 +2164,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC218\uC9D1\uAE30\uB85D \n"
+  m_text: "\uC218\uC9D1\uB3C4\uAC10\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 79d51d93763574046a71bad839bfd515, type: 2}
   m_sharedMaterial: {fileID: -3962539967523010996, guid: 79d51d93763574046a71bad839bfd515, type: 2}
