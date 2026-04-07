@@ -5,7 +5,7 @@ public class JumpController : MonoBehaviour
     [SerializeField] private float jumpPower = 6f;
     [SerializeField] private float gravityScale = 1f;
     [SerializeField] private float maxFallSpeed = 20f;
-    [SerializeField] private float groundY = -2f;
+    [SerializeField] private float groundY = -0.5f;
 
     public float VerticalVelocity { get; private set; }
 
@@ -35,6 +35,7 @@ public class JumpController : MonoBehaviour
     // 착지 후 수직값 정리 로직
     public void ResetVertical(bool isGrounded)
     {
+       
         if (isGrounded && VerticalVelocity < 0f)
         {
             VerticalVelocity = groundY;

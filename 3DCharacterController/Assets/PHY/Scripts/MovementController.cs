@@ -29,21 +29,19 @@ public class MovementController : MonoBehaviour
         return moveDirection.normalized;
     }
 
-    public void Move(Transform target, Vector3 moveDirection)
+    public void Move(Rigidbody rb, Vector3 moveDirection)
     {
-        target.position += moveDirection * speed * Time.deltaTime;
+        //target.position += moveDirection * speed * Time.deltaTime; => 기존 코드
+        Vector3 velocity = moveDirection * speed;
+        velocity.y = rb.linearVelocity.y;
+        rb.linearVelocity = velocity;
     }
 
     public void Rotate(Transform target, Vector3 moveDirection)
     {
-        if (moveDirection.sqrMagnitude < 0.01f)
-            return;
+        if (moveDirection.sqrMagnitude < 0.01f) return;
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        target.rotation = Quaternion.Slerp(
-            target.rotation,
-            targetRotation,
-            rotationSpeed * Time.deltaTime
-        );
+        target.rotation = Quaternion.Slerp(target.rotation, targetRotation, rotationSpeed * Time.deltaTime);
     }
 }

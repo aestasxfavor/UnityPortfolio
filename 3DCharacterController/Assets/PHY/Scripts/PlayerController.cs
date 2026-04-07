@@ -39,7 +39,11 @@ public class PlayerController : MonoBehaviour
         ProcessMovement();
         ProcessJump();
 
-        jumpController.UpdateVertical(groundDetector.IsGrounded, Time.deltaTime);
+        jumpController.UpdateVertical(groundDetector.IsGrounded, Time.fixedDeltaTime);
+
+        Vector3 velocity = rb.linearVelocity;
+        velocity.y = jumpController.VerticalVelocity;
+        rb.linearVelocity = velocity;
 
         if (showDebugLog)
         {
@@ -51,7 +55,7 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement,cameraTransform);
 
-        movementController.Move(transform, moveDirection);
+        movementController.Move(rb, moveDirection);
         movementController.Rotate(transform, moveDirection);
     }
 
