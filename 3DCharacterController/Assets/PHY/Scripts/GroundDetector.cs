@@ -2,14 +2,19 @@ using UnityEngine;
 
 public class GroundDetector : MonoBehaviour
 {
+    [Header("Ground Check")]
     [SerializeField] private Transform groundCheckPoint;
-    [SerializeField] private float groundCheckDistance = 1.0f;
     [SerializeField] private LayerMask groundLayer;
-    [SerializeField] private float slopeLimit = 45f;
+    [SerializeField] private float groundCheckDistance = 1.0f;
 
-    public bool IsGrounded { get; private set; }
+    [Header("Slope Setting")]
+    [SerializeField] private float maxSlopeAngle = 45f;
+
     public Vector3 GroundNormal { get; private set; } = Vector3.up;
     public float SlopeAngle { get; private set; }
+    public bool IsGrounded { get; private set; }
+
+    public bool IsWalkableSlope { get; private set; }
 
     // Raycast 기반 지면 체크 로직
     public void GroundCheck()
@@ -19,43 +24,45 @@ public class GroundDetector : MonoBehaviour
             IsGrounded = false;
             GroundNormal = Vector3.up;
             SlopeAngle = 0f;
+            IsWalkableSlope = false;
             Debug.LogWarning("GroundCheckPoint is null");
             return;
         }
 
         Vector3 origin = groundCheckPoint.position;
-        float distance = groundCheckDistance;
+        Vector3 direction = Vector3.down;
 
-        Debug.DrawRay(origin, Vector3.down * distance, Color.red);
+        Debug.DrawRay(origin, direction * groundCheckDistance, Color.red);
 
         bool isHit = Physics.Raycast(
             origin,
-            Vector3.down,
+            direction,
             out RaycastHit hit,
-            distance,
+            groundCheckDistance,
             groundLayer,
             QueryTriggerInteraction.Ignore
         );
 
+        IsGrounded = isHit;
+
         if (isHit)
         {
             GroundNormal = hit.normal;
-            SlopeAngle = Vector3.Angle(hit.normal, Vector3.up);
-            IsGrounded = SlopeAngle <= slopeLimit;
+            SlopeAngle = Vector3.Angle(Vector3.up, hit.normal);
+            IsWalkableSlope = SlopeAngle <= maxSlopeAngle;
 
-            //Debug.Log(
-            //    $"HIT | obj:{hit.collider.name} | layer:{LayerMask.LayerToName(hit.collider.gameObject.layer)} | hitDist:{hit.distance:F3} | origin:{origin} | end:{origin + Vector3.down * distance}"
-            //);
+            Debug.DrawRay(hit.point, GroundNormal * 0.7f, Color.blue);
+            //Debug.Log($"Grounded: {IsGrounded}, SlopeAngle: {SlopeAngle}, Walkable: {IsWalkableSlope}");
+            //Debug.Log($"Slope Angle: {SlopeAngle}");
+            //Debug.Log($"Ground Normal: {GroundNormal}");
+            //IsGrounded = SlopeAngle <= maxSlopeAngle;
         }
         else
         {
-            IsGrounded = false;
+            //IsGrounded = false;
             GroundNormal = Vector3.up;
             SlopeAngle = 0f;
-
-            //Debug.Log(
-            //    $"NO HIT | origin:{origin} | end:{origin + Vector3.down * distance} | checkDist:{distance} | groundLayerValue:{groundLayer.value}"
-            //);
+            IsWalkableSlope = false;
         }
     }
 
