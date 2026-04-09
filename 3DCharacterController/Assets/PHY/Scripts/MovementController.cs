@@ -5,21 +5,22 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float rotationSpeed = 10f;
 
+    // 카메라 기준 방향 이동 계산 로직
     public Vector3 GetMoveDirection(Vector2 movement, Transform cameraTransform)
     {
         if (movement.sqrMagnitude < 0.01f) return Vector3.zero;
 
-
+        // 카메라 없으면 입력값 기준 기본 방향 사용
         if (cameraTransform == null)
         {
             Vector3 fallbackDirection = new Vector3(movement.x, 0f, movement.y).normalized;
-            //Debug.Log($"Camera 없음 | Input: {movement} | MoveDirection: {fallbackDirection}");
             return fallbackDirection;
         }
 
         Vector3 cameraForward = cameraTransform.forward;
         Vector3 cameraRight = cameraTransform.right;
 
+        // 수평 이동만 반영하기 위한 y축 제거 로직
         cameraForward.y = 0f;
         cameraRight.y = 0f;
 
@@ -28,16 +29,19 @@ public class MovementController : MonoBehaviour
 
         Vector3 moveDirection = cameraForward * movement.y + cameraRight * movement.x;
         moveDirection = moveDirection.normalized;
-        //Debug.Log($"Input: {movement} | MoveDirection: {moveDirection}");
 
         return moveDirection;
     }
 
+    // Rigidbody에 수평 이동만 적용하는 로직
     public void Move(Rigidbody rb, Vector3 moveDirection)
     {
-        //target.position += moveDirection * moveSpeed * Time.deltaTime; => 기존 코드
-        Vector3 velocity = moveDirection * moveSpeed;
-        velocity.y = rb.linearVelocity.y;
+        Vector3 velocity = rb.linearVelocity;
+        Vector3 horizonVelocity = moveDirection * moveSpeed;
+
+        velocity.x = horizonVelocity.x;
+        velocity.z = horizonVelocity.z;
+
         rb.linearVelocity = velocity;
     }
 
@@ -47,9 +51,11 @@ public class MovementController : MonoBehaviour
     /// </summary>
     /// <param name="target"></param>
     /// <param name="moveDirection"></param>
+
+    // 이동 방향 기준 회전 로직
     public void Rotate(Transform target, Vector3 moveDirection)
     {
-        if (moveDirection.sqrMagnitude < 0.01f) return;
+        if (moveDirection.sqrMagnitude < 0.1f) return;
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
         target.rotation = Quaternion.Slerp(target.rotation, targetRotation, rotationSpeed * Time.deltaTime);

@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField] private bool showDebugLog = true;
 
+    // 인스펙터 자동 참조
     private void Reset()
     {
         rb = GetComponent<Rigidbody>();
@@ -21,6 +22,7 @@ public class PlayerController : MonoBehaviour
         groundDetector = GetComponent<GroundDetector>();
     }
 
+    // 필수 컴포넌트 참조 보정
     private void Awake()
     {
         if (rb == null) rb = GetComponent<Rigidbody>();
@@ -51,6 +53,7 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    // 이동 입력 처리 로직
     private void ProcessMovement()
     {
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement,cameraTransform);
@@ -59,6 +62,7 @@ public class PlayerController : MonoBehaviour
         movementController.Rotate(transform, moveDirection);
     }
 
+    // 점프 입력 처리 로직
     private void ProcessJump()
     {
         if (!inputHandler.JumpPressed) return;
@@ -67,6 +71,7 @@ public class PlayerController : MonoBehaviour
         inputHandler.ResetJumpInput();
     }
 
+    // 필수 참조 확인
     private bool CanRun()
     {
         return rb != null 

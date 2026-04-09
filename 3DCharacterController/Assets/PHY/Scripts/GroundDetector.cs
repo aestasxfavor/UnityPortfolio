@@ -13,7 +13,6 @@ public class GroundDetector : MonoBehaviour
     public Vector3 GroundNormal { get; private set; } = Vector3.up;
     public float SlopeAngle { get; private set; }
     public bool IsGrounded { get; private set; }
-
     public bool IsWalkableSlope { get; private set; }
 
     // Raycast 기반 지면 체크 로직
@@ -52,14 +51,9 @@ public class GroundDetector : MonoBehaviour
             IsWalkableSlope = SlopeAngle <= maxSlopeAngle;
 
             Debug.DrawRay(hit.point, GroundNormal * 0.7f, Color.blue);
-            //Debug.Log($"Grounded: {IsGrounded}, SlopeAngle: {SlopeAngle}, Walkable: {IsWalkableSlope}");
-            //Debug.Log($"Slope Angle: {SlopeAngle}");
-            //Debug.Log($"Ground Normal: {GroundNormal}");
-            //IsGrounded = SlopeAngle <= maxSlopeAngle;
         }
         else
         {
-            //IsGrounded = false;
             GroundNormal = Vector3.up;
             SlopeAngle = 0f;
             IsWalkableSlope = false;
