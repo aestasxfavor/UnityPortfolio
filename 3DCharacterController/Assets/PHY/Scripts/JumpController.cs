@@ -3,14 +3,14 @@ using UnityEngine;
 public class JumpController : MonoBehaviour
 {
     [SerializeField] private float jumpPower = 6f;
-    [SerializeField] private float gravityScale = 1f;
+    [SerializeField] private float gravityScale = 2.5f;
     [SerializeField] private float maxFallSpeed = 20f;
-    [SerializeField] private float groundY = -0.5f;
+    [SerializeField] private float groundStickVelocity = -0.5f;
 
     public float VerticalVelocity { get; private set; }
 
     // 점프 처리 로직
-    public void Jump(bool isGrounded)
+    public void TryJump(bool isGrounded)
     {
         if (!isGrounded) return;
 
@@ -33,18 +33,18 @@ public class JumpController : MonoBehaviour
     }
 
     // 착지 후 수직값 정리 로직
-    public void ResetVertical(bool isGrounded)
+    public void HandleLanding(bool isGrounded)
     {
        
         if (isGrounded && VerticalVelocity < 0f)
         {
-            VerticalVelocity = groundY;
+            VerticalVelocity = groundStickVelocity;
         }
     }
 
     public void UpdateVertical(bool isGrounded, float deltaTime)
     {
-        ResetVertical(isGrounded);
+        HandleLanding(isGrounded);
 
         if (!isGrounded)
         {

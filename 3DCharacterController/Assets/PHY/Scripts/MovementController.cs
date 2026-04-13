@@ -3,7 +3,7 @@ using UnityEngine;
 public class MovementController : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField] private float rotationSpeed = 720f;
 
     // 카메라 기준 방향 이동 계산 로직
     public Vector3 GetMoveDirection(Vector2 movement, Transform cameraTransform)
@@ -53,11 +53,12 @@ public class MovementController : MonoBehaviour
     /// <param name="moveDirection"></param>
 
     // 이동 방향 기준 회전 로직
-    public void Rotate(Transform target, Vector3 moveDirection)
+    public void Rotate(Transform target, Vector3 moveDirection, float deltaTime)
     {
-        if (moveDirection.sqrMagnitude < 0.1f) return;
+        if (moveDirection.sqrMagnitude < 0.01f) return;
 
         Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        target.rotation = Quaternion.Slerp(target.rotation, targetRotation, rotationSpeed * Time.deltaTime);
+        target.rotation = Quaternion.Slerp(target.rotation, targetRotation, rotationSpeed * deltaTime);
+        //target.rotation = Quaternion.RotateTowards(target.rotation, targetRotation, rotationSpeed * deltaTime);
     }
 }

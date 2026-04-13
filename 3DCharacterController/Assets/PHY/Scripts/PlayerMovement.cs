@@ -34,6 +34,6 @@ public class PlayerMovement : MonoBehaviour
     // JumpController
     public void OnJump()
     {
-        Debug.Log("Jump");
+        Debug.Log("TryJump");
     }
 }

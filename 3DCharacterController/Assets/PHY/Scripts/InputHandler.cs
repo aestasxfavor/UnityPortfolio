@@ -17,10 +17,10 @@ public class InputHandler : MonoBehaviour
     public void OnJump()
     {
         JumpPressed = true;
-        //Debug.Log("Jump Input");
+        //Debug.Log("TryJump Input");
     }
 
-    // Jump 입력 초기화 로직
+    // TryJump 입력 초기화 로직
     public void ResetJumpInput()
     {
         JumpPressed = false;

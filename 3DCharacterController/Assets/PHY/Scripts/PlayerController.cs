@@ -47,6 +47,9 @@ public class PlayerController : MonoBehaviour
         velocity.y = jumpController.VerticalVelocity;
         rb.linearVelocity = velocity;
 
+       // Debug.Log($"VerticalVelocity : {jumpController.VerticalVelocity}");
+        Debug.Log($"Grounded : {groundDetector.IsGrounded} | VerticalVelocity : {jumpController.VerticalVelocity}");
+
         if (showDebugLog)
         {
             Debug.Log($"Move : {inputHandler.Movement} | Grounded : {groundDetector.IsGrounded}");
@@ -59,7 +62,7 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement,cameraTransform);
 
         movementController.Move(rb, moveDirection);
-        movementController.Rotate(transform, moveDirection);
+        movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
     }
 
     // 점프 입력 처리 로직
@@ -67,7 +70,7 @@ public class PlayerController : MonoBehaviour
     {
         if (!inputHandler.JumpPressed) return;
 
-        jumpController.Jump(groundDetector.IsGrounded);
+        jumpController.TryJump(groundDetector.IsGrounded);
         inputHandler.ResetJumpInput();
     }
 

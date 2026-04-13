@@ -1292,7 +1292,7 @@ Transform:
   m_GameObject: {fileID: 1106222344}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -11, y: -6.1, z: 0}
+  m_LocalPosition: {x: -11, y: -6.2, z: 0}
   m_LocalScale: {x: 4, y: 1, z: 8}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -1452,9 +1452,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   jumpPower: 6
-  gravityScale: 1
+  gravityScale: 1.8
   maxFallSpeed: 20
-  groundY: -2
+  groundStickVelocity: -0.5
 --- !u!114 &1259150251
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1468,7 +1468,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  rotationSpeed: 14
+  rotationSpeed: 15
 --- !u!114 &1259150252
 MonoBehaviour:
   m_ObjectHideFlags: 0
