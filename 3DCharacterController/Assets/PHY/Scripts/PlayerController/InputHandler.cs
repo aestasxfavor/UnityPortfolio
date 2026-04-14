@@ -10,14 +10,12 @@ public class InputHandler : MonoBehaviour
     public void OnMove(InputValue value)
     {
         Movement = value.Get<Vector2>();
-       // Debug.Log($"Move Input : {Movement}");
     }
 
     // 점프 입력 상태 저장 로직
     public void OnJump()
     {
         JumpPressed = true;
-        //Debug.Log("TryJump Input");
     }
 
     // TryJump 입력 초기화 로직

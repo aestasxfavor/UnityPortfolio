@@ -1309,6 +1309,7 @@ GameObject:
   - component: {fileID: 1259150247}
   - component: {fileID: 1259150246}
   - component: {fileID: 1259150245}
+  - component: {fileID: 1259150256}
   - component: {fileID: 1259150253}
   - component: {fileID: 1259150252}
   - component: {fileID: 1259150251}
@@ -1438,7 +1439,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   groundCheckDistance: 0.3
-  maxSlopeAngle: 45
+  maxSlopeAngle: 42
 --- !u!114 &1259150250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1468,7 +1469,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 7
-  rotationSpeed: 15
+  rotationSpeed: 1250
 --- !u!114 &1259150252
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1487,6 +1488,7 @@ MonoBehaviour:
   movementController: {fileID: 0}
   jumpController: {fileID: 0}
   groundDetector: {fileID: 0}
+  playerStateMachine: {fileID: 0}
   showDebugLog: 1
 --- !u!114 &1259150253
 MonoBehaviour:
@@ -1537,6 +1539,18 @@ MonoBehaviour:
   animator: {fileID: 1259150254}
   rb: {fileID: 1259150246}
   groundDetector: {fileID: 1259150249}
+--- !u!114 &1259150256
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1259150244}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4ce27da5709ada04e8003df7ab3959ce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1446070674
 PrefabInstance:
   m_ObjectHideFlags: 0

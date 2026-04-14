@@ -2,13 +2,18 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    [Header("Components")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private Transform cameraTransform;
 
+    [Header("Controllers")]
     [SerializeField] private InputHandler inputHandler;
     [SerializeField] private MovementController movementController;
     [SerializeField] private JumpController jumpController;
     [SerializeField] private GroundDetector groundDetector;
+
+    [Header("StatePatterns")]
+    [SerializeField] private PlayerStateMachine playerStateMachine;
 
     [SerializeField] private bool showDebugLog = true;
 
@@ -20,16 +25,32 @@ public class PlayerController : MonoBehaviour
         movementController = GetComponent<MovementController>();
         jumpController = GetComponent<JumpController>();
         groundDetector = GetComponent<GroundDetector>();
+        playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
     // 필수 컴포넌트 참조 보정
     private void Awake()
     {
+        if (cameraTransform == null && Camera.main != null) 
+        {
+            cameraTransform = Camera.main.transform;
+        }
+
+
         if (rb == null) rb = GetComponent<Rigidbody>();
         if (inputHandler == null) inputHandler = GetComponent<InputHandler>();
         if (movementController == null) movementController = GetComponent<MovementController>();
         if (jumpController == null) jumpController = GetComponent<JumpController>();
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
+        if(playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
+    }
+
+    private void Start()
+    {
+        if (playerStateMachine != null)
+        {
+            playerStateMachine.ChangeState(new PlayerIdleState(this, playerStateMachine));
+        }
     }
 
     private void FixedUpdate()
@@ -47,12 +68,9 @@ public class PlayerController : MonoBehaviour
         velocity.y = jumpController.VerticalVelocity;
         rb.linearVelocity = velocity;
 
-       // Debug.Log($"VerticalVelocity : {jumpController.VerticalVelocity}");
-        Debug.Log($"Grounded : {groundDetector.IsGrounded} | VerticalVelocity : {jumpController.VerticalVelocity}");
-
         if (showDebugLog)
         {
-            Debug.Log($"Move : {inputHandler.Movement} | Grounded : {groundDetector.IsGrounded}");
+            Debug.Log($"Grounded : {groundDetector.IsGrounded} | Walkable : {groundDetector.IsWalkableSlope} | SlopeAngle : {groundDetector.SlopeAngle}");
         }
     }
 
@@ -60,6 +78,14 @@ public class PlayerController : MonoBehaviour
     private void ProcessMovement()
     {
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement,cameraTransform);
+
+        bool isBlockedBySlope = groundDetector.IsGrounded && !groundDetector.IsWalkableSlope;
+
+        if (isBlockedBySlope)
+        {
+            movementController.Move(rb, Vector3.zero);
+            return;
+        }
 
         movementController.Move(rb, moveDirection);
         movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
@@ -70,7 +96,9 @@ public class PlayerController : MonoBehaviour
     {
         if (!inputHandler.JumpPressed) return;
 
-        jumpController.TryJump(groundDetector.IsGrounded);
+        bool canJump = groundDetector.IsGrounded && groundDetector.IsWalkableSlope;
+
+        jumpController.TryJump(canJump);
         inputHandler.ResetJumpInput();
     }
 
