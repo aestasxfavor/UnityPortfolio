@@ -15,6 +15,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     private void Update()
     {
+        if (rb == null || groundDetector == null || animator == null) return;
+
         Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // rb.linearVelocity.y가 아닌 z를 사용할 것
         float speed = horizontalVelocity.magnitude;
         float ySpeed = rb.linearVelocity.y;

@@ -1,16 +1,31 @@
 using UnityEngine;
 
-public class PlayerMoveState : MonoBehaviour
+public class PlayerMoveState : PlayerBaseState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public PlayerMoveState(PlayerController _playerController, PlayerStateMachine _playerStateMachine) : base(_playerController, _playerStateMachine)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        Debug.Log("move enter");
+    }
+
+    public override void Update()
+    {
+        if (!playerController.GroundDetector.IsGrounded) return;
+
+        if (playerController.InputHandler.Movement.sqrMagnitude <= 0.01f)
+        {
+            playerStateMachine.ChangeState(new PlayerIdleState(playerController, playerStateMachine));
+            //Debug.Log("player ChangeState: Idle");
+            return;
+        }
+
+    }
+
+    public override void Exit()
+    {
+        Debug.Log("move exit");
     }
 }

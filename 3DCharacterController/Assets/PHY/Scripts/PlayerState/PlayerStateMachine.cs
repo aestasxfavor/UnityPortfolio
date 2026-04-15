@@ -7,6 +7,8 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (newState == null) return;
 
+        Debug.Log($"ChangeState: {CurrentState?.GetType().Name} -> {newState.GetType().Name}");
+
         CurrentState?.Exit();
         CurrentState = newState;
         CurrentState?.Enter();

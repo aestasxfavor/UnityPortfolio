@@ -7,17 +7,31 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void Enter()
     {
-        Debug.Log("PlayerIdleState Enter");
+        Debug.Log("idle enter");
     }
 
     public override void Update()
     {
+        if (!playerController.GroundDetector.IsGrounded) return;
 
+        if(playerController.InputHandler.JumpPressed)
+        {
+            playerStateMachine.ChangeState(new PlayerJumpState(playerController, playerStateMachine));
+            //Debug.Log("player ChangeState : Jump");
+            return;
+        }
+
+        if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
+        {
+            playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
+            //Debug.Log("player ChangeState : Move");
+            return;
+        }
     }
 
     public override void Exit()
     {
-        Debug.Log("PlayerIdleState Exit");
+        Debug.Log("idle exit");
     }
 }
 

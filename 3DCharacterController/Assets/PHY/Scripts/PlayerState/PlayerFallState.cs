@@ -1,16 +1,36 @@
 using UnityEngine;
 
-public class PlayerFallState : MonoBehaviour
+public class PlayerFallState : PlayerBaseState
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public PlayerFallState(PlayerController _playerController, PlayerStateMachine _playerStateMachine) : base(_playerController, _playerStateMachine)
     {
-        
     }
 
-    // Update is called once per frame
-    void Update()
+    public override void Enter()
     {
-        
+        Debug.Log("fall enter");
     }
+
+    public override void Update()
+    {
+        if(!playerController.GroundDetector.IsGrounded)
+        {
+            if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
+            {
+                playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
+                //Debug.Log("Player ChangeState: Move");
+                return;
+            }
+
+            playerStateMachine.ChangeState(new PlayerIdleState(playerController, playerStateMachine));
+            //Debug.Log("player ChangeState: Idle");
+            return;
+        }
+    }
+
+    public override void Exit()
+    {
+        Debug.Log("fall exit");
+    }
+
 }

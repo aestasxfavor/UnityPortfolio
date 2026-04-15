@@ -1489,7 +1489,7 @@ MonoBehaviour:
   jumpController: {fileID: 0}
   groundDetector: {fileID: 0}
   playerStateMachine: {fileID: 0}
-  showDebugLog: 1
+  showDebugLog: 0
 --- !u!114 &1259150253
 MonoBehaviour:
   m_ObjectHideFlags: 0

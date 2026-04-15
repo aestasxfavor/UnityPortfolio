@@ -15,6 +15,11 @@ public class PlayerController : MonoBehaviour
     [Header("StatePatterns")]
     [SerializeField] private PlayerStateMachine playerStateMachine;
 
+    public InputHandler InputHandler => inputHandler;
+    public MovementController MovementController => movementController;
+    public JumpController JumpController => jumpController;
+    public GroundDetector GroundDetector => groundDetector;
+
     [SerializeField] private bool showDebugLog = true;
 
     // 인스펙터 자동 참조
@@ -31,7 +36,7 @@ public class PlayerController : MonoBehaviour
     // 필수 컴포넌트 참조 보정
     private void Awake()
     {
-        if (cameraTransform == null && Camera.main != null) 
+        if (cameraTransform == null && Camera.main != null)
         {
             cameraTransform = Camera.main.transform;
         }
@@ -42,7 +47,7 @@ public class PlayerController : MonoBehaviour
         if (movementController == null) movementController = GetComponent<MovementController>();
         if (jumpController == null) jumpController = GetComponent<JumpController>();
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
-        if(playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
+        if (playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
     private void Start()
@@ -77,7 +82,7 @@ public class PlayerController : MonoBehaviour
     // 이동 입력 처리 로직
     private void ProcessMovement()
     {
-        Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement,cameraTransform);
+        Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement, cameraTransform);
 
         bool isBlockedBySlope = groundDetector.IsGrounded && !groundDetector.IsWalkableSlope;
 
@@ -98,17 +103,22 @@ public class PlayerController : MonoBehaviour
 
         bool canJump = groundDetector.IsGrounded && groundDetector.IsWalkableSlope;
 
-        jumpController.TryJump(canJump);
+        if (canJump)
+        {
+            jumpController.TryJump(canJump);
+            playerStateMachine.ChangeState(new PlayerJumpState(this, playerStateMachine));
+        }
+
         inputHandler.ResetJumpInput();
     }
 
     // 필수 참조 확인
     private bool CanRun()
     {
-        return rb != null 
-            && inputHandler != null 
+        return rb != null
+            && inputHandler != null
             && movementController != null
-            && jumpController != null 
+            && jumpController != null
             && groundDetector != null;
     }
 }
