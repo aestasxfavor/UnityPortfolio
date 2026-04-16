@@ -12,14 +12,18 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void Update()
     {
-        if (!playerController.GroundDetector.IsGrounded) return;
-
-        if(playerController.InputHandler.JumpPressed)
+        if (!playerController.GroundDetector.IsGrounded)
         {
-            playerStateMachine.ChangeState(new PlayerJumpState(playerController, playerStateMachine));
-            //Debug.Log("player ChangeState : Jump");
+            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine));
             return;
         }
+
+        //if(playerController.InputHandler.JumpPressed)
+        //{
+        //    playerStateMachine.ChangeState(new PlayerJumpState(playerController, playerStateMachine));
+        //    //Debug.Log("player ChangeState : Jump");
+        //    return;
+        //}
 
         if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
         {

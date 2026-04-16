@@ -4,7 +4,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private Rigidbody rb;
-    [SerializeField] private Transform cameraTransform;
+    private Transform cameraTransform;
 
     [Header("Controllers")]
     [SerializeField] private InputHandler inputHandler;
@@ -36,12 +36,6 @@ public class PlayerController : MonoBehaviour
     // 필수 컴포넌트 참조 보정
     private void Awake()
     {
-        if (cameraTransform == null && Camera.main != null)
-        {
-            cameraTransform = Camera.main.transform;
-        }
-
-
         if (rb == null) rb = GetComponent<Rigidbody>();
         if (inputHandler == null) inputHandler = GetComponent<InputHandler>();
         if (movementController == null) movementController = GetComponent<MovementController>();
@@ -56,6 +50,11 @@ public class PlayerController : MonoBehaviour
         {
             playerStateMachine.ChangeState(new PlayerIdleState(this, playerStateMachine));
         }
+    }
+
+    public void SetCameraTransform(Transform newCameraTransform)
+    {
+        cameraTransform = newCameraTransform;
     }
 
     private void FixedUpdate()
@@ -119,6 +118,9 @@ public class PlayerController : MonoBehaviour
             && inputHandler != null
             && movementController != null
             && jumpController != null
-            && groundDetector != null;
+            && groundDetector != null
+            && cameraTransform != null;
+
+
     }
 }

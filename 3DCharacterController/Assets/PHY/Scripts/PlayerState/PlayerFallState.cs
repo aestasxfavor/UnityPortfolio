@@ -13,7 +13,7 @@ public class PlayerFallState : PlayerBaseState
 
     public override void Update()
     {
-        if(!playerController.GroundDetector.IsGrounded)
+        if(playerController.GroundDetector.IsGrounded)
         {
             if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
             {
