@@ -47,7 +47,6 @@ public class MovementController : MonoBehaviour
 
     /// <summary>
     /// 경사면에서 방향키 조작하면 캐릭터가 빙그르르 도는 현상 발견함
-    /// 5단계 작업인 이동 방향 기반 회전 구현에서 정밀하게 로직 구현할 예정 -> 7단계 경사면 대응에서 해야하는건가? 
     /// Slope 함수를 사용하려고 했으나 게임 캐릭터 컨트롤러 구현 목표인 것을 감안하여 
     /// 좀 더 게임 느낌이 나도록하기위해RotateTowards 함수를 사용함
     /// </summary>
