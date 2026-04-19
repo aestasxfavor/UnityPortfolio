@@ -83,7 +83,9 @@ public class PlayerController : MonoBehaviour
     {
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement, cameraTransform);
 
+        bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
         bool isBlockedBySlope = groundDetector.IsGrounded && !groundDetector.IsWalkableSlope;
+        bool isGrounded = groundDetector.IsGrounded;
 
         if (isBlockedBySlope)
         {
@@ -91,7 +93,24 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
+        if (!isGrounded) return;
+
         movementController.Move(rb, moveDirection);
+
+        if (!hasMoveInput) return;
+
+        if (showDebugLog)
+        {
+            Debug.Log(
+                $"[Rotate Before] " +
+                $"Grounded:{groundDetector.IsGrounded} | " +
+                $"Walkable:{groundDetector.IsWalkableSlope} | " +
+                $"Input:{inputHandler.Movement} | " +
+                $"MoveDir:{moveDirection} | " +
+                $"Velocity:{rb.linearVelocity}"
+            );
+        }
+
         movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
     }
 

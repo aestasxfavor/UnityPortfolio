@@ -56,10 +56,11 @@ public class MovementController : MonoBehaviour
     // 이동 방향 기준 회전 로직
     public void Rotate(Transform target, Vector3 moveDirection, float deltaTime)
     {
-        if (moveDirection.sqrMagnitude < 0.01f) return;
+        Vector3 flatDirection = new Vector3(moveDirection.x, 0f, moveDirection.z);
 
-        Quaternion targetRotation = Quaternion.LookRotation(moveDirection);
-        //target.rotation = Quaternion.Slerp(target.rotation, targetRotation, rotationSpeed * deltaTime);
+        if (flatDirection.sqrMagnitude < 0.01f) return;
+
+        Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
         target.rotation = Quaternion.RotateTowards(target.rotation, targetRotation, rotationSpeed * deltaTime);
     }
 }
