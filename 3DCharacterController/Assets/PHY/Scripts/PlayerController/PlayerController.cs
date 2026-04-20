@@ -89,29 +89,37 @@ public class PlayerController : MonoBehaviour
 
         if (isBlockedBySlope)
         {
-            movementController.Move(rb, Vector3.zero);
+            movementController.Move(rb, Vector3.zero, Time.deltaTime);
             return;
         }
 
-        if (!isGrounded) return;
 
-        movementController.Move(rb, moveDirection);
-
-        if (!hasMoveInput) return;
-
-        if (showDebugLog)
+        if (isGrounded)
         {
-            Debug.Log(
-                $"[Rotate Before] " +
-                $"Grounded:{groundDetector.IsGrounded} | " +
-                $"Walkable:{groundDetector.IsWalkableSlope} | " +
-                $"Input:{inputHandler.Movement} | " +
-                $"MoveDir:{moveDirection} | " +
-                $"Velocity:{rb.linearVelocity}"
-            );
-        }
+            movementController.Move(rb, moveDirection, Time.deltaTime);
 
-        movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
+            if (hasMoveInput)
+            {
+                if (showDebugLog)
+                {
+                    Debug.Log(
+                        $"[Rotate Before] " +
+                        $"Grounded:{groundDetector.IsGrounded} | " +
+                        $"Walkable:{groundDetector.IsWalkableSlope} | " +
+                        $"Input:{inputHandler.Movement} | " +
+                        $"MoveDir:{moveDirection} | " +
+                        $"Velocity:{rb.linearVelocity}"
+                    );
+                }
+
+                movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
+            }
+
+        }
+        else
+        {
+            // 공중 상태 분기 로직 들어갈 예정
+        }
     }
 
     // 점프 입력 처리 로직

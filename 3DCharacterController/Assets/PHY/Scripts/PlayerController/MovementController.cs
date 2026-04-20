@@ -34,13 +34,30 @@ public class MovementController : MonoBehaviour
     }
 
     // Rigidbody에 수평 이동만 적용하는 로직
-    public void Move(Rigidbody rb, Vector3 moveDirection)
-    {
-        Vector3 velocity = rb.linearVelocity;
-        Vector3 horizonVelocity = moveDirection * moveSpeed;
+    //public void Move(Rigidbody rb, Vector3 moveDirection)
+    //{
+    //    Vector3 velocity = rb.linearVelocity;
+    //    Vector3 horizonVelocity = moveDirection * moveSpeed;
 
-        velocity.x = horizonVelocity.x;
-        velocity.z = horizonVelocity.z;
+    //    velocity.x = horizonVelocity.x;
+    //    velocity.z = horizonVelocity.z;
+
+    //    rb.linearVelocity = velocity;
+    //}
+
+    public void Move(Rigidbody rb, Vector3 moveDirection, float deltaTime)
+    {
+        float accelration = 30f;
+        float decelration = 40f;
+
+        Vector3 velocity = rb.linearVelocity;
+        Vector3 targetVelocity = moveDirection * moveSpeed;
+
+        float currentAccelX = moveDirection.sqrMagnitude > 0.01f ? accelration : decelration;
+        float currentAccelZ = moveDirection.sqrMagnitude > 0.01f ? accelration : decelration;
+
+        velocity.x = Mathf.MoveTowards(velocity.x, targetVelocity.x, currentAccelX * deltaTime);
+        velocity.z = Mathf.MoveTowards(velocity.z, targetVelocity.z, currentAccelX * deltaTime);
 
         rb.linearVelocity = velocity;
     }
