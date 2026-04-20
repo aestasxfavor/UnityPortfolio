@@ -89,14 +89,14 @@ public class PlayerController : MonoBehaviour
 
         if (isBlockedBySlope)
         {
-            movementController.Move(rb, Vector3.zero, Time.deltaTime);
+            movementController.Move(rb, Vector3.zero);
             return;
         }
 
 
         if (isGrounded)
         {
-            movementController.Move(rb, moveDirection, Time.deltaTime);
+            movementController.Move(rb, moveDirection);
 
             if (hasMoveInput)
             {

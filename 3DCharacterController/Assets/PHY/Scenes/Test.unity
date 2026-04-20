@@ -664,7 +664,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 707352021541086514, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: moveSpeed
-      value: 5
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 707352021541086514, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: rotationSpeed
