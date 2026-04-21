@@ -8,6 +8,7 @@ public class JumpController : MonoBehaviour
     [SerializeField] private float groundStickVelocity = -0.5f;
 
     public float VerticalVelocity { get; private set; }
+    public bool IsJumping { get; private set; }
 
     // 점프 처리 로직
     public void TryJump(bool isGrounded)
@@ -15,6 +16,7 @@ public class JumpController : MonoBehaviour
         if (!isGrounded) return;
 
         VerticalVelocity = jumpPower;
+        IsJumping = true;
     }
 
     // 중력 적용 로직
@@ -35,10 +37,14 @@ public class JumpController : MonoBehaviour
     // 착지 후 수직값 정리 로직
     public void HandleLanding(bool isGrounded)
     {
-       
-        if (isGrounded && VerticalVelocity < 0f)
+        if (isGrounded)
         {
-            VerticalVelocity = groundStickVelocity;
+            IsJumping = false;
+
+            if (VerticalVelocity < 0f)
+            {
+                VerticalVelocity = groundStickVelocity;
+            }
         }
     }
 

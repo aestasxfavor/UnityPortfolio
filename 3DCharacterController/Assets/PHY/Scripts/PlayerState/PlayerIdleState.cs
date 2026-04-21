@@ -28,7 +28,7 @@ public class PlayerIdleState : PlayerBaseState
         if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
         {
             playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
-            //Debug.Log("player ChangeState : Move");
+            //Debug.Log("player ChangeState : MoveSlope");
             return;
         }
     }

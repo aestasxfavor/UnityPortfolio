@@ -18,7 +18,7 @@ public class PlayerFallState : PlayerBaseState
             if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
             {
                 playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
-                //Debug.Log("Player ChangeState: Move");
+                //Debug.Log("Player ChangeState: MoveSlope");
                 return;
             }
 

@@ -34,7 +34,7 @@ public class MovementController : MonoBehaviour
     }
 
     //Rigidbody에 수평 이동만 적용하는 로직
-    public void Move(Rigidbody rb, Vector3 moveDirection)
+    public void MoveSlope(Rigidbody rb, Vector3 moveDirection)
     {
         Vector3 velocity = rb.linearVelocity;
         Vector3 horizonVelocity = moveDirection * moveSpeed;
@@ -46,28 +46,28 @@ public class MovementController : MonoBehaviour
     }
 
     /// <summary>
-    /// 밑의 Move 함수를 사용하면 경사면에서 막힘.
+    /// 밑의 MoveSlope 함수를 사용하면 경사면에서 막힘.
     /// 로직에 문제가 있음. 추후 수정해야 할듯.
     /// </summary>
     /// <param name="rb"></param>
     /// <param name="moveDirection"></param>
     /// <param name="deltaTime"></param>
-    //public void Move(Rigidbody rb, Vector3 moveDirection, float deltaTime)
-    //{
-    //    float accelration = 30f;
-    //    float decelration = 40f;
+    public void MoveFlat(Rigidbody rb, Vector3 moveDirection, float deltaTime)
+    {
+        float moveResponse = 80f;
+        float stopResponse = 40f;
 
-    //    Vector3 velocity = rb.linearVelocity;
-    //    Vector3 targetVelocity = moveDirection * moveSpeed;
+        Vector3 velocity = rb.linearVelocity;
+        Vector3 targetVelocity = moveDirection * moveSpeed;
 
-    //    float currentAccelX = moveDirection.sqrMagnitude > 0.01f ? accelration : decelration;
-    //    float currentAccelZ = moveDirection.sqrMagnitude > 0.01f ? accelration : decelration;
+        bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
+        float response = hasMoveInput? moveResponse : stopResponse;
 
-    //    velocity.x = Mathf.MoveTowards(velocity.x, targetVelocity.x, currentAccelX * deltaTime);
-    //    velocity.z = Mathf.MoveTowards(velocity.z, targetVelocity.z, currentAccelZ * deltaTime);
+        velocity.x = Mathf.MoveTowards(velocity.x, targetVelocity.x, response * deltaTime);
+        velocity.z = Mathf.MoveTowards(velocity.z, targetVelocity.z, response * deltaTime);
 
-    //    rb.linearVelocity = velocity;
-    //}
+        rb.linearVelocity = velocity;
+    }
 
     /// <summary>
     /// 경사면에서 방향키 조작하면 캐릭터가 빙그르르 도는 현상 발견함

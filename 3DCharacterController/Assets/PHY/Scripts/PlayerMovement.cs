@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
     public void OnMove(InputValue value)
     {
         movement = value.Get<Vector2>();
-        Debug.Log($"Move Input : {movement}");
+        Debug.Log($"MoveSlope Input : {movement}");
     }
 
     // movementController로 옮기기

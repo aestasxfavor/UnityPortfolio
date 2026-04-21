@@ -1,5 +1,8 @@
 using UnityEngine;
-
+/// <summary>
+/// 2026-04-21
+/// 리지드바디 기반 컨트롤러에서 캐릭터 컨트롤러 + 리지드바디 일부를 사용한 캐릭터 컨트롤러 제작 예정
+/// </summary>
 public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
@@ -84,42 +87,56 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement, cameraTransform);
 
         bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
-        bool isBlockedBySlope = groundDetector.IsGrounded && !groundDetector.IsWalkableSlope;
         bool isGrounded = groundDetector.IsGrounded;
+        bool isWalkableSlope = groundDetector.IsWalkableSlope; 
+        bool isBlockedBySlope = isGrounded && !isWalkableSlope;
+        bool isOnSlope = isGrounded && groundDetector.SlopeAngle > 0.01f;
 
         if (isBlockedBySlope)
         {
-            movementController.Move(rb, Vector3.zero);
+            movementController.MoveSlope(rb, Vector3.zero);
             return;
         }
 
-
-        if (isGrounded)
+        if(isOnSlope)
         {
-            movementController.Move(rb, moveDirection);
-
-            if (hasMoveInput)
-            {
-                if (showDebugLog)
-                {
-                    Debug.Log(
-                        $"[Rotate Before] " +
-                        $"Grounded:{groundDetector.IsGrounded} | " +
-                        $"Walkable:{groundDetector.IsWalkableSlope} | " +
-                        $"Input:{inputHandler.Movement} | " +
-                        $"MoveDir:{moveDirection} | " +
-                        $"Velocity:{rb.linearVelocity}"
-                    );
-                }
-
-                movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
-            }
-
+            movementController.MoveSlope(rb, moveDirection);
         }
         else
         {
-            // 공중 상태 분기 로직 들어갈 예정
+            movementController.MoveFlat(rb, moveDirection, Time.fixedDeltaTime);
         }
+
+        if (!hasMoveInput) return;
+        if (isBlockedBySlope) return;
+
+        movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
+        //if (isGrounded)
+        //{
+        //    movementController.MoveSlope(rb, moveDirection, Time.fixedDeltaTime);
+
+        //    if (hasMoveInput)
+        //    {
+        //        if (showDebugLog)
+        //        {
+        //            Debug.Log(
+        //                $"[Rotate Before] " +
+        //                $"Grounded:{groundDetector.IsGrounded} | " +
+        //                $"Walkable:{groundDetector.IsWalkableSlope} | " +
+        //                $"Input:{inputHandler.Movement} | " +
+        //                $"MoveDir:{moveDirection} | " +
+        //                $"Velocity:{rb.linearVelocity}"
+        //            );
+        //        }
+
+        //        movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
+        //    }
+
+        //}
+        //else
+        //{
+        //    // 공중 상태 분기 로직 들어갈 예정
+        //}
     }
 
     // 점프 입력 처리 로직
