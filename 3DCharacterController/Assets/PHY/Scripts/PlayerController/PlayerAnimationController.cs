@@ -3,23 +3,25 @@ using UnityEngine;
 public class PlayerAnimationController : MonoBehaviour
 {
     [SerializeField] private Animator animator;
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private CharacterController characterController;
     [SerializeField] private GroundDetector groundDetector;
+    [SerializeField] private JumpController jumpController;
 
     private void Reset()
     {
-        rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
         groundDetector = GetComponent<GroundDetector>();
+        jumpController = GetComponent<JumpController>();
         animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
-        if (rb == null || groundDetector == null || animator == null) return;
+        if (characterController == null || groundDetector == null || jumpController == null || animator == null) return;
 
-        Vector3 horizontalVelocity = new Vector3(rb.linearVelocity.x, 0f, rb.linearVelocity.z); // rb.linearVelocity.y가 아닌 z를 사용할 것
+        Vector3 horizontalVelocity = new Vector3(characterController.velocity.x, 0f, characterController.velocity.z);
         float speed = horizontalVelocity.magnitude;
-        float ySpeed = rb.linearVelocity.y;
+        float ySpeed = jumpController.VerticalVelocity;
         bool isGrounded = groundDetector.IsGrounded;
 
         animator.SetFloat("Speed", speed);

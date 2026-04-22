@@ -5,6 +5,12 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float moveSpeed = 10f;
     [SerializeField] private float rotationSpeed = 720f;
 
+    [SerializeField] private float moveResponse = 10f;
+    [SerializeField] private float stopResponse = 20f;
+
+    private Vector3 currentHorizontalVelocity;
+    public float MoveSpeed => moveSpeed;
+
     // 카메라 기준 방향 이동 계산 로직
     public Vector3 GetMoveDirection(Vector2 movement, Transform cameraTransform)
     {
@@ -33,41 +39,54 @@ public class MovementController : MonoBehaviour
         return moveDirection;
     }
 
-    //Rigidbody에 수평 이동만 적용하는 로직
-    public void MoveSlope(Rigidbody rb, Vector3 moveDirection)
+    // 캐릭터 컨트롤러 기반 이동 로직
+    public Vector3 GetHorizontalMove(Vector3 moveDirection, float deltaTime)
     {
-        Vector3 velocity = rb.linearVelocity;
-        Vector3 horizonVelocity = moveDirection * moveSpeed;
-
-        velocity.x = horizonVelocity.x;
-        velocity.z = horizonVelocity.z;
-
-        rb.linearVelocity = velocity;
-    }
-
-    /// <summary>
-    /// 밑의 MoveSlope 함수를 사용하면 경사면에서 막힘.
-    /// 로직에 문제가 있음. 추후 수정해야 할듯.
-    /// </summary>
-    /// <param name="rb"></param>
-    /// <param name="moveDirection"></param>
-    /// <param name="deltaTime"></param>
-    public void MoveFlat(Rigidbody rb, Vector3 moveDirection, float deltaTime)
-    {
-        float moveResponse = 80f;
-        float stopResponse = 40f;
-
-        Vector3 velocity = rb.linearVelocity;
         Vector3 targetVelocity = moveDirection * moveSpeed;
 
         bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
-        float response = hasMoveInput? moveResponse : stopResponse;
+        float response = hasMoveInput ? moveResponse : stopResponse;
+        currentHorizontalVelocity = Vector3.MoveTowards(currentHorizontalVelocity, targetVelocity, response * deltaTime);
 
-        velocity.x = Mathf.MoveTowards(velocity.x, targetVelocity.x, response * deltaTime);
-        velocity.z = Mathf.MoveTowards(velocity.z, targetVelocity.z, response * deltaTime);
 
-        rb.linearVelocity = velocity;
+        return currentHorizontalVelocity;
     }
+
+    //Rigidbody에 수평 이동만 적용하는 로직
+    //public void MoveSlope(Rigidbody rb, Vector3 moveDirection)
+    //{
+    //    Vector3 velocity = rb.linearVelocity;
+    //    Vector3 horizonVelocity = moveDirection * moveSpeed;
+
+    //    velocity.x = horizonVelocity.x;
+    //    velocity.z = horizonVelocity.z;
+
+    //    rb.linearVelocity = velocity;
+    //}
+
+    ///// <summary>
+    ///// 밑의 MoveSlope 함수를 사용하면 경사면에서 막힘.
+    ///// 로직에 문제가 있음. 추후 수정해야 할듯.
+    ///// </summary>
+    ///// <param name="rb"></param>
+    ///// <param name="moveDirection"></param>
+    ///// <param name="deltaTime"></param>
+    //public void MoveFlat(Rigidbody rb, Vector3 moveDirection, float deltaTime)
+    //{
+    //    float moveResponse = 80f;
+    //    float stopResponse = 40f;
+
+    //    Vector3 velocity = rb.linearVelocity;
+    //    Vector3 targetVelocity = moveDirection * moveSpeed;
+
+    //    bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
+    //    float response = hasMoveInput? moveResponse : stopResponse;
+
+    //    velocity.x = Mathf.MoveTowards(velocity.x, targetVelocity.x, response * deltaTime);
+    //    velocity.z = Mathf.MoveTowards(velocity.z, targetVelocity.z, response * deltaTime);
+
+    //    rb.linearVelocity = velocity;
+    //}
 
     /// <summary>
     /// 경사면에서 방향키 조작하면 캐릭터가 빙그르르 도는 현상 발견함

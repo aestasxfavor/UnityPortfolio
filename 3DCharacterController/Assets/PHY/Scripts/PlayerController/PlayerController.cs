@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] private CharacterController characterController;
     private Transform cameraTransform;
 
     [Header("Controllers")]
@@ -28,7 +28,7 @@ public class PlayerController : MonoBehaviour
     // 인스펙터 자동 참조
     private void Reset()
     {
-        rb = GetComponent<Rigidbody>();
+        characterController = GetComponent<CharacterController>();
         inputHandler = GetComponent<InputHandler>();
         movementController = GetComponent<MovementController>();
         jumpController = GetComponent<JumpController>();
@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     // 필수 컴포넌트 참조 보정
     private void Awake()
     {
-        if (rb == null) rb = GetComponent<Rigidbody>();
+        if (characterController == null) characterController = GetComponent<CharacterController>();
         if (inputHandler == null) inputHandler = GetComponent<InputHandler>();
         if (movementController == null) movementController = GetComponent<MovementController>();
         if (jumpController == null) jumpController = GetComponent<JumpController>();
@@ -60,20 +60,15 @@ public class PlayerController : MonoBehaviour
         cameraTransform = newCameraTransform;
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
         if (!CanRun()) return;
 
         groundDetector.GroundCheck();
 
-        ProcessMovement();
         ProcessJump();
-
-        jumpController.UpdateVertical(groundDetector.IsGrounded, Time.fixedDeltaTime);
-
-        Vector3 velocity = rb.linearVelocity;
-        velocity.y = jumpController.VerticalVelocity;
-        rb.linearVelocity = velocity;
+        jumpController.UpdateVertical(groundDetector.IsGrounded, Time.deltaTime);
+        ProcessMovement();
 
         if (showDebugLog)
         {
@@ -87,30 +82,40 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement, cameraTransform);
 
         bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
-        bool isGrounded = groundDetector.IsGrounded;
-        bool isWalkableSlope = groundDetector.IsWalkableSlope; 
-        bool isBlockedBySlope = isGrounded && !isWalkableSlope;
-        bool isOnSlope = isGrounded && groundDetector.SlopeAngle > 0.01f;
 
-        if (isBlockedBySlope)
-        {
-            movementController.MoveSlope(rb, Vector3.zero);
-            return;
-        }
+        Vector3 horizontalMove = movementController.GetHorizontalMove(moveDirection, Time.deltaTime);
+        Vector3 finalMove = horizontalMove;
+        finalMove.y = jumpController.VerticalVelocity;
 
-        if(isOnSlope)
-        {
-            movementController.MoveSlope(rb, moveDirection);
-        }
-        else
-        {
-            movementController.MoveFlat(rb, moveDirection, Time.fixedDeltaTime);
-        }
+        characterController.Move(finalMove * Time.deltaTime);
 
         if (!hasMoveInput) return;
-        if (isBlockedBySlope) return;
 
-        movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
+        movementController.Rotate(transform, moveDirection, Time.deltaTime);
+        //bool isGrounded = groundDetector.IsGrounded;
+        //bool isWalkableSlope = groundDetector.IsWalkableSlope; 
+        //bool isBlockedBySlope = isGrounded && !isWalkableSlope;
+        //bool isOnSlope = isGrounded && groundDetector.SlopeAngle > 0.01f;
+
+        //if (isBlockedBySlope)
+        //{
+        //    movementController.MoveSlope(rb, Vector3.zero);
+        //    return;
+        //}
+
+        //if(isOnSlope)
+        //{
+        //    movementController.MoveSlope(rb, moveDirection);
+        //}
+        //else
+        //{
+        //    movementController.MoveFlat(rb, moveDirection, Time.fixedDeltaTime);
+        //}
+
+        //if (!hasMoveInput) return;
+        //if (isBlockedBySlope) return;
+
+        //movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
         //if (isGrounded)
         //{
         //    movementController.MoveSlope(rb, moveDirection, Time.fixedDeltaTime);
@@ -158,7 +163,7 @@ public class PlayerController : MonoBehaviour
     // 필수 참조 확인
     private bool CanRun()
     {
-        return rb != null
+        return characterController != null
             && inputHandler != null
             && movementController != null
             && jumpController != null
