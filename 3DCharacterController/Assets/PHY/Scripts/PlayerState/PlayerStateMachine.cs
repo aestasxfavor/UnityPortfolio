@@ -7,6 +7,11 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (newState == null) return;
 
+        if(CurrentState != null && CurrentState.GetType() != newState.GetType())
+        {
+            return;
+        }
+
         Debug.Log($"ChangeState: {CurrentState?.GetType().Name} -> {newState.GetType().Name}");
 
         CurrentState?.Exit();

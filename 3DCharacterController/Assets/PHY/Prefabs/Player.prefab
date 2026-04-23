@@ -391,7 +391,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4227286509472267079}
-  - component: {fileID: 1123725099807801290}
   - component: {fileID: 3408326230082254600}
   - component: {fileID: 2582590836395629233}
   - component: {fileID: 8285095558180843875}
@@ -428,29 +427,6 @@ Transform:
   - {fileID: 247555989835789296}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1123725099807801290
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1841904798512722796}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.3
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: -0, y: 0.9, z: -0}
 --- !u!114 &3408326230082254600
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -493,6 +469,7 @@ MonoBehaviour:
   jumpController: {fileID: 0}
   groundDetector: {fileID: 0}
   playerStateMachine: {fileID: 0}
+  fallThreshold: -0.5
   showDebugLog: 1
 --- !u!114 &1252307429968288183
 MonoBehaviour:

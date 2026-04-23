@@ -18,12 +18,27 @@ public class PlayerController : MonoBehaviour
     [Header("StatePatterns")]
     [SerializeField] private PlayerStateMachine playerStateMachine;
 
+    [Header("Air State")]
+    [SerializeField] private float fallThreshold = -0.5f;
+    [SerializeField] private float fallStartDistance = 1.0f;
+
+    [Header("Debug")]
+    [SerializeField] private bool showDebugLog = true;
+
+    [Header("Property")]
     public InputHandler InputHandler => inputHandler;
     public MovementController MovementController => movementController;
     public JumpController JumpController => jumpController;
     public GroundDetector GroundDetector => groundDetector;
 
-    [SerializeField] private bool showDebugLog = true;
+    public float FallThreshold => fallThreshold;
+    public float FallStartDistance => fallStartDistance;
+
+    public float JumpStartY => jumpStartY;
+    private float jumpStartY;
+
+    public bool WasGrounded => wasGrounded;
+    private bool wasGrounded;
 
     // 인스펙터 자동 참조
     private void Reset()
@@ -64,10 +79,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!CanRun()) return;
 
-        groundDetector.GroundCheck();
+        wasGrounded = groundDetector.IsGrounded;
 
-        ProcessJump();
+        groundDetector.GroundCheck();
         jumpController.UpdateVertical(groundDetector.IsGrounded, Time.deltaTime);
+
         ProcessMovement();
 
         if (showDebugLog)
@@ -92,72 +108,22 @@ public class PlayerController : MonoBehaviour
         if (!hasMoveInput) return;
 
         movementController.Rotate(transform, moveDirection, Time.deltaTime);
-        //bool isGrounded = groundDetector.IsGrounded;
-        //bool isWalkableSlope = groundDetector.IsWalkableSlope; 
-        //bool isBlockedBySlope = isGrounded && !isWalkableSlope;
-        //bool isOnSlope = isGrounded && groundDetector.SlopeAngle > 0.01f;
 
-        //if (isBlockedBySlope)
-        //{
-        //    movementController.MoveSlope(rb, Vector3.zero);
-        //    return;
-        //}
-
-        //if(isOnSlope)
-        //{
-        //    movementController.MoveSlope(rb, moveDirection);
-        //}
-        //else
-        //{
-        //    movementController.MoveFlat(rb, moveDirection, Time.fixedDeltaTime);
-        //}
-
-        //if (!hasMoveInput) return;
-        //if (isBlockedBySlope) return;
-
-        //movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
-        //if (isGrounded)
-        //{
-        //    movementController.MoveSlope(rb, moveDirection, Time.fixedDeltaTime);
-
-        //    if (hasMoveInput)
-        //    {
-        //        if (showDebugLog)
-        //        {
-        //            Debug.Log(
-        //                $"[Rotate Before] " +
-        //                $"Grounded:{groundDetector.IsGrounded} | " +
-        //                $"Walkable:{groundDetector.IsWalkableSlope} | " +
-        //                $"Input:{inputHandler.Movement} | " +
-        //                $"MoveDir:{moveDirection} | " +
-        //                $"Velocity:{rb.linearVelocity}"
-        //            );
-        //        }
-
-        //        movementController.Rotate(transform, moveDirection, Time.fixedDeltaTime);
-        //    }
-
-        //}
-        //else
-        //{
-        //    // 공중 상태 분기 로직 들어갈 예정
-        //}
+        if (showDebugLog)
+        {
+            Debug.Log(
+       $"GD_Grounded:{groundDetector.IsGrounded} | " +
+       $"CC_Grounded:{characterController.isGrounded} | " +
+       $"Walkable:{groundDetector.IsWalkableSlope} | " +
+       $"SlopeAngle:{groundDetector.SlopeAngle:F2} | " +
+       $"YSpeed:{jumpController.VerticalVelocity:F2}"
+   );
+        }
     }
 
-    // 점프 입력 처리 로직
-    private void ProcessJump()
+    public void SetJumpStartY(float value)
     {
-        if (!inputHandler.JumpPressed) return;
-
-        bool canJump = groundDetector.IsGrounded && groundDetector.IsWalkableSlope;
-
-        if (canJump)
-        {
-            jumpController.TryJump(canJump);
-            playerStateMachine.ChangeState(new PlayerJumpState(this, playerStateMachine));
-        }
-
-        inputHandler.ResetJumpInput();
+        jumpStartY = value;
     }
 
     // 필수 참조 확인
@@ -169,7 +135,6 @@ public class PlayerController : MonoBehaviour
             && jumpController != null
             && groundDetector != null
             && cameraTransform != null;
-
-
     }
 }
+

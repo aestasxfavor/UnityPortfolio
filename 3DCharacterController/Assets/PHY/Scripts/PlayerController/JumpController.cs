@@ -35,27 +35,26 @@ public class JumpController : MonoBehaviour
     }
 
     // 착지 후 수직값 정리 로직
-    public void HandleLanding(bool isGrounded)
+    public void HandleLanding()
     {
-        if (isGrounded)
-        {
-            IsJumping = false;
+        IsJumping = false;
 
-            if (VerticalVelocity < 0f)
-            {
-                VerticalVelocity = groundStickVelocity;
-            }
+        if (VerticalVelocity < 0f)
+        {
+            VerticalVelocity = groundStickVelocity;
         }
+
     }
 
     public void UpdateVertical(bool isGrounded, float deltaTime)
     {
-        HandleLanding(isGrounded);
-
-        if (!isGrounded)
+        if (isGrounded)
         {
-            ApplyGravity(deltaTime);
-            LimitFallSpeed();
+            HandleLanding();
+            return;
         }
+
+        ApplyGravity(deltaTime);
+        LimitFallSpeed();
     }
 }

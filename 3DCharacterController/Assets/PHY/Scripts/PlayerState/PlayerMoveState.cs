@@ -13,9 +13,26 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void Update()
     {
-        if (!playerController.GroundDetector.IsGrounded)
+        if (playerController.WasGrounded
+            && !playerController.GroundDetector.IsGrounded
+            && !playerController.JumpController.IsJumping
+            && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold)
         {
             playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine));
+            return;
+        }
+
+        bool canJump = playerController.InputHandler.JumpPressed &&
+                       playerController.GroundDetector.IsGrounded &&
+                       playerController.GroundDetector.IsWalkableSlope;
+
+        if (canJump)
+        {
+            playerController.SetJumpStartY(playerController.transform.position.y);
+            playerController.JumpController.TryJump(true);
+            playerController.InputHandler.ResetJumpInput();
+
+            playerStateMachine.ChangeState(new PlayerJumpState(playerController, playerStateMachine));
             return;
         }
 
