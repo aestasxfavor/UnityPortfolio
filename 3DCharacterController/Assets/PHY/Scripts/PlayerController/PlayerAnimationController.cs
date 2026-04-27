@@ -15,6 +15,14 @@ public class PlayerAnimationController : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
     }
 
+    private void Awake()
+    {
+        if (characterController == null) characterController = GetComponent<CharacterController>();
+        if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
+        if (jumpController == null) jumpController = GetComponent<JumpController>();
+        if (animator == null) animator = GetComponentInChildren<Animator>();
+    }
+
     private void Update()
     {
         if (characterController == null || groundDetector == null || jumpController == null || animator == null) return;

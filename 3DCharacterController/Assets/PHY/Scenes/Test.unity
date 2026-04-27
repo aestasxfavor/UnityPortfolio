@@ -2359,6 +2359,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 419484749446995620, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
     - target: {fileID: 1841904798512722796, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: m_Name
       value: Player
@@ -2403,9 +2407,13 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6782659197209582500, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
+      propertyPath: landingTriggerMinYSpeed
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 8285095558180843875, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: showDebugLog
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8285095558180843875, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: fallStartDistance

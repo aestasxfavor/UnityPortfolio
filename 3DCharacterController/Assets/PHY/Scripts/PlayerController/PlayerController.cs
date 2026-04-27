@@ -1,4 +1,5 @@
 using UnityEngine;
+
 /// <summary>
 /// 2026-04-21
 /// 리지드바디 기반 컨트롤러에서 캐릭터 컨트롤러 + 리지드바디 일부를 사용한 캐릭터 컨트롤러 제작 예정
@@ -40,7 +41,6 @@ public class PlayerController : MonoBehaviour
     public bool WasGrounded => wasGrounded;
     private bool wasGrounded;
 
-    // 인스펙터 자동 참조
     private void Reset()
     {
         characterController = GetComponent<CharacterController>();
@@ -51,7 +51,6 @@ public class PlayerController : MonoBehaviour
         playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
-    // 필수 컴포넌트 참조 보정
     private void Awake()
     {
         if (characterController == null) characterController = GetComponent<CharacterController>();
@@ -92,14 +91,14 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // 이동 입력 처리 로직
     private void ProcessMovement()
     {
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement, cameraTransform);
 
         bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
 
-        Vector3 horizontalMove = movementController.GetHorizontalMove(moveDirection, Time.deltaTime);
+        Vector3 horizontalMove = movementController.GetHorizontalMove(moveDirection, Time.deltaTime, groundDetector.IsGrounded);
+
         Vector3 finalMove = horizontalMove;
         finalMove.y = jumpController.VerticalVelocity;
 
@@ -107,17 +106,20 @@ public class PlayerController : MonoBehaviour
 
         if (!hasMoveInput) return;
 
-        movementController.Rotate(transform, moveDirection, Time.deltaTime);
+        if (groundDetector.IsGrounded)
+        {
+            movementController.Rotate(transform, moveDirection, Time.deltaTime);
+        }
 
         if (showDebugLog)
         {
             Debug.Log(
-       $"GD_Grounded:{groundDetector.IsGrounded} | " +
-       $"CC_Grounded:{characterController.isGrounded} | " +
-       $"Walkable:{groundDetector.IsWalkableSlope} | " +
-       $"SlopeAngle:{groundDetector.SlopeAngle:F2} | " +
-       $"YSpeed:{jumpController.VerticalVelocity:F2}"
-   );
+                $"GD_Grounded:{groundDetector.IsGrounded} | " +
+                $"CC_Grounded:{characterController.isGrounded} | " +
+                $"Walkable:{groundDetector.IsWalkableSlope} | " +
+                $"SlopeAngle:{groundDetector.SlopeAngle:F2} | " +
+                $"YSpeed:{jumpController.VerticalVelocity:F2}"
+            );
         }
     }
 
@@ -126,7 +128,6 @@ public class PlayerController : MonoBehaviour
         jumpStartY = value;
     }
 
-    // 필수 참조 확인
     private bool CanRun()
     {
         return characterController != null
@@ -137,4 +138,3 @@ public class PlayerController : MonoBehaviour
             && cameraTransform != null;
     }
 }
-

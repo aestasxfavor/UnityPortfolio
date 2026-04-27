@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerFallState : PlayerBaseState
 {
-    public PlayerFallState(PlayerController _playerController, PlayerStateMachine _playerStateMachine) : base(_playerController, _playerStateMachine)
+    public PlayerFallState(PlayerController _playerController, PlayerStateMachine _playerStateMachine)
+        : base(_playerController, _playerStateMachine)
     {
     }
 
@@ -13,17 +14,15 @@ public class PlayerFallState : PlayerBaseState
 
     public override void Update()
     {
-        if(playerController.GroundDetector.IsGrounded)
+        if (playerController.GroundDetector.IsGrounded)
         {
-            if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
+            if (playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
             {
                 playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
-                //Debug.Log("Player ChangeState: MoveSlope");
                 return;
             }
 
             playerStateMachine.ChangeState(new PlayerIdleState(playerController, playerStateMachine));
-            //Debug.Log("player ChangeState: Idle");
             return;
         }
     }
@@ -32,5 +31,4 @@ public class PlayerFallState : PlayerBaseState
     {
         Debug.Log("fall exit");
     }
-
 }
