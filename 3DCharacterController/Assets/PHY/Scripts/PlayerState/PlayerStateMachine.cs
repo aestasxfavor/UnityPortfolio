@@ -7,7 +7,7 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (newState == null) return;
 
-        if(CurrentState != null && CurrentState.GetType() != newState.GetType())
+        if(CurrentState != null && CurrentState.GetType() == newState.GetType())
         {
             return;
         }

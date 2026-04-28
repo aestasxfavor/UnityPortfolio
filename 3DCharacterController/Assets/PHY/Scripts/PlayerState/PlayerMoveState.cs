@@ -22,12 +22,27 @@ public class PlayerMoveState : PlayerBaseState
             return;
         }
 
+        
+
         bool canJump = playerController.InputHandler.JumpPressed &&
                        playerController.GroundDetector.IsGrounded &&
                        playerController.GroundDetector.IsWalkableSlope;
 
+        if (playerController.InputHandler.JumpPressed)
+        {
+            Debug.Log(
+                $"[Move Jump Check] " +
+                $"JumpPressed:{playerController.InputHandler.JumpPressed}, " +
+                $"IsGrounded:{playerController.GroundDetector.IsGrounded}, " +
+                $"IsWalkableSlope:{playerController.GroundDetector.IsWalkableSlope}, " +
+                $"VerticalVelocity:{playerController.JumpController.VerticalVelocity}, " +
+                $"IsJumping:{playerController.JumpController.IsJumping}"
+            );
+        }
+
         if (canJump)
         {
+            Debug.Log("move -> jump ÀüÀÌ");
             playerController.SetJumpStartY(playerController.transform.position.y);
             playerController.JumpController.TryJump(true);
             playerController.InputHandler.ResetJumpInput();

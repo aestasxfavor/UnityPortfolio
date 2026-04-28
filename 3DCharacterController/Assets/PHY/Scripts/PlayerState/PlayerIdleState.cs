@@ -21,17 +21,40 @@ public class PlayerIdleState : PlayerBaseState
             return;
         }
 
+       
+
         bool canJump = playerController.InputHandler.JumpPressed &&
                        playerController.GroundDetector.IsGrounded &&
                        playerController.GroundDetector.IsWalkableSlope;
 
+        if (playerController.InputHandler.JumpPressed)
+        {
+            Debug.Log(
+                $"[Idle Jump Check] " +
+                $"JumpPressed:{playerController.InputHandler.JumpPressed}, " +
+                $"IsGrounded:{playerController.GroundDetector.IsGrounded}, " +
+                $"IsWalkableSlope:{playerController.GroundDetector.IsWalkableSlope}, " +
+                $"VerticalVelocity:{playerController.JumpController.VerticalVelocity}, " +
+                $"IsJumping:{playerController.JumpController.IsJumping}"
+            );
+        }
+
         if (canJump)
         {
+            //Debug.Log("idle -> jump 전이 1");
+
             playerController.SetJumpStartY(playerController.transform.position.y);
+            //Debug.Log("idle -> jump 전이 2 : SetJumpStartY 완료");
+
             playerController.JumpController.TryJump(true);
+            //Debug.Log("idle -> jump 전이 3 : TryJump 완료");
+
             playerController.InputHandler.ResetJumpInput();
+            //Debug.Log("idle -> jump 전이 4 : ResetJumpInput 완료");
 
             playerStateMachine.ChangeState(new PlayerJumpState(playerController, playerStateMachine));
+            //Debug.Log("idle -> jump 전이 5 : ChangeState 호출 완료");
+
             return;
         }
 

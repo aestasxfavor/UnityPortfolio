@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerLandingState : PlayerBaseState
 {
+    private float landingTimer;
+    private float landingDuration = 0.25f;
     public PlayerLandingState(PlayerController _playerController, PlayerStateMachine _playerStateMachine)
         : base(_playerController, _playerStateMachine)
     {
@@ -9,16 +11,27 @@ public class PlayerLandingState : PlayerBaseState
 
     public override void Enter()
     {
-        
+        landingTimer = 0f;
+        Debug.Log("landing enter");
     }
 
     public override void Update()
     {
+        landingTimer += Time.deltaTime;
+        if (landingTimer < landingDuration) return;
         
+        if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
+        {
+            playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
+        }
+        else
+        {
+            playerStateMachine.ChangeState(new PlayerIdleState(playerController, playerStateMachine));
+        }
     }
 
     public override void Exit()
     {
-       
+        Debug.Log("landing exit");
     }
 }
