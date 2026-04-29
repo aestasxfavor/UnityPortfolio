@@ -63,6 +63,9 @@ public class PlayerController : MonoBehaviour
 
     private void Start()
     {
+        groundDetector.GroundCheck();
+        wasGrounded = groundDetector.IsGrounded;
+
         if (playerStateMachine != null)
         {
             playerStateMachine.ChangeState(new PlayerIdleState(this, playerStateMachine));
@@ -81,7 +84,7 @@ public class PlayerController : MonoBehaviour
         wasGrounded = groundDetector.IsGrounded;
 
         groundDetector.GroundCheck();
-        jumpController.UpdateVertical(groundDetector.IsGrounded, Time.deltaTime);
+        jumpController.UpdateVertical(characterController.isGrounded, Time.deltaTime);
 
         ProcessMovement();
 

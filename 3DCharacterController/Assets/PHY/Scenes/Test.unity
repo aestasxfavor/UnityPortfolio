@@ -2360,6 +2360,14 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 419484749446995620, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
+      propertyPath: m_Avatar
+      value: 
+      objectReference: {fileID: 9000000, guid: f45bc6c8a36d3064d8b7954d4d57c202, type: 3}
+    - target: {fileID: 419484749446995620, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 419484749446995620, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: m_WarningMessage
       value: 
       objectReference: {fileID: 0}
@@ -2410,6 +2418,10 @@ PrefabInstance:
     - target: {fileID: 6782659197209582500, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: landingTriggerMinYSpeed
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6818276817852387901, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
+      propertyPath: gravityScale
+      value: 2.5
       objectReference: {fileID: 0}
     - target: {fileID: 8285095558180843875, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: showDebugLog

@@ -1,10 +1,10 @@
 using UnityEngine;
 
-public class PlayerLandingState : PlayerBaseState
+public class PlayerLandState : PlayerBaseState
 {
     private float landingTimer;
     private float landingDuration = 0.25f;
-    public PlayerLandingState(PlayerController _playerController, PlayerStateMachine _playerStateMachine)
+    public PlayerLandState(PlayerController _playerController, PlayerStateMachine _playerStateMachine)
         : base(_playerController, _playerStateMachine)
     {
     }

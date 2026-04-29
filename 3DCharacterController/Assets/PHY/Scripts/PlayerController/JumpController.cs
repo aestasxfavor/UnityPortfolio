@@ -3,30 +3,30 @@ using UnityEngine;
 public class JumpController : MonoBehaviour
 {
     [SerializeField] private float jumpPower = 6f;
-    [SerializeField] private float gravityScale = 2.5f;
+    [SerializeField] private float gravityScale = 3.5f;
     [SerializeField] private float maxFallSpeed = 20f;
     [SerializeField] private float groundStickVelocity = -0.5f;
 
     public float VerticalVelocity { get; private set; }
     public bool IsJumping { get; private set; }
 
-    // 점프 처리 로직
+    private bool hasLeftGround;
+
     public void TryJump(bool isGrounded)
     {
         if (!isGrounded) return;
 
         VerticalVelocity = jumpPower;
         IsJumping = true;
+        hasLeftGround = false;
     }
 
-    // 중력 적용 로직
-    public void ApplyGravity(float deltaTime)
+    private void ApplyGravity(float deltaTime)
     {
         VerticalVelocity += Physics.gravity.y * gravityScale * deltaTime;
     }
 
-    // 낙하 속도 제어 로직
-    public void LimitFallSpeed()
+    private void LimitFallSpeed()
     {
         if (VerticalVelocity < -maxFallSpeed)
         {
@@ -34,27 +34,40 @@ public class JumpController : MonoBehaviour
         }
     }
 
-    // 착지 후 수직값 정리 로직
-    public void HandleLanding()
+    private void HandleLanding()
     {
         IsJumping = false;
-
-        if (VerticalVelocity < 0f)
-        {
-            VerticalVelocity = groundStickVelocity;
-        }
-
+        hasLeftGround = false;
+        VerticalVelocity = groundStickVelocity;
     }
 
     public void UpdateVertical(bool isGrounded, float deltaTime)
     {
-        if (isGrounded)
+        // 점프 중이고 실제로 땅에서 떨어진 프레임을 한 번이라도 겪었는지 기록
+        if (IsJumping && !isGrounded)
         {
-            HandleLanding();
+            hasLeftGround = true;
+        }
+
+        // 점프 중이 아니고 땅에 붙어 있으면 바닥 고정 속도만 유지
+        if (!IsJumping && isGrounded)
+        {
+            if (VerticalVelocity < 0f)
+            {
+                VerticalVelocity = groundStickVelocity;
+            }
+
             return;
         }
 
+        // 점프 상승/하강 중에는 grounded가 잠깐 true여도 중력은 계속 적용
         ApplyGravity(deltaTime);
         LimitFallSpeed();
+
+        // 점프 후 실제로 공중에 나간 적이 있고, 다시 땅에 닿았을 때만 착지 처리
+        if (IsJumping && hasLeftGround && isGrounded && VerticalVelocity <= 0f)
+        {
+            HandleLanding();
+        }
     }
 }

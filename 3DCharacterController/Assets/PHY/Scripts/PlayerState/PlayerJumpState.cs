@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class PlayerJumpState : PlayerBaseState
 {
+    private bool hasLeftGround;
+
     public PlayerJumpState(PlayerController _playerController, PlayerStateMachine _playerStateMachine)
         : base(_playerController, _playerStateMachine)
     {
@@ -9,14 +11,28 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void Enter()
     {
+        hasLeftGround = false;
         Debug.Log("jump enter");
     }
 
     public override void Update()
     {
-        if (playerController.JumpController.VerticalVelocity < playerController.FallThreshold)
+        if (!playerController.GroundDetector.IsGrounded)
         {
-            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine));
+            hasLeftGround = true;
+        }
+
+        if (hasLeftGround && playerController.GroundDetector.IsGrounded)
+        {
+            if (playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
+            {
+                playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
+            }
+            else
+            {
+                playerStateMachine.ChangeState(new PlayerIdleState(playerController, playerStateMachine));
+            }
+
             return;
         }
     }

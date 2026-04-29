@@ -36,4 +36,13 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetFloat("YSpeed", ySpeed);
         animator.SetBool("IsGrounded", isGrounded);
     }
+
+    public void PlayJump()
+    {
+        if (animator == null) return;
+
+        animator.ResetTrigger("Jump");
+        animator.SetTrigger("Jump");
+
+    }
 }
