@@ -3,32 +3,48 @@ using UnityEngine;
 public class PlayerFallState : PlayerBaseState
 {
     private bool isLandingHandled;
+    private bool hasStartedFallingAnimation;
+    private bool startFallMotion;
 
-    public PlayerFallState(PlayerController _playerController, PlayerStateMachine _playerStateMachine)
+    public PlayerFallState(PlayerController _playerController, PlayerStateMachine _playerStateMachine, bool _startFallMotion)
         : base(_playerController, _playerStateMachine)
     {
+        startFallMotion = _startFallMotion;
     }
 
     public override void Enter()
     {
         isLandingHandled = false;
+        hasStartedFallingAnimation = false;
 
-        Debug.Log("inAir enter");
+        Debug.Log("fall enter");
+        playerController.PlayerAnimationController.SetLanding(false);
 
-        playerController.HighFallDetector.BeginFall(
-            playerController.JumpController.VerticalVelocity
-        );
+        if(startFallMotion)
+        {
+            hasStartedFallingAnimation = true;
+            playerController.PlayerAnimationController.SetFalling(true);
+            Debug.Log("falling animation started");
+
+        }
+
+        playerController.HighFallDetector.StartFall(playerController.JumpController.VerticalVelocity);
     }
 
     public override void Update()
     {
         if (!playerController.GroundDetector.IsGrounded)
         {
-            playerController.HighFallDetector.TickFall(
-                Time.deltaTime,
-                playerController.JumpController.VerticalVelocity
-            );
+            playerController.HighFallDetector.TickFall(Time.deltaTime, playerController.JumpController.VerticalVelocity);
 
+            //// 높은 낙하 일때만 애니메이션 시작
+            //if(!hasStartedFallingAnimation && playerController.HighFallDetector.IsHighFalling)
+            //{
+            //    hasStartedFallingAnimation = true;
+            //    playerController.PlayerAnimationController.SetFalling(true);
+
+            //    Debug.Log("Falling animation started");
+            //}
             return;
         }
 
@@ -43,13 +59,17 @@ public class PlayerFallState : PlayerBaseState
 
         bool wasHighFall = playerController.HighFallDetector.ConsumeHighFallResult();
 
-        Debug.Log($"InAir 상태에서 착지 감지 / wasHighFall {wasHighFall}");
+        Debug.Log($"falling 상태에서 착지 감지 / wasHighFall {wasHighFall}");
 
         if (wasHighFall)
         {
+            playerController.PlayerAnimationController.SetLanding(true);
             playerStateMachine.ChangeState(new PlayerLandState(playerController, playerStateMachine));
             return;
         }
+
+        playerController.PlayerAnimationController.SetFalling(false);
+        playerController.PlayerAnimationController.SetLanding(false);
 
         ReturnToGroundState();
     }
@@ -68,6 +88,6 @@ public class PlayerFallState : PlayerBaseState
 
     public override void Exit()
     {
-        Debug.Log("inAir exit");
+        Debug.Log("falling exit");
     }
 }

@@ -8,6 +8,7 @@ public class PlayerController : MonoBehaviour
 {
     [Header("Components")]
     [SerializeField] private CharacterController characterController;
+    [SerializeField] private PlayerAnimationController playerAnimationController;
     private Transform cameraTransform;
 
     [Header("Controllers")]
@@ -32,8 +33,9 @@ public class PlayerController : MonoBehaviour
     public MovementController MovementController => movementController;
     public JumpController JumpController => jumpController;
     public GroundDetector GroundDetector => groundDetector;
-
     public HighFallDetector HighFallDetector => highFallDetector;
+
+    public PlayerAnimationController PlayerAnimationController => playerAnimationController;
 
     public float FallThreshold => fallThreshold;
     public float FallStartDistance => fallStartDistance;
@@ -52,6 +54,7 @@ public class PlayerController : MonoBehaviour
         jumpController = GetComponent<JumpController>();
         groundDetector = GetComponent<GroundDetector>();
         highFallDetector = GetComponent<HighFallDetector>();
+        playerAnimationController = GetComponent<PlayerAnimationController>();
         playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
@@ -63,6 +66,7 @@ public class PlayerController : MonoBehaviour
         if (jumpController == null) jumpController = GetComponent<JumpController>();
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
         if (highFallDetector == null) highFallDetector = GetComponent<HighFallDetector>();
+        if(playerAnimationController == null) playerAnimationController = GetComponent<PlayerAnimationController>();
         if (playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
@@ -144,6 +148,7 @@ public class PlayerController : MonoBehaviour
             && jumpController != null
             && groundDetector != null
             && highFallDetector != null
+            && playerAnimationController != null
             && cameraTransform != null;
     }
 }

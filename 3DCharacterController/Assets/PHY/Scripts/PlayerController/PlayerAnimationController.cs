@@ -7,6 +7,9 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private GroundDetector groundDetector;
     [SerializeField] private JumpController jumpController;
 
+    private readonly int IsFallingHash = Animator.StringToHash("IsFalling");
+    private readonly int IsLandingHash = Animator.StringToHash("IsLanding");
+
     private void Reset()
     {
         characterController = GetComponent<CharacterController>();
@@ -44,5 +47,17 @@ public class PlayerAnimationController : MonoBehaviour
         animator.ResetTrigger("Jump");
         animator.SetTrigger("Jump");
 
+    }
+
+    public void SetFalling(bool value)
+    {
+        if(animator == null) return;
+        animator.SetBool(IsFallingHash, value);
+    }
+
+    public void SetLanding(bool value)
+    {
+        if (animator == null) return;
+        animator.SetBool(IsLandingHash, value);
     }
 }

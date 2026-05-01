@@ -17,12 +17,21 @@ public class PlayerJumpState : PlayerBaseState
 
     public override void Update()
     {
-        if (!playerController.GroundDetector.IsGrounded)
+        bool isGrounded = playerController.GroundDetector.IsGrounded;
+        float ySpeed = playerController.JumpController.VerticalVelocity;
+
+        if(!isGrounded)
         {
             hasLeftGround = true;
         }
 
-        if (hasLeftGround && playerController.GroundDetector.IsGrounded)
+       if(hasLeftGround && !isGrounded && ySpeed <= 0f)
+        {
+            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, false));
+            return;
+        }
+
+        if (hasLeftGround && isGrounded)
         {
             if (playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
             {

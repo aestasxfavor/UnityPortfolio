@@ -12,12 +12,14 @@ public class PlayerLandState : PlayerBaseState
     public override void Enter()
     {
         landingTimer = 0f;
-        Debug.Log("land enter");
+        playerController.PlayerAnimationController.SetFalling(true);
+        Debug.Log("landing enter");
     }
 
     public override void Update()
     {
         landingTimer += Time.deltaTime;
+
         if (landingTimer < landingDuration) return;
         
         if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
@@ -32,6 +34,8 @@ public class PlayerLandState : PlayerBaseState
 
     public override void Exit()
     {
-        Debug.Log("land exit");
+        playerController.PlayerAnimationController.SetLanding(false);
+        playerController.PlayerAnimationController.SetFalling(false);
+        Debug.Log("landing exit");
     }
 }

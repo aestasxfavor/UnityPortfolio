@@ -12,14 +12,14 @@ public class HighFallDetector : MonoBehaviour
 
     private bool isTracking;
 
-    public void BeginFall(float currentYSpeed)
+    public void StartFall(float currentYSpeed)
     {
         isTracking = true;
         FallTimer = 0f;
         MinYSpeed = currentYSpeed;
         IsHighFalling = false;
 
-        Debug.Log("HighFallDetector BeginFall");
+        Debug.Log("HighFallDetector StartFall");
     }
 
     public void TickFall(float deltaTime, float currentYSpeed)
