@@ -36,15 +36,6 @@ public class PlayerFallState : PlayerBaseState
         if (!playerController.GroundDetector.IsGrounded)
         {
             playerController.HighFallDetector.TickFall(Time.deltaTime, playerController.JumpController.VerticalVelocity);
-
-            //// 높은 낙하 일때만 애니메이션 시작
-            //if(!hasStartedFallingAnimation && playerController.HighFallDetector.IsHighFalling)
-            //{
-            //    hasStartedFallingAnimation = true;
-            //    playerController.PlayerAnimationController.SetFalling(true);
-
-            //    Debug.Log("Falling animation started");
-            //}
             return;
         }
 
