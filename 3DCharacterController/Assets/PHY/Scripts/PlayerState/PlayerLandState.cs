@@ -12,7 +12,7 @@ public class PlayerLandState : PlayerBaseState
     public override void Enter()
     {
         landingTimer = 0f;
-        Debug.Log("landing enter");
+        Debug.Log("land enter");
     }
 
     public override void Update()
@@ -32,6 +32,6 @@ public class PlayerLandState : PlayerBaseState
 
     public override void Exit()
     {
-        Debug.Log("landing exit");
+        Debug.Log("land exit");
     }
 }

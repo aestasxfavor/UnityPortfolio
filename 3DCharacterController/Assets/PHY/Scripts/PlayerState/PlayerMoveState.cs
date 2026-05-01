@@ -18,7 +18,7 @@ public class PlayerMoveState : PlayerBaseState
             && !playerController.JumpController.IsJumping
             && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold)
         {
-            playerStateMachine.ChangeState(new PlayerInAirState(playerController, playerStateMachine));
+            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine));
             return;
         }
 

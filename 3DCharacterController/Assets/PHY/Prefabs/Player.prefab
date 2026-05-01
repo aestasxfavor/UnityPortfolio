@@ -402,6 +402,7 @@ GameObject:
   - component: {fileID: 6782659197209582500}
   - component: {fileID: 363153047987805630}
   - component: {fileID: 3518767206623636004}
+  - component: {fileID: 3043522241677126821}
   m_Layer: 6
   m_Name: Player
   m_TagString: Untagged
@@ -468,8 +469,10 @@ MonoBehaviour:
   movementController: {fileID: 0}
   jumpController: {fileID: 0}
   groundDetector: {fileID: 0}
+  highFallDetector: {fileID: 0}
   playerStateMachine: {fileID: 0}
   fallThreshold: -0.5
+  fallStartDistance: 1
   showDebugLog: 1
 --- !u!114 &1252307429968288183
 MonoBehaviour:
@@ -487,6 +490,9 @@ MonoBehaviour:
   rotationSpeed: 1080
   moveResponse: 15
   stopResponse: 20
+  airControl: 0.5
+  airMoveResponse: 5
+  airStopResponse: 5
 --- !u!114 &6818276817852387901
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -560,7 +566,7 @@ Animator:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1841904798512722796}
   m_Enabled: 1
-  m_Avatar: {fileID: 9000000, guid: 3b67df81402b787439566924c49ef787, type: 3}
+  m_Avatar: {fileID: 9000000, guid: f45bc6c8a36d3064d8b7954d4d57c202, type: 3}
   m_Controller: {fileID: 9100000, guid: d888d02e9a2348d40b549a241d13e83a, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
@@ -628,6 +634,20 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &3043522241677126821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1841904798512722796}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c8695983f5bbb0f448a6402d1f3b5341, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highFallTime: 0.35
+  highFallSpeed: -7
 --- !u!1 &1844780486847558496
 GameObject:
   m_ObjectHideFlags: 0

@@ -15,6 +15,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private MovementController movementController;
     [SerializeField] private JumpController jumpController;
     [SerializeField] private GroundDetector groundDetector;
+    [SerializeField] private HighFallDetector highFallDetector;
 
     [Header("StatePatterns")]
     [SerializeField] private PlayerStateMachine playerStateMachine;
@@ -32,6 +33,8 @@ public class PlayerController : MonoBehaviour
     public JumpController JumpController => jumpController;
     public GroundDetector GroundDetector => groundDetector;
 
+    public HighFallDetector HighFallDetector => highFallDetector;
+
     public float FallThreshold => fallThreshold;
     public float FallStartDistance => fallStartDistance;
 
@@ -48,6 +51,7 @@ public class PlayerController : MonoBehaviour
         movementController = GetComponent<MovementController>();
         jumpController = GetComponent<JumpController>();
         groundDetector = GetComponent<GroundDetector>();
+        highFallDetector = GetComponent<HighFallDetector>();
         playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
@@ -58,6 +62,7 @@ public class PlayerController : MonoBehaviour
         if (movementController == null) movementController = GetComponent<MovementController>();
         if (jumpController == null) jumpController = GetComponent<JumpController>();
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
+        if (highFallDetector == null) highFallDetector = GetComponent<HighFallDetector>();
         if (playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
@@ -138,6 +143,7 @@ public class PlayerController : MonoBehaviour
             && movementController != null
             && jumpController != null
             && groundDetector != null
+            && highFallDetector != null
             && cameraTransform != null;
     }
 }
