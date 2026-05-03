@@ -903,6 +903,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 400910081216899772, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
+      propertyPath: groundCheckDistance
+      value: 0.2
+      objectReference: {fileID: 0}
     - target: {fileID: 1841904798512722796, guid: bc21e63bf7bc82a40a4d3caa15ec1256, type: 3}
       propertyPath: m_Name
       value: Player
