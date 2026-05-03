@@ -3,7 +3,9 @@ using UnityEngine;
 public class PlayerLandState : PlayerBaseState
 {
     private float landingTimer;
-    private float landingDuration = 0.25f;
+    private float idlelandingDuration = 0.35f;
+    private float moveLandingDuration = 0.2f;
+
     public PlayerLandState(PlayerController _playerController, PlayerStateMachine _playerStateMachine)
         : base(_playerController, _playerStateMachine)
     {
@@ -12,7 +14,10 @@ public class PlayerLandState : PlayerBaseState
     public override void Enter()
     {
         landingTimer = 0f;
-        playerController.PlayerAnimationController.SetFalling(true);
+
+        playerController.PlayerAnimationController.SetFalling(false);
+        playerController.PlayerAnimationController.SetLanding(true);
+
         Debug.Log("landing enter");
     }
 
@@ -20,9 +25,15 @@ public class PlayerLandState : PlayerBaseState
     {
         landingTimer += Time.deltaTime;
 
-        if (landingTimer < landingDuration) return;
+        bool hasMoveInput = playerController.InputHandler.Movement.sqrMagnitude > 0.01f;
+
+        playerController.PlayerAnimationController.SetMoveInput(hasMoveInput);
+
+        float targetDuration = hasMoveInput ? moveLandingDuration : idlelandingDuration;
+
+        if (landingTimer < targetDuration) return;
         
-        if(playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
+        if(hasMoveInput)
         {
             playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
         }
@@ -36,6 +47,7 @@ public class PlayerLandState : PlayerBaseState
     {
         playerController.PlayerAnimationController.SetLanding(false);
         playerController.PlayerAnimationController.SetFalling(false);
+
         Debug.Log("landing exit");
     }
 }

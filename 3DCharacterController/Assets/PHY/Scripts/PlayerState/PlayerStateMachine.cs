@@ -19,7 +19,7 @@ public class PlayerStateMachine : MonoBehaviour
         CurrentState?.Enter();
     }
 
-    private void Update()
+    public void UpdateState()
     {
         CurrentState?.Update();
     }

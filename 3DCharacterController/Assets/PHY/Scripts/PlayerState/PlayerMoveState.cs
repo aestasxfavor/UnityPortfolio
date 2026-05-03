@@ -8,6 +8,9 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void Enter()
     {
+        playerController.PlayerAnimationController.SetFalling(false);
+        playerController.PlayerAnimationController.SetLanding(false);
+        playerController.PlayerAnimationController.SetMoveInput(true);
         Debug.Log("move enter");
     }
 
@@ -18,7 +21,7 @@ public class PlayerMoveState : PlayerBaseState
             && !playerController.JumpController.IsJumping
             && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold)
         {
-            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, true));
+            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, false));
             return;
         }
 

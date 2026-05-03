@@ -9,6 +9,7 @@ public class PlayerAnimationController : MonoBehaviour
 
     private readonly int IsFallingHash = Animator.StringToHash("IsFalling");
     private readonly int IsLandingHash = Animator.StringToHash("IsLanding");
+    private readonly int HasMoveInputHash = Animator.StringToHash("HasMoveInput");
 
     private void Reset()
     {
@@ -59,5 +60,11 @@ public class PlayerAnimationController : MonoBehaviour
     {
         if (animator == null) return;
         animator.SetBool(IsLandingHash, value);
+    }
+
+    public void SetMoveInput(bool value)
+    {
+        if (animator == null) return;
+        animator.SetBool(HasMoveInputHash, value);
     }
 }

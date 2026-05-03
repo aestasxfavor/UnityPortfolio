@@ -23,7 +23,6 @@ public class PlayerController : MonoBehaviour
 
     [Header("Air State")]
     [SerializeField] private float fallThreshold = -0.5f;
-    [SerializeField] private float fallStartDistance = 1.0f;
 
     [Header("Debug")]
     [SerializeField] private bool showDebugLog = true;
@@ -37,14 +36,17 @@ public class PlayerController : MonoBehaviour
 
     public PlayerAnimationController PlayerAnimationController => playerAnimationController;
 
-    public float FallThreshold => fallThreshold;
-    public float FallStartDistance => fallStartDistance;
+    public CharacterController CharacterController => characterController;
 
+    public float FallThreshold => fallThreshold;
+ 
     public float JumpStartY => jumpStartY;
     private float jumpStartY;
 
     public bool WasGrounded => wasGrounded;
     private bool wasGrounded;
+
+    public bool ControllerGroundedAfterMove { get; private set; }
 
     private void Reset()
     {
@@ -55,6 +57,7 @@ public class PlayerController : MonoBehaviour
         groundDetector = GetComponent<GroundDetector>();
         highFallDetector = GetComponent<HighFallDetector>();
         playerAnimationController = GetComponent<PlayerAnimationController>();
+        characterController = GetComponent<CharacterController>();
         playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
@@ -66,7 +69,8 @@ public class PlayerController : MonoBehaviour
         if (jumpController == null) jumpController = GetComponent<JumpController>();
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
         if (highFallDetector == null) highFallDetector = GetComponent<HighFallDetector>();
-        if(playerAnimationController == null) playerAnimationController = GetComponent<PlayerAnimationController>();
+        if (playerAnimationController == null) playerAnimationController = GetComponent<PlayerAnimationController>();
+        if(characterController == null) characterController = GetComponent<CharacterController>();
         if (playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
@@ -90,12 +94,16 @@ public class PlayerController : MonoBehaviour
     {
         if (!CanRun()) return;
 
+        ControllerGroundedAfterMove = false;
+
         wasGrounded = groundDetector.IsGrounded;
 
         groundDetector.GroundCheck();
         jumpController.UpdateVertical(characterController.isGrounded, Time.deltaTime);
 
         ProcessMovement();
+
+        playerStateMachine.UpdateState();
 
         if (showDebugLog)
         {
@@ -114,7 +122,9 @@ public class PlayerController : MonoBehaviour
         Vector3 finalMove = horizontalMove;
         finalMove.y = jumpController.VerticalVelocity;
 
-        characterController.Move(finalMove * Time.deltaTime);
+        CollisionFlags flags = characterController.Move(finalMove * Time.deltaTime);
+
+        ControllerGroundedAfterMove = (flags & CollisionFlags.Below) != 0;
 
         if (!hasMoveInput) return;
 
@@ -149,6 +159,7 @@ public class PlayerController : MonoBehaviour
             && groundDetector != null
             && highFallDetector != null
             && playerAnimationController != null
+            && characterController != null
             && cameraTransform != null;
     }
 }

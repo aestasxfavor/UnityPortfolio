@@ -7,6 +7,10 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void Enter()
     {
+        playerController.PlayerAnimationController.SetFalling(false);
+        playerController.PlayerAnimationController.SetLanding(false);
+        playerController.PlayerAnimationController.SetMoveInput(false);
+
         Debug.Log("idle enter");
     }
 
@@ -17,7 +21,7 @@ public class PlayerIdleState : PlayerBaseState
             && !playerController.JumpController.IsJumping
             && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold)
         {
-            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, true));
+            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, false));
             return;
         }
 
@@ -41,19 +45,17 @@ public class PlayerIdleState : PlayerBaseState
 
         if (canJump)
         {
-            //Debug.Log("idle -> jump 전이 1");
 
             playerController.SetJumpStartY(playerController.transform.position.y);
-            //Debug.Log("idle -> jump 전이 2 : SetJumpStartY 완료");
+
 
             playerController.JumpController.TryJump(true);
-            //Debug.Log("idle -> jump 전이 3 : TryJump 완료");
+
 
             playerController.InputHandler.ResetJumpInput();
-            //Debug.Log("idle -> jump 전이 4 : ResetJumpInput 완료");
+
 
             playerStateMachine.ChangeState(new PlayerJumpState(playerController, playerStateMachine));
-            //Debug.Log("idle -> jump 전이 5 : ChangeState 호출 완료");
 
             return;
         }
@@ -62,7 +64,7 @@ public class PlayerIdleState : PlayerBaseState
         if (playerController.InputHandler.Movement.sqrMagnitude > 0.01f)
         {
             playerStateMachine.ChangeState(new PlayerMoveState(playerController, playerStateMachine));
-            //Debug.Log("player ChangeState : MoveSlope");
+
             return;
         }
     }
