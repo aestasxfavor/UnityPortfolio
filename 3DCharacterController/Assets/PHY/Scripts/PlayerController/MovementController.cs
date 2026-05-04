@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class MovementController : MonoBehaviour
 {
-    [SerializeField] private float moveSpeed = 10f;
-    [SerializeField] private float rotationSpeed = 720f;
+    [SerializeField] private float walkSpeed = 4f;
+    [SerializeField] private float runSpeed = 7f;
+
+    [SerializeField] private float rotationSpeed = 1080f;
 
     [SerializeField] private float moveResponse = 10f;
     [SerializeField] private float stopResponse = 20f;
@@ -13,7 +15,14 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float airStopResponse = 5f;
 
     private Vector3 currentHorizontalVelocity;
-    public float MoveSpeed => moveSpeed;
+
+    public float WalkSpeed => walkSpeed;
+    public float RunSpeed => runSpeed;
+    public float CurrentHorizontalSpeed => currentHorizontalVelocity.magnitude;
+    public float CurrentMoveSpeed { get; private set; }
+
+    public bool IsRunning { get; private set; }
+    //public float MoveSpeed => moveSpeed;
 
     // 카메라 기준 방향 이동 계산 로직
     public Vector3 GetMoveDirection(Vector2 movement, Transform cameraTransform)
@@ -44,13 +53,18 @@ public class MovementController : MonoBehaviour
     }
 
     // 캐릭터 컨트롤러 기반 이동 로직
-    public Vector3 GetHorizontalMove(Vector3 moveDirection, float deltaTime, bool isGrounded)
+    public Vector3 GetHorizontalMove(Vector3 moveDirection, float deltaTime, bool isGrounded, bool isRunPressed)
     {
         bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
 
+        IsRunning = hasMoveInput && isRunPressed;
+
+        CurrentMoveSpeed = IsRunning ? runSpeed : walkSpeed;
+
         float speedMultiplier = isGrounded ? 1f : airControl;
 
-        Vector3 targetVelocity = moveDirection * moveSpeed * speedMultiplier;
+        Vector3 targetVelocity = moveDirection * CurrentMoveSpeed * speedMultiplier;
+
         float response;
 
         if (isGrounded)

@@ -39,7 +39,7 @@ public class PlayerController : MonoBehaviour
     public CharacterController CharacterController => characterController;
 
     public float FallThreshold => fallThreshold;
- 
+
     public float JumpStartY => jumpStartY;
     private float jumpStartY;
 
@@ -70,7 +70,7 @@ public class PlayerController : MonoBehaviour
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
         if (highFallDetector == null) highFallDetector = GetComponent<HighFallDetector>();
         if (playerAnimationController == null) playerAnimationController = GetComponent<PlayerAnimationController>();
-        if(characterController == null) characterController = GetComponent<CharacterController>();
+        if (characterController == null) characterController = GetComponent<CharacterController>();
         if (playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
@@ -105,10 +105,10 @@ public class PlayerController : MonoBehaviour
 
         playerStateMachine.UpdateState();
 
-        if (showDebugLog)
-        {
-            Debug.Log($"Grounded : {groundDetector.IsGrounded} | Walkable : {groundDetector.IsWalkableSlope} | SlopeAngle : {groundDetector.SlopeAngle}");
-        }
+        //if (showDebugLog)
+        //{
+        //    Debug.Log($"Grounded : {groundDetector.IsGrounded} | Walkable : {groundDetector.IsWalkableSlope} | SlopeAngle : {groundDetector.SlopeAngle}");
+        //}
     }
 
     private void ProcessMovement()
@@ -116,8 +116,9 @@ public class PlayerController : MonoBehaviour
         Vector3 moveDirection = movementController.GetMoveDirection(inputHandler.Movement, cameraTransform);
 
         bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
+        bool isRunPressed = inputHandler.IsRunPressed;
 
-        Vector3 horizontalMove = movementController.GetHorizontalMove(moveDirection, Time.deltaTime, groundDetector.IsGrounded);
+        Vector3 horizontalMove = movementController.GetHorizontalMove(moveDirection, Time.deltaTime, groundDetector.IsGrounded, isRunPressed);
 
         Vector3 finalMove = horizontalMove;
         finalMove.y = jumpController.VerticalVelocity;
@@ -126,7 +127,6 @@ public class PlayerController : MonoBehaviour
 
         ControllerGroundedAfterMove = (flags & CollisionFlags.Below) != 0;
 
-        if (!hasMoveInput) return;
 
         if (groundDetector.IsGrounded)
         {
@@ -136,13 +136,15 @@ public class PlayerController : MonoBehaviour
         if (showDebugLog)
         {
             Debug.Log(
-                $"GD_Grounded:{groundDetector.IsGrounded} | " +
-                $"CC_Grounded:{characterController.isGrounded} | " +
-                $"Walkable:{groundDetector.IsWalkableSlope} | " +
-                $"SlopeAngle:{groundDetector.SlopeAngle:F2} | " +
-                $"YSpeed:{jumpController.VerticalVelocity:F2}"
+                $"TargetSpeed:{movementController.CurrentMoveSpeed:F2} | " +
+                $"CurrentSpeed:{movementController.CurrentHorizontalSpeed:F2} | " +
+                $"RunPressed:{isRunPressed} | " +
+                $"HasMoveInput:{hasMoveInput}"
             );
         }
+
+        if (!hasMoveInput) return;
+        
     }
 
     public void SetJumpStartY(float value)

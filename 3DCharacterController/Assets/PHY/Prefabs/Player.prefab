@@ -465,6 +465,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   characterController: {fileID: 3518767206623636004}
+  playerAnimationController: {fileID: 0}
   inputHandler: {fileID: 0}
   movementController: {fileID: 0}
   jumpController: {fileID: 0}
@@ -472,7 +473,6 @@ MonoBehaviour:
   highFallDetector: {fileID: 0}
   playerStateMachine: {fileID: 0}
   fallThreshold: -0.5
-  fallStartDistance: 1
   showDebugLog: 1
 --- !u!114 &1252307429968288183
 MonoBehaviour:
@@ -486,7 +486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47f987e9c9b345429f00af416cfe385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 3.5
+  walkSpeed: 4
+  runSpeed: 7
   rotationSpeed: 1080
   moveResponse: 15
   stopResponse: 20
@@ -525,7 +526,9 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  maxGroundCheckDistance: 1
   groundCheckDistance: 0.3
+  landingCheckDistance: 0.08
   maxSlopeAngle: 42
 --- !u!114 &7233249820898087528
 MonoBehaviour:
@@ -629,8 +632,8 @@ CharacterController:
   serializedVersion: 3
   m_Height: 2
   m_Radius: 0.5
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
+  m_SlopeLimit: 42
+  m_StepOffset: 0.2
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
