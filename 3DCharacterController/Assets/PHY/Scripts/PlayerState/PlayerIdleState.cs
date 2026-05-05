@@ -21,7 +21,7 @@ public class PlayerIdleState : PlayerBaseState
             && !playerController.JumpController.IsJumping
             && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold)
         {
-            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, false));
+            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, true));
             return;
         }
 
@@ -31,29 +31,12 @@ public class PlayerIdleState : PlayerBaseState
                        playerController.GroundDetector.IsGrounded &&
                        playerController.GroundDetector.IsWalkableSlope;
 
-        if (playerController.InputHandler.JumpPressed)
-        {
-            Debug.Log(
-                $"[Idle Jump Check] " +
-                $"JumpPressed:{playerController.InputHandler.JumpPressed}, " +
-                $"IsGrounded:{playerController.GroundDetector.IsGrounded}, " +
-                $"IsWalkableSlope:{playerController.GroundDetector.IsWalkableSlope}, " +
-                $"VerticalVelocity:{playerController.JumpController.VerticalVelocity}, " +
-                $"IsJumping:{playerController.JumpController.IsJumping}"
-            );
-        }
-
         if (canJump)
         {
-
             playerController.SetJumpStartY(playerController.transform.position.y);
-
-
             playerController.JumpController.TryJump(true);
 
-
             playerController.InputHandler.ResetJumpInput();
-
 
             playerStateMachine.ChangeState(new PlayerJumpState(playerController, playerStateMachine));
 

@@ -8,6 +8,7 @@ public class PlayerFallState : PlayerBaseState
 
     private float fallTimer;
     private float minYSpeed;
+   
 
     private const float HighFallMinTime = 0.35f;
     private const float HighFallMinYSpeed = -4f;
@@ -33,10 +34,13 @@ public class PlayerFallState : PlayerBaseState
 
         if (startFallMotion)
         {
+            //Debug.Log($"[FallState Enter] startFallMotion: {startFallMotion}");
             StartFallingAnimation();
         }
 
         playerController.HighFallDetector.StartFall(playerController.JumpController.VerticalVelocity);
+
+
     }
 
     public override void Update()
@@ -51,12 +55,12 @@ public class PlayerFallState : PlayerBaseState
             StartFallingAnimation();
         }
 
-        if(fallTimer < 0.05f) return;
+        if (fallTimer < 0.05f) return;
 
-        // 중요: 실제 CharacterController.Move 이후 바닥 충돌이 있었으면 바로 착지 처리
+        // CharacterController.Move 이후 바닥 충돌이 있었으면 착지 처리
         if (playerController.ControllerGroundedAfterMove)
         {
-            HandleLanding();
+          HandleLanding();
             return;
         }
        
@@ -71,11 +75,14 @@ public class PlayerFallState : PlayerBaseState
     private void StartFallingAnimation()
     {
         hasStartedFallingAnimation = true;
+     
         playerController.PlayerAnimationController.SetFalling(true);
 
         Debug.Log(
-            $"높은 낙하 확정 / Falling animation started / fallTimer:{fallTimer:F2} / minYSpeed:{minYSpeed:F2}"
-        );
+        $"[FALL START] fallTimer:{fallTimer:F3} / " +
+        $"minYSpeed:{minYSpeed:F3} / " +
+        $"currentYSpeed:{playerController.JumpController.VerticalVelocity:F3}"
+    );
     }
 
     private void HandleLanding()
@@ -87,11 +94,7 @@ public class PlayerFallState : PlayerBaseState
         bool wasHighFall = playerController.HighFallDetector.ConsumeHighFallResult();
         bool shouldPlayLandingMotion = wasHighFall || hasStartedFallingAnimation;
 
-        Debug.Log(
-            $"실제 바닥 충돌 후 착지 처리 / wasHighFall:{wasHighFall} / " +
-            $"hasStartedFallingAnimation:{hasStartedFallingAnimation} / " +
-            $"ControllerGroundedAfterMove:{playerController.ControllerGroundedAfterMove}"
-        );
+        
 
         playerController.PlayerAnimationController.SetFalling(false);
 

@@ -6,6 +6,11 @@ public class PlayerAnimationController : MonoBehaviour
     [SerializeField] private CharacterController characterController;
     [SerializeField] private GroundDetector groundDetector;
     [SerializeField] private JumpController jumpController;
+    [SerializeField] private MovementController movementController;
+
+    private readonly int SpeedHash = Animator.StringToHash("Speed");
+    private readonly int YSpeedHash = Animator.StringToHash("YSpeed");
+    private readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
 
     private readonly int IsFallingHash = Animator.StringToHash("IsFalling");
     private readonly int IsLandingHash = Animator.StringToHash("IsLanding");
@@ -16,6 +21,7 @@ public class PlayerAnimationController : MonoBehaviour
         characterController = GetComponent<CharacterController>();
         groundDetector = GetComponent<GroundDetector>();
         jumpController = GetComponent<JumpController>();
+        movementController = GetComponent<MovementController>();
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -24,21 +30,50 @@ public class PlayerAnimationController : MonoBehaviour
         if (characterController == null) characterController = GetComponent<CharacterController>();
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
         if (jumpController == null) jumpController = GetComponent<JumpController>();
+        if (movementController == null) movementController = GetComponent<MovementController>();
         if (animator == null) animator = GetComponentInChildren<Animator>();
+       
     }
 
     private void Update()
     {
-        if (characterController == null || groundDetector == null || jumpController == null || animator == null) return;
+        if(!CanUpdateAnimation()) return;
 
-        Vector3 horizontalVelocity = new Vector3(characterController.velocity.x, 0f, characterController.velocity.z);
-        float speed = horizontalVelocity.magnitude;
-        float ySpeed = jumpController.VerticalVelocity;
-        bool isGrounded = groundDetector.IsGrounded;
+        UpdateMoveSpeed();
+        SetYSpeed(jumpController.VerticalVelocity);
+        SetGrounded(groundDetector.IsGrounded);
+    }
 
-        animator.SetFloat("Speed", speed);
-        animator.SetFloat("YSpeed", ySpeed);
-        animator.SetBool("IsGrounded", isGrounded);
+    private void UpdateMoveSpeed()
+    {
+        if(movementController.RunSpeed <= 0f)
+        {
+            SetSpeed(0f);
+            return;
+        }
+
+        float normalizedSpeed = movementController.CurrentHorizontalSpeed / movementController.RunSpeed;
+        normalizedSpeed = Mathf.Clamp01(normalizedSpeed);
+
+        SetSpeed(normalizedSpeed);
+    }
+
+    public void SetSpeed(float value)
+    {
+        if (animator == null) return;
+        animator.SetFloat(SpeedHash, value, 0.05f, Time.deltaTime);
+    }
+
+    public void SetYSpeed(float value)
+    {
+        if (animator == null) return;
+        animator.SetFloat(YSpeedHash, value);
+    }
+
+    public void SetGrounded(bool value)
+    {
+        if (animator == null) return;
+        animator.SetBool(IsGroundedHash, value);
     }
 
     public void PlayJump()
@@ -53,6 +88,7 @@ public class PlayerAnimationController : MonoBehaviour
     public void SetFalling(bool value)
     {
         if(animator == null) return;
+        Debug.Log($"SetFalling È£ÃâµÊ: {value}");
         animator.SetBool(IsFallingHash, value);
     }
 
@@ -66,5 +102,14 @@ public class PlayerAnimationController : MonoBehaviour
     {
         if (animator == null) return;
         animator.SetBool(HasMoveInputHash, value);
+    }
+
+    private bool CanUpdateAnimation()
+    {
+        return animator != null
+            && characterController != null
+            && groundDetector != null
+            && jumpController != null
+            && movementController != null;
     }
 }

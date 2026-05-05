@@ -21,11 +21,10 @@ public class PlayerMoveState : PlayerBaseState
             && !playerController.JumpController.IsJumping
             && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold)
         {
-            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, false));
+            playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, true));
             return;
         }
 
-        
 
         bool canJump = playerController.InputHandler.JumpPressed &&
                        playerController.GroundDetector.IsGrounded &&
@@ -57,7 +56,6 @@ public class PlayerMoveState : PlayerBaseState
         if (playerController.InputHandler.Movement.sqrMagnitude <= 0.01f)
         {
             playerStateMachine.ChangeState(new PlayerIdleState(playerController, playerStateMachine));
-            //Debug.Log("player ChangeState: Idle");
             return;
         }
 

@@ -9,6 +9,7 @@ public class MovementController : MonoBehaviour
 
     [SerializeField] private float moveResponse = 10f;
     [SerializeField] private float stopResponse = 20f;
+    [SerializeField] private float runToWalkResponse = 4f;
 
     [SerializeField] private float airControl = 0.5f;
     [SerializeField] private float airMoveResponse = 5f;
@@ -59,7 +60,13 @@ public class MovementController : MonoBehaviour
 
         IsRunning = hasMoveInput && isRunPressed;
 
-        CurrentMoveSpeed = IsRunning ? runSpeed : walkSpeed;
+        CurrentMoveSpeed = hasMoveInput ? (IsRunning ? runSpeed : walkSpeed) : 0f;
+
+        if(isGrounded && !hasMoveInput)
+        {
+            currentHorizontalVelocity = Vector3.zero;
+            return Vector3.zero;
+        }
 
         float speedMultiplier = isGrounded ? 1f : airControl;
 
@@ -69,7 +76,20 @@ public class MovementController : MonoBehaviour
 
         if (isGrounded)
         {
-            response = hasMoveInput ? moveResponse : stopResponse;
+            if (!hasMoveInput)
+            {
+                response = stopResponse;
+            }
+            else
+            {
+                float currentSpeed = currentHorizontalVelocity.magnitude;
+                float targetSpeed = targetVelocity.magnitude;
+
+                bool isSlowingDown = currentSpeed > targetSpeed;
+
+                response = isSlowingDown ? runToWalkResponse : moveResponse;
+            }
+                
         }
         else
         {

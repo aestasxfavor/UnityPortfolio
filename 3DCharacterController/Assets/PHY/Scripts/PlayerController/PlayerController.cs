@@ -104,11 +104,6 @@ public class PlayerController : MonoBehaviour
         ProcessMovement();
 
         playerStateMachine.UpdateState();
-
-        //if (showDebugLog)
-        //{
-        //    Debug.Log($"Grounded : {groundDetector.IsGrounded} | Walkable : {groundDetector.IsWalkableSlope} | SlopeAngle : {groundDetector.SlopeAngle}");
-        //}
     }
 
     private void ProcessMovement()
@@ -118,33 +113,31 @@ public class PlayerController : MonoBehaviour
         bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
         bool isRunPressed = inputHandler.IsRunPressed;
 
-        Vector3 horizontalMove = movementController.GetHorizontalMove(moveDirection, Time.deltaTime, groundDetector.IsGrounded, isRunPressed);
+        playerAnimationController.SetMoveInput(hasMoveInput);
+
+        Vector3 horizontalMove = movementController.GetHorizontalMove(
+            moveDirection,
+            Time.deltaTime,
+            groundDetector.IsGrounded,
+            isRunPressed
+        );
 
         Vector3 finalMove = horizontalMove;
         finalMove.y = jumpController.VerticalVelocity;
 
+        // CollisionFlags: Move 후 캐릭터 컨트롤러가 어떤 방향으로 충돌이 있었는지 알려주는 플래그
         CollisionFlags flags = characterController.Move(finalMove * Time.deltaTime);
 
-        ControllerGroundedAfterMove = (flags & CollisionFlags.Below) != 0;
+        bool hitBelow = (flags & CollisionFlags.Below) != 0;
 
+        groundDetector.GroundCheck();
 
-        if (groundDetector.IsGrounded)
+        ControllerGroundedAfterMove = hitBelow && groundDetector.IsGrounded;
+
+        if (hasMoveInput && groundDetector.IsGrounded)
         {
             movementController.Rotate(transform, moveDirection, Time.deltaTime);
         }
-
-        if (showDebugLog)
-        {
-            Debug.Log(
-                $"TargetSpeed:{movementController.CurrentMoveSpeed:F2} | " +
-                $"CurrentSpeed:{movementController.CurrentHorizontalSpeed:F2} | " +
-                $"RunPressed:{isRunPressed} | " +
-                $"HasMoveInput:{hasMoveInput}"
-            );
-        }
-
-        if (!hasMoveInput) return;
-        
     }
 
     public void SetJumpStartY(float value)

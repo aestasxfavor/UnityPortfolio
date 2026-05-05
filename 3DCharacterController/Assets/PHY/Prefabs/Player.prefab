@@ -598,6 +598,7 @@ MonoBehaviour:
   characterController: {fileID: 3518767206623636004}
   groundDetector: {fileID: 400910081216899772}
   jumpController: {fileID: 6818276817852387901}
+  movementController: {fileID: 1252307429968288183}
 --- !u!114 &363153047987805630
 MonoBehaviour:
   m_ObjectHideFlags: 0
