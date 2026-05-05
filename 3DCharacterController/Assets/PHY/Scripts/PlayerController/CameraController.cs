@@ -1,6 +1,10 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
+/// <summary>
+/// Todo: 마우스로 카메라 각도 조절 기능 추가 예정
+/// </summary>
+
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform cameraTarget;

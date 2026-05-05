@@ -12,7 +12,7 @@ public class InputHandler : MonoBehaviour
     public void OnMove(InputValue value)
     {
         Movement = value.Get<Vector2>();
-        //Debug.Log($"[InputHandler] Movement Input : {Movement}");
+       
     }
 
     // 점프 입력 상태 저장 로직

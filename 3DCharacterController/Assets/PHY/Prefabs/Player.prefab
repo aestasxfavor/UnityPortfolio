@@ -486,11 +486,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d47f987e9c9b345429f00af416cfe385, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  walkSpeed: 4
-  runSpeed: 7
+  walkSpeed: 3
+  runSpeed: 6
   rotationSpeed: 1080
   moveResponse: 15
   stopResponse: 20
+  runToWalkResponse: 4
   airControl: 0.5
   airMoveResponse: 5
   airStopResponse: 5
