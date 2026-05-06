@@ -122,7 +122,11 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        cinemachineCamera.Target.TrackingTarget = pitchTarget != null ? pitchTarget : yawTarget;
+        if (cinemachineCamera != null && yawTarget != null)
+        {
+            cinemachineCamera.Target.TrackingTarget = yawTarget;
+        }
+        //cinemachineCamera.Target.TrackingTarget = pitchTarget != null ? pitchTarget : yawTarget;
     }
 
     private void InitRotation()
