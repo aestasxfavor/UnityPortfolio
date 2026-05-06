@@ -7,41 +7,99 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private Transform cameraTarget;
+    [SerializeField] private Transform yawTarget;
+    [SerializeField] private Transform pitchTarget;
     [SerializeField] private CinemachineCamera cinemachineCamera;
+    [SerializeField] private InputHandler inputHandler;
+
+    [SerializeField] private float mouseSensitivity = 0.08f;
+    [SerializeField] private float minPitch = -25f;
+    [SerializeField] private float maxPitch = 60f;
+
+    private float yaw;
+    private float pitch;
+    private bool useMouseLook = true;
+
 
     private void Reset()
     {
-        if (cameraTarget == null)
+        inputHandler = GetComponent<InputHandler>();
+
+        if (yawTarget == null)
         {
-            Transform found = transform.Find("CameraTarget");
+            Transform found = transform.Find("TrackingCamera_CloseBackView");
             if (found != null)
             {
-                cameraTarget = found;
+                yawTarget = found;
             }
+        }
+
+        if (pitchTarget == null)
+        {
+            if (yawTarget != null)
+            {
+                Transform found = yawTarget.Find("CameraPitchTarget");
+
+                if (found != null)
+                {
+                    pitchTarget = found;
+                }
+            }
+
+            if (pitchTarget == null)
+            {
+                Transform found = transform.Find("CameraPitchTarget");
+
+                if (found != null)
+                {
+                    pitchTarget = found;
+                }
+            }
+
         }
     }
 
     private void Awake()
     {
-        if (cameraTarget == null)
-        {
-            Transform found = transform.Find("CameraTarget");
-            if (found != null)
-            {
-                cameraTarget = found;
-            }
-        }
+        if (inputHandler == null) inputHandler = GetComponent<InputHandler>();
+
     }
 
     private void Start()
     {
         BindCamera();
-
+        InitRotation();
         PlayerController playerController = GetComponent<PlayerController>();
-        if(playerController != null && Camera.main != null)
+        if (playerController != null && Camera.main != null)
         {
             playerController.SetCameraTransform(Camera.main.transform);
+        }
+    }
+
+    private void LateUpdate()
+    {
+        if (!useMouseLook)
+        {
+            return;
+        }
+
+        if (inputHandler == null || yawTarget == null)
+        {
+            return;
+        }
+
+        Vector2 lookInput = inputHandler.Look;
+
+        yaw += lookInput.x * mouseSensitivity;
+        pitch -= lookInput.y * mouseSensitivity;
+
+        pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+
+        yawTarget.rotation = Quaternion.Euler(0f, yaw, 0f);
+
+        if (pitchTarget != null)
+        {
+            pitchTarget.localRotation = Quaternion.Euler(pitch, 0f, 0f);
         }
     }
 
@@ -52,7 +110,7 @@ public class CameraController : MonoBehaviour
             cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
         }
 
-        if (cameraTarget == null)
+        if (yawTarget == null)
         {
             Debug.LogWarning("CameraTarget을 찾지 못함");
             return;
@@ -64,6 +122,30 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        cinemachineCamera.Target.TrackingTarget = cameraTarget;
+        cinemachineCamera.Target.TrackingTarget = pitchTarget != null ? pitchTarget : yawTarget;
+    }
+
+    private void InitRotation()
+    {
+        if (yawTarget != null)
+        {
+            yaw = yawTarget.eulerAngles.y;
+        }
+
+        if (pitchTarget != null)
+        {
+            pitch = Normalize(pitchTarget.eulerAngles.x);
+            pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
+        }
+    }
+
+    private float Normalize(float angle)
+    {
+        if (angle > 180f)
+        {
+            angle -= 360f;
+        }
+
+        return angle;
     }
 }
