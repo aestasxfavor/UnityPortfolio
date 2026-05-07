@@ -32,7 +32,12 @@ public class PlayerFallState : PlayerBaseState
 
         Debug.Log("fall enter");
 
-        playerController.HighFallDetector.StartFall(playerController.JumpController.VerticalVelocity);
+        if(startFallMotion)
+        {
+            StartFallingAnimation();
+        }
+
+            playerController.HighFallDetector.StartFall(playerController.JumpController.VerticalVelocity);
     }
 
     public override void Update()
