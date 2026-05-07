@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform yawTarget;
     [SerializeField] private Transform pitchTarget;
+    [SerializeField] private Transform cameraSocket;
     [SerializeField] private CinemachineCamera cinemachineCamera;
     [SerializeField] private InputHandler inputHandler;
 
@@ -53,6 +54,16 @@ public class CameraController : MonoBehaviour
                 if (found != null)
                 {
                     pitchTarget = found;
+                }
+            }
+
+            if (cameraSocket == null && pitchTarget != null)
+            {
+                Transform found = pitchTarget.Find("CameraSocket");
+
+                if (found != null)
+                {
+                    cameraSocket = found;
                 }
             }
 
@@ -118,14 +129,38 @@ public class CameraController : MonoBehaviour
 
         if (cinemachineCamera == null)
         {
-            Debug.LogWarning("CinemachineCamera를 찾지 못함");
+            Debug.LogWarning("시네머신 카메라를 찾지 못함");
             return;
         }
 
-        if (cinemachineCamera != null && yawTarget != null)
+        if (pitchTarget == null)
         {
-            cinemachineCamera.Target.TrackingTarget = yawTarget;
+            Debug.LogWarning("pitchTarget을 찾지 못함");
+            return;
         }
+
+        if (cameraSocket == null)
+        {
+            Debug.LogWarning("cameraSocket을 찾지 못함");
+            return;
+        }
+
+        if (pitchTarget == null && yawTarget != null)
+        {
+            pitchTarget = yawTarget.Find("CameraPitchTarget");
+        }
+
+        if (cameraSocket == null && pitchTarget != null)
+        {
+            cameraSocket = pitchTarget.Find("CameraSocket");
+        }
+
+        cinemachineCamera.Target.TrackingTarget = cameraSocket;
+
+        //if (cinemachineCamera != null && yawTarget != null)
+        //{
+        //    cinemachineCamera.Target.TrackingTarget = yawTarget;
+        //}
         //cinemachineCamera.Target.TrackingTarget = pitchTarget != null ? pitchTarget : yawTarget;
     }
 

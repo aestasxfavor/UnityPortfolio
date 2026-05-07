@@ -32,15 +32,7 @@ public class PlayerFallState : PlayerBaseState
 
         Debug.Log("fall enter");
 
-        if (startFallMotion)
-        {
-            //Debug.Log($"[FallState Enter] startFallMotion: {startFallMotion}");
-            StartFallingAnimation();
-        }
-
         playerController.HighFallDetector.StartFall(playerController.JumpController.VerticalVelocity);
-
-
     }
 
     public override void Update()
@@ -60,16 +52,14 @@ public class PlayerFallState : PlayerBaseState
         // CharacterController.Move 이후 바닥 충돌이 있었으면 착지 처리
         if (playerController.ControllerGroundedAfterMove)
         {
-          HandleLanding();
+            HandleLanding();
             return;
         }
-       
     }
 
     private bool IsHighFallNow()
     {
-        return fallTimer >= HighFallMinTime &&
-               minYSpeed <= HighFallMinYSpeed;
+        return fallTimer >= HighFallMinTime && minYSpeed <= HighFallMinYSpeed;
     }
 
     private void StartFallingAnimation()
@@ -77,12 +67,6 @@ public class PlayerFallState : PlayerBaseState
         hasStartedFallingAnimation = true;
      
         playerController.PlayerAnimationController.SetFalling(true);
-
-        Debug.Log(
-        $"[FALL START] fallTimer:{fallTimer:F3} / " +
-        $"minYSpeed:{minYSpeed:F3} / " +
-        $"currentYSpeed:{playerController.JumpController.VerticalVelocity:F3}"
-    );
     }
 
     private void HandleLanding()
@@ -93,8 +77,6 @@ public class PlayerFallState : PlayerBaseState
 
         bool wasHighFall = playerController.HighFallDetector.ConsumeHighFallResult();
         bool shouldPlayLandingMotion = wasHighFall || hasStartedFallingAnimation;
-
-        
 
         playerController.PlayerAnimationController.SetFalling(false);
 
