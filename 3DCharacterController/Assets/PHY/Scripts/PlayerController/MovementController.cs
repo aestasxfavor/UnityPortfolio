@@ -23,7 +23,6 @@ public class MovementController : MonoBehaviour
     public float CurrentMoveSpeed { get; private set; }
 
     public bool IsRunning { get; private set; }
-    //public float MoveSpeed => moveSpeed;
 
     // 카메라 기준 방향 이동 계산 로직
     public Vector3 GetMoveDirection(Vector2 movement, Transform cameraTransform)

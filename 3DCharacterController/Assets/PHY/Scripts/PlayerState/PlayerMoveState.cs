@@ -16,10 +16,7 @@ public class PlayerMoveState : PlayerBaseState
 
     public override void Update()
     {
-        if (playerController.WasGrounded
-            && !playerController.GroundDetector.IsGrounded
-            && !playerController.JumpController.IsJumping
-            && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold)
+        if (ShouldFall())
         {
             playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, true));
             return;
@@ -29,18 +26,6 @@ public class PlayerMoveState : PlayerBaseState
         bool canJump = playerController.InputHandler.JumpPressed &&
                        playerController.GroundDetector.IsGrounded &&
                        playerController.GroundDetector.IsWalkableSlope;
-
-        if (playerController.InputHandler.JumpPressed)
-        {
-            Debug.Log(
-                $"[Move Jump Check] " +
-                $"JumpPressed:{playerController.InputHandler.JumpPressed}, " +
-                $"IsGrounded:{playerController.GroundDetector.IsGrounded}, " +
-                $"IsWalkableSlope:{playerController.GroundDetector.IsWalkableSlope}, " +
-                $"VerticalVelocity:{playerController.JumpController.VerticalVelocity}, " +
-                $"IsJumping:{playerController.JumpController.IsJumping}"
-            );
-        }
 
         if (canJump)
         {
@@ -59,6 +44,14 @@ public class PlayerMoveState : PlayerBaseState
             return;
         }
 
+    }
+
+    private bool ShouldFall()
+    {
+        return playerController.WasGrounded
+            && !playerController.GroundDetector.IsGrounded
+            && !playerController.JumpController.IsJumping
+            && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold;
     }
 
     public override void Exit()

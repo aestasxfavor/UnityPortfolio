@@ -1,10 +1,6 @@
 using Unity.Cinemachine;
 using UnityEngine;
 
-/// <summary>
-/// Todo: 마우스로 카메라 각도 조절 기능 추가 예정
-/// </summary>
-
 public class CameraController : MonoBehaviour
 {
     [SerializeField] private Transform yawTarget;
@@ -16,71 +12,28 @@ public class CameraController : MonoBehaviour
     [SerializeField] private float mouseSensitivity = 0.08f;
     [SerializeField] private float minPitch = -25f;
     [SerializeField] private float maxPitch = 60f;
+    [SerializeField] private bool useMouseLook = true;
 
     private float yaw;
     private float pitch;
-    private bool useMouseLook = true;
-
 
     private void Reset()
     {
-        inputHandler = GetComponent<InputHandler>();
-
-        if (yawTarget == null)
-        {
-            Transform found = transform.Find("TrackingCamera_CloseBackView");
-            if (found != null)
-            {
-                yawTarget = found;
-            }
-        }
-
-        if (pitchTarget == null)
-        {
-            if (yawTarget != null)
-            {
-                Transform found = yawTarget.Find("CameraPitchTarget");
-
-                if (found != null)
-                {
-                    pitchTarget = found;
-                }
-            }
-
-            if (pitchTarget == null)
-            {
-                Transform found = transform.Find("CameraPitchTarget");
-
-                if (found != null)
-                {
-                    pitchTarget = found;
-                }
-            }
-
-            if (cameraSocket == null && pitchTarget != null)
-            {
-                Transform found = pitchTarget.Find("CameraSocket");
-
-                if (found != null)
-                {
-                    cameraSocket = found;
-                }
-            }
-
-        }
+        FindReferences();
     }
 
     private void Awake()
     {
-        if (inputHandler == null) inputHandler = GetComponent<InputHandler>();
-
+        FindReferences();
     }
 
     private void Start()
     {
-        BindCamera();
-        InitRotation();
+        BindCameraTarget();
+        InitCameraRotation();
+
         PlayerController playerController = GetComponent<PlayerController>();
+
         if (playerController != null && Camera.main != null)
         {
             playerController.SetCameraTransform(Camera.main.transform);
@@ -89,21 +42,13 @@ public class CameraController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if (!useMouseLook)
-        {
-            return;
-        }
-
-        if (inputHandler == null || yawTarget == null)
-        {
-            return;
-        }
+        if (!useMouseLook) return;
+        if (inputHandler == null || yawTarget == null) return;
 
         Vector2 lookInput = inputHandler.Look;
 
         yaw += lookInput.x * mouseSensitivity;
         pitch -= lookInput.y * mouseSensitivity;
-
         pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
 
         yawTarget.rotation = Quaternion.Euler(0f, yaw, 0f);
@@ -114,8 +59,13 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    public void BindCamera()
+    private void FindReferences()
     {
+        if (inputHandler == null)
+        {
+            inputHandler = GetComponent<InputHandler>();
+        }
+
         if (cinemachineCamera == null)
         {
             cinemachineCamera = FindFirstObjectByType<CinemachineCamera>();
@@ -123,13 +73,32 @@ public class CameraController : MonoBehaviour
 
         if (yawTarget == null)
         {
-            Debug.LogWarning("CameraTarget을 찾지 못함");
-            return;
+            yawTarget = transform.Find("TrackingCamera_CloseBackView");
         }
 
-        if (cinemachineCamera == null)
+        if (pitchTarget == null && yawTarget != null)
         {
-            Debug.LogWarning("시네머신 카메라를 찾지 못함");
+            pitchTarget = yawTarget.Find("CameraPitchTarget");
+        }
+
+        if (pitchTarget == null)
+        {
+            pitchTarget = transform.Find("CameraPitchTarget");
+        }
+
+        if (cameraSocket == null && pitchTarget != null)
+        {
+            cameraSocket = pitchTarget.Find("CameraSocket");
+        }
+    }
+
+    private void BindCameraTarget()
+    {
+        FindReferences();
+
+        if (yawTarget == null)
+        {
+            Debug.LogWarning("yawTarget을 찾지 못함");
             return;
         }
 
@@ -145,26 +114,16 @@ public class CameraController : MonoBehaviour
             return;
         }
 
-        if (pitchTarget == null && yawTarget != null)
+        if (cinemachineCamera == null)
         {
-            pitchTarget = yawTarget.Find("CameraPitchTarget");
-        }
-
-        if (cameraSocket == null && pitchTarget != null)
-        {
-            cameraSocket = pitchTarget.Find("CameraSocket");
+            Debug.LogWarning("시네머신 카메라를 찾지 못함");
+            return;
         }
 
         cinemachineCamera.Target.TrackingTarget = cameraSocket;
-
-        //if (cinemachineCamera != null && yawTarget != null)
-        //{
-        //    cinemachineCamera.Target.TrackingTarget = yawTarget;
-        //}
-        //cinemachineCamera.Target.TrackingTarget = pitchTarget != null ? pitchTarget : yawTarget;
     }
 
-    private void InitRotation()
+    private void InitCameraRotation()
     {
         if (yawTarget != null)
         {
@@ -173,12 +132,12 @@ public class CameraController : MonoBehaviour
 
         if (pitchTarget != null)
         {
-            pitch = Normalize(pitchTarget.eulerAngles.x);
+            pitch = NormalizeAngle(pitchTarget.eulerAngles.x);
             pitch = Mathf.Clamp(pitch, minPitch, maxPitch);
         }
     }
 
-    private float Normalize(float angle)
+    private float NormalizeAngle(float angle)
     {
         if (angle > 180f)
         {

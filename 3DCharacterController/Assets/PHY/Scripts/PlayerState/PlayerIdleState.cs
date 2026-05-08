@@ -16,10 +16,7 @@ public class PlayerIdleState : PlayerBaseState
 
     public override void Update()
     {
-        if (playerController.WasGrounded
-            && !playerController.GroundDetector.IsGrounded
-            && !playerController.JumpController.IsJumping
-            && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold)
+        if (ShouldFall())
         {
             playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, true));
             return;
@@ -51,6 +48,15 @@ public class PlayerIdleState : PlayerBaseState
             return;
         }
     }
+
+    private bool ShouldFall()
+    {
+        return playerController.WasGrounded
+            && !playerController.GroundDetector.IsGrounded
+            && !playerController.JumpController.IsJumping
+            && playerController.JumpController.VerticalVelocity <= playerController.FallThreshold;
+    }
+
 
     public override void Exit()
     {

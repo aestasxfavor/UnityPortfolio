@@ -6,7 +6,6 @@ public class InputHandler : MonoBehaviour
     public Vector2 Movement { get; private set; }
     public Vector2 Look { get; private set; }
     public bool JumpPressed { get; private set; }
-
     public bool IsRunPressed { get; private set; }
 
     // 이동 입력값 저장 로직

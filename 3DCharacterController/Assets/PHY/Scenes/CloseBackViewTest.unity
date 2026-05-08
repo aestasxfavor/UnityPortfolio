@@ -2341,6 +2341,7 @@ MonoBehaviour:
   mouseSensitivity: 0.08
   minPitch: -15
   maxPitch: 35
+  useMouseLook: 1
 --- !u!4 &364506650376810917
 Transform:
   m_ObjectHideFlags: 0
@@ -2390,7 +2391,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   maxGroundCheckDistance: 1
-  groundCheckDistance: 0.3
+  groundedDistance: 0.2
   landingCheckDistance: 0.08
   maxSlopeAngle: 42
 --- !u!95 &419484749412000400

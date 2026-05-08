@@ -10,9 +10,8 @@ public class PlayerAnimationController : MonoBehaviour
 
     private readonly int SpeedHash = Animator.StringToHash("Speed");
     private readonly int YSpeedHash = Animator.StringToHash("YSpeed");
-    private readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
-
     private readonly int IsFallingHash = Animator.StringToHash("IsFalling");
+    private readonly int IsGroundedHash = Animator.StringToHash("IsGrounded");
     private readonly int IsLandingHash = Animator.StringToHash("IsLanding");
     private readonly int HasMoveInputHash = Animator.StringToHash("HasMoveInput");
 
@@ -22,7 +21,7 @@ public class PlayerAnimationController : MonoBehaviour
         groundDetector = GetComponent<GroundDetector>();
         jumpController = GetComponent<JumpController>();
         movementController = GetComponent<MovementController>();
-        animator = GetComponentInChildren<Animator>();
+        animator = GetComponent<Animator>();
     }
 
     private void Awake()
@@ -31,15 +30,16 @@ public class PlayerAnimationController : MonoBehaviour
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
         if (jumpController == null) jumpController = GetComponent<JumpController>();
         if (movementController == null) movementController = GetComponent<MovementController>();
-        if (animator == null) animator = GetComponentInChildren<Animator>();
+        if (animator == null) animator = GetComponent<Animator>();
        
     }
 
     private void Update()
     {
-        if(!CanUpdateAnimation()) return;
+        if(!IsAnimationReady()) return;
 
         UpdateMoveSpeed();
+
         SetYSpeed(jumpController.VerticalVelocity);
         SetGrounded(groundDetector.IsGrounded);
     }
@@ -76,15 +76,6 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool(IsGroundedHash, value);
     }
 
-    public void PlayJump()
-    {
-        if (animator == null) return;
-
-        animator.ResetTrigger("Jump");
-        animator.SetTrigger("Jump");
-
-    }
-
     public void SetFalling(bool value)
     {
         if(animator == null) return;
@@ -104,7 +95,7 @@ public class PlayerAnimationController : MonoBehaviour
         animator.SetBool(HasMoveInputHash, value);
     }
 
-    private bool CanUpdateAnimation()
+    private bool IsAnimationReady()
     {
         return animator != null
             && characterController != null

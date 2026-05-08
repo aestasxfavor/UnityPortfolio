@@ -21,26 +21,6 @@ public class JumpController : MonoBehaviour
         hasLeftGround = false;
     }
 
-    private void ApplyGravity(float deltaTime)
-    {
-        VerticalVelocity += Physics.gravity.y * gravityScale * deltaTime;
-    }
-
-    private void LimitFallSpeed()
-    {
-        if (VerticalVelocity < -maxFallSpeed)
-        {
-            VerticalVelocity = -maxFallSpeed;
-        }
-    }
-
-    private void HandleLanding()
-    {
-        IsJumping = false;
-        hasLeftGround = false;
-        VerticalVelocity = groundStickVelocity;
-    }
-
     public void UpdateVertical(bool isGrounded, float deltaTime)
     {
         // 점프 중이고 실제로 땅에서 떨어진 프레임을 한 번이라도 겪었는지 기록
@@ -62,12 +42,35 @@ public class JumpController : MonoBehaviour
 
         // 점프 상승/하강 중에는 grounded가 잠깐 true여도 중력은 계속 적용
         ApplyGravity(deltaTime);
+
         LimitFallSpeed();
 
         // 점프 후 실제로 공중에 나간 적이 있고, 다시 땅에 닿았을 때만 착지 처리
         if (IsJumping && hasLeftGround && isGrounded && VerticalVelocity <= 0f)
         {
-            HandleLanding();
+            EndJump();
         }
     }
+
+    private void ApplyGravity(float deltaTime)
+    {
+        VerticalVelocity += Physics.gravity.y * gravityScale * deltaTime;
+    }
+
+    private void LimitFallSpeed()
+    {
+        if (VerticalVelocity < -maxFallSpeed)
+        {
+            VerticalVelocity = -maxFallSpeed;
+        }
+    }
+
+    private void EndJump()
+    {
+        IsJumping = false;
+        hasLeftGround = false;
+        VerticalVelocity = groundStickVelocity;
+    }
+
+    
 }

@@ -20,12 +20,12 @@ public class PlayerJumpState : PlayerBaseState
         bool isGrounded = playerController.GroundDetector.IsGrounded;
         float ySpeed = playerController.JumpController.VerticalVelocity;
 
-        if(!isGrounded)
+        if (!isGrounded)
         {
             hasLeftGround = true;
         }
 
-       if(hasLeftGround && !isGrounded && ySpeed <= 0f)
+        if (hasLeftGround && !isGrounded && ySpeed <= 0f)
         {
             playerStateMachine.ChangeState(new PlayerFallState(playerController, playerStateMachine, false));
             return;

@@ -7,8 +7,8 @@ public class HighFallDetector : MonoBehaviour
     [SerializeField] private float highFallSpeed = -7f;
 
     public float FallTimer { get; private set; }
-    public float MinYSpeed { get; private set; }
-    public bool IsHighFalling { get; private set; }
+    public float LowYSpeed { get; private set; }
+    public bool IsHighFall { get; private set; }
 
     private bool isTracking;
 
@@ -16,35 +16,33 @@ public class HighFallDetector : MonoBehaviour
     {
         isTracking = true;
         FallTimer = 0f;
-        MinYSpeed = currentYSpeed;
-        IsHighFalling = false;
+        LowYSpeed = currentYSpeed;
+        IsHighFall = false;
 
         Debug.Log("HighFallDetector StartFall");
     }
 
-    public void TickFall(float deltaTime, float currentYSpeed)
+    public void CheckHighFall(float deltaTime, float currentYSpeed)
     {
         if (!isTracking) return;
 
         FallTimer += deltaTime;
 
-        if (currentYSpeed < MinYSpeed)
+        if (currentYSpeed < LowYSpeed)
         {
-            MinYSpeed = currentYSpeed;
+            LowYSpeed = currentYSpeed;
         }
 
-        if (!IsHighFalling &&
-            FallTimer >= highFallTime &&
-            MinYSpeed <= highFallSpeed)
+        if (!IsHighFall && FallTimer >= highFallTime && LowYSpeed <= highFallSpeed)
         {
-            IsHighFalling = true;
+            IsHighFall = true;
             Debug.Log("HighFallDetector isHighFalling true");
         }
     }
 
-    public bool ConsumeHighFallResult()
+    public bool GetResultAndReset()
     {
-        bool result = IsHighFalling;
+        bool result = IsHighFall;
         ResetFall();
         return result;
     }
@@ -53,7 +51,7 @@ public class HighFallDetector : MonoBehaviour
     {
         isTracking = false;
         FallTimer = 0f;
-        MinYSpeed = 0f;
-        IsHighFalling = false;
+        LowYSpeed = 0f;
+        IsHighFall = false;
     }
 }

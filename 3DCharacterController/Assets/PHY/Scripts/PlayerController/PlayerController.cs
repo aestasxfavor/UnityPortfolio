@@ -27,16 +27,13 @@ public class PlayerController : MonoBehaviour
     [Header("Debug")]
     [SerializeField] private bool showDebugLog = true;
 
-    [Header("Property")]
+    public CharacterController CharacterController => characterController;
+    public PlayerAnimationController PlayerAnimationController => playerAnimationController;
     public InputHandler InputHandler => inputHandler;
     public MovementController MovementController => movementController;
     public JumpController JumpController => jumpController;
     public GroundDetector GroundDetector => groundDetector;
     public HighFallDetector HighFallDetector => highFallDetector;
-
-    public PlayerAnimationController PlayerAnimationController => playerAnimationController;
-
-    public CharacterController CharacterController => characterController;
 
     public float FallThreshold => fallThreshold;
 
@@ -57,7 +54,6 @@ public class PlayerController : MonoBehaviour
         groundDetector = GetComponent<GroundDetector>();
         highFallDetector = GetComponent<HighFallDetector>();
         playerAnimationController = GetComponent<PlayerAnimationController>();
-        characterController = GetComponent<CharacterController>();
         playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
@@ -70,13 +66,12 @@ public class PlayerController : MonoBehaviour
         if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
         if (highFallDetector == null) highFallDetector = GetComponent<HighFallDetector>();
         if (playerAnimationController == null) playerAnimationController = GetComponent<PlayerAnimationController>();
-        if (characterController == null) characterController = GetComponent<CharacterController>();
         if (playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
     private void Start()
     {
-        groundDetector.GroundCheck();
+        groundDetector.CheckGround();
         wasGrounded = groundDetector.IsGrounded;
 
         if (playerStateMachine != null)
@@ -92,13 +87,13 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-        if (!CanRun()) return;
+        if (!IsReady()) return;
 
         ControllerGroundedAfterMove = false;
 
         wasGrounded = groundDetector.IsGrounded;
 
-        groundDetector.GroundCheck();
+        groundDetector.CheckGround();
         jumpController.UpdateVertical(characterController.isGrounded, Time.deltaTime);
 
         ProcessMovement();
@@ -115,12 +110,8 @@ public class PlayerController : MonoBehaviour
 
         playerAnimationController.SetMoveInput(hasMoveInput);
 
-        Vector3 horizontalMove = movementController.GetHorizontalMove(
-            moveDirection,
-            Time.deltaTime,
-            groundDetector.IsGrounded,
-            isRunPressed
-        );
+        Vector3 horizontalMove = movementController.GetHorizontalMove(moveDirection, Time.deltaTime, 
+            groundDetector.IsGrounded, isRunPressed);
 
         Vector3 finalMove = horizontalMove;
         finalMove.y = jumpController.VerticalVelocity;
@@ -130,7 +121,7 @@ public class PlayerController : MonoBehaviour
 
         bool hitBelow = (flags & CollisionFlags.Below) != 0;
 
-        groundDetector.GroundCheck();
+        groundDetector.CheckGround();
 
         ControllerGroundedAfterMove = hitBelow && groundDetector.IsGrounded;
 
@@ -145,7 +136,7 @@ public class PlayerController : MonoBehaviour
         jumpStartY = value;
     }
 
-    private bool CanRun()
+    private bool IsReady()
     {
         return characterController != null
             && inputHandler != null

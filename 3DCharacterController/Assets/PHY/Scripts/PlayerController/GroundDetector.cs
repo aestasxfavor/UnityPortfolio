@@ -8,7 +8,7 @@ public class GroundDetector : MonoBehaviour
 
     [Header("Ground Distance")]
     [SerializeField] private float maxGroundCheckDistance = 1.0f;
-    [SerializeField] private float groundCheckDistance = 0.2f;
+    [SerializeField] private float groundedDistance = 0.2f;
     [SerializeField] private float landingCheckDistance = 0.08f;
 
     [Header("Slope Setting")]
@@ -19,15 +19,15 @@ public class GroundDetector : MonoBehaviour
 
     public float DistanceToGround { get; private set; } = Mathf.Infinity;
 
-    public bool IsGroundedDetected { get; private set; }
+    public bool HasGroundHit { get; private set; }
     public bool IsGrounded { get; private set; }
 
-    public bool IsCloseEnoughToLand { get; private set; }
+    public bool IsNearGround { get; private set; }
     public bool IsWalkableSlope { get; private set; }
 
 
     // Raycast 기반 지면 체크 로직
-    public void GroundCheck()
+    public void CheckGround()
     {
         if (groundCheckPoint == null)
         {
@@ -38,7 +38,7 @@ public class GroundDetector : MonoBehaviour
         Vector3 origin = groundCheckPoint.position;
         Vector3 direction = Vector3.down;
 
-        Debug.DrawRay(origin, direction * groundCheckDistance, Color.red);
+        Debug.DrawRay(origin, direction * maxGroundCheckDistance, Color.red);
 
         bool isHit = Physics.Raycast(
             origin,
@@ -49,7 +49,7 @@ public class GroundDetector : MonoBehaviour
             QueryTriggerInteraction.Ignore
         );
 
-        IsGroundedDetected = isHit;
+        HasGroundHit = isHit;
 
         if (isHit)
         {
@@ -58,8 +58,8 @@ public class GroundDetector : MonoBehaviour
             SlopeAngle = Vector3.Angle(Vector3.up, hit.normal);
             IsWalkableSlope = SlopeAngle <= maxSlopeAngle;
 
-            IsGrounded = DistanceToGround <= groundCheckDistance && IsWalkableSlope;
-            IsCloseEnoughToLand = DistanceToGround <= landingCheckDistance;
+            IsGrounded = DistanceToGround <= groundedDistance && IsWalkableSlope;
+            IsNearGround = DistanceToGround <= landingCheckDistance;
 
             Debug.DrawRay(hit.point, GroundNormal * 0.7f, Color.blue);
         }
@@ -71,9 +71,9 @@ public class GroundDetector : MonoBehaviour
 
     private void ResetGroundInfo()
     {
-        IsGroundedDetected = false;
+        HasGroundHit = false;
         IsGrounded = false;
-        IsCloseEnoughToLand = false;
+        IsNearGround = false;
         IsWalkableSlope = false;
 
         DistanceToGround = Mathf.Infinity;
@@ -89,7 +89,7 @@ public class GroundDetector : MonoBehaviour
         Gizmos.color = IsGrounded ? Color.green : Color.red;
         Gizmos.DrawLine(
             groundCheckPoint.position,
-            groundCheckPoint.position + Vector3.down * groundCheckDistance
+            groundCheckPoint.position + Vector3.down * groundedDistance
         );
     }
 }

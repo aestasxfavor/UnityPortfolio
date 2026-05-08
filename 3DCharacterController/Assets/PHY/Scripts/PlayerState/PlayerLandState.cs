@@ -3,7 +3,7 @@ using UnityEngine;
 public class PlayerLandState : PlayerBaseState
 {
     private float landingTimer;
-    private float idlelandingDuration = 0.35f;
+    private float idleLandingDuration = 0.35f;
     private float moveLandingDuration = 0.2f;
 
     public PlayerLandState(PlayerController _playerController, PlayerStateMachine _playerStateMachine)
@@ -29,7 +29,7 @@ public class PlayerLandState : PlayerBaseState
 
         playerController.PlayerAnimationController.SetMoveInput(hasMoveInput);
 
-        float targetDuration = hasMoveInput ? moveLandingDuration : idlelandingDuration;
+        float targetDuration = hasMoveInput ? moveLandingDuration : idleLandingDuration;
 
         if (landingTimer < targetDuration) return;
         
