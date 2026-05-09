@@ -8,7 +8,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 1080f;
 
     [SerializeField] private float moveResponse = 10f;
-    [SerializeField] private float stopResponse = 20f;
+    [SerializeField] private float stopResponse = 20f;      // 입력을 멈췄을 때 수평 속도를 빠르게 줄이기 위한 감속 반응값
     [SerializeField] private float runToWalkResponse = 4f;
 
     [SerializeField] private float airControl = 0.5f;
@@ -61,12 +61,6 @@ public class MovementController : MonoBehaviour
 
         CurrentMoveSpeed = hasMoveInput ? (IsRunning ? runSpeed : walkSpeed) : 0f;
 
-        if(isGrounded && !hasMoveInput)
-        {
-            currentHorizontalVelocity = Vector3.zero;
-            return Vector3.zero;
-        }
-
         float speedMultiplier = isGrounded ? 1f : airControl;
 
         Vector3 targetVelocity = moveDirection * CurrentMoveSpeed * speedMultiplier;
@@ -103,7 +97,7 @@ public class MovementController : MonoBehaviour
 
     /// <summary>
     /// 경사면에서 방향키 조작하면 캐릭터가 빙그르르 도는 현상 발견함
-    /// Slope 함수를 사용하려고 했으나 게임 캐릭터 컨트롤러 구현 목표인 것을 감안하여 
+    /// Slerp 함수를 사용하려고 했으나 게임 캐릭터 컨트롤러 구현 목표인 것을 감안하여 
     /// 좀 더 게임 느낌이 나도록하기위해RotateTowards 함수를 사용함
     /// </summary>
     /// <param name="target"></param>
@@ -118,5 +112,7 @@ public class MovementController : MonoBehaviour
 
         Quaternion targetRotation = Quaternion.LookRotation(flatDirection);
         target.rotation = Quaternion.RotateTowards(target.rotation, targetRotation, rotationSpeed * deltaTime);
+
+
     }
 }

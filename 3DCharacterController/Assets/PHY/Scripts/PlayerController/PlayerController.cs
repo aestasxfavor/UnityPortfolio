@@ -47,26 +47,20 @@ public class PlayerController : MonoBehaviour
 
     private void Reset()
     {
-        characterController = GetComponent<CharacterController>();
-        inputHandler = GetComponent<InputHandler>();
-        movementController = GetComponent<MovementController>();
-        jumpController = GetComponent<JumpController>();
-        groundDetector = GetComponent<GroundDetector>();
-        highFallDetector = GetComponent<HighFallDetector>();
-        playerAnimationController = GetComponent<PlayerAnimationController>();
-        playerStateMachine = GetComponent<PlayerStateMachine>();
+        FindRefernces();
+        //characterController = GetComponent<CharacterController>();
+        //inputHandler = GetComponent<InputHandler>();
+        //movementController = GetComponent<MovementController>();
+        //jumpController = GetComponent<JumpController>();
+        //groundDetector = GetComponent<GroundDetector>();
+        //highFallDetector = GetComponent<HighFallDetector>();
+        //playerAnimationController = GetComponent<PlayerAnimationController>();
+        //playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 
     private void Awake()
     {
-        if (characterController == null) characterController = GetComponent<CharacterController>();
-        if (inputHandler == null) inputHandler = GetComponent<InputHandler>();
-        if (movementController == null) movementController = GetComponent<MovementController>();
-        if (jumpController == null) jumpController = GetComponent<JumpController>();
-        if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
-        if (highFallDetector == null) highFallDetector = GetComponent<HighFallDetector>();
-        if (playerAnimationController == null) playerAnimationController = GetComponent<PlayerAnimationController>();
-        if (playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
+        FindRefernces();
     }
 
     private void Start()
@@ -94,6 +88,9 @@ public class PlayerController : MonoBehaviour
         wasGrounded = groundDetector.IsGrounded;
 
         groundDetector.CheckGround();
+
+        // JumpController의 수직 속도 보정은 착지 반응이 즉시 필요하므로
+        // Raycast 기반 GroundDetector가 아닌 CharacterController의 접지 판정을 사용한다.
         jumpController.UpdateVertical(characterController.isGrounded, Time.deltaTime);
 
         ProcessMovement();
@@ -123,6 +120,8 @@ public class PlayerController : MonoBehaviour
 
         groundDetector.CheckGround();
 
+        // CharacterController.Move 이후 실제 아래 방향 충돌이 있었는지 확인해
+        // FallState의 착지 전이 기준으로 사용한다.
         ControllerGroundedAfterMove = hitBelow && groundDetector.IsGrounded;
 
         if (hasMoveInput && groundDetector.IsGrounded)
@@ -145,7 +144,18 @@ public class PlayerController : MonoBehaviour
             && groundDetector != null
             && highFallDetector != null
             && playerAnimationController != null
-            && characterController != null
             && cameraTransform != null;
+    }
+
+    private void FindRefernces()
+    {
+        if (characterController == null) characterController = GetComponent<CharacterController>();
+        if (inputHandler == null) inputHandler = GetComponent<InputHandler>();
+        if (movementController == null) movementController = GetComponent<MovementController>();
+        if (jumpController == null) jumpController = GetComponent<JumpController>();
+        if (groundDetector == null) groundDetector = GetComponent<GroundDetector>();
+        if (highFallDetector == null) highFallDetector = GetComponent<HighFallDetector>();
+        if (playerAnimationController == null) playerAnimationController = GetComponent<PlayerAnimationController>();
+        if (playerStateMachine == null) playerStateMachine = GetComponent<PlayerStateMachine>();
     }
 }

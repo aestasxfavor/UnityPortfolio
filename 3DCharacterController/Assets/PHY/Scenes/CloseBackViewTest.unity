@@ -2581,7 +2581,7 @@ MonoBehaviour:
   runSpeed: 6
   rotationSpeed: 1080
   moveResponse: 15
-  stopResponse: 20
+  stopResponse: 10
   runToWalkResponse: 4
   airControl: 0.5
   airMoveResponse: 5
