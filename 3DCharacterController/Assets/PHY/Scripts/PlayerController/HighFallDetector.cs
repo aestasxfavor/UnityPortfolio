@@ -4,7 +4,7 @@ public class HighFallDetector : MonoBehaviour
 {
     [Header("High Fall Check")]
     [SerializeField] private float highFallTime = 0.35f;
-    [SerializeField] private float highFallSpeed = -7f;
+    [SerializeField] private float highFallSpeed = -4f;
 
     public float FallTimer { get; private set; }
     public float LowYSpeed { get; private set; }

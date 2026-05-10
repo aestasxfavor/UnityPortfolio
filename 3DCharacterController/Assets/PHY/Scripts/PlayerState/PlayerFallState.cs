@@ -4,7 +4,7 @@ public class PlayerFallState : PlayerBaseState
 {
     private bool LandingDone;
     private bool hasPlayedFalling;
-    private bool startFallMotion;
+    private bool startFallMotion;           // Falling 모션 개선시 사용할 지 재검토 예정
 
     private float fallTimer;
     private float lowYSpeed;
@@ -35,9 +35,8 @@ public class PlayerFallState : PlayerBaseState
 
         Debug.Log("fall enter");
 
-        // 이걸 키면 falling 모션이 바로 나와서 좋긴한데 박스나 낮은 단차에도 나와버림
-        // 그렇다고 끄면 낙하할 때 모션이 제대로 안나오고 씹히는 경우가 많음 ㅈ같네 진짜
-        // 분기를 대체 어떻게 둬야하는걸까
+        // Falling 모션 즉시 재생은 낮은 단차에서도 발동될 수 있어 현재 비활성화
+        // 추후 낙하 높이 / Y속도 / 지면 거리 기준으로 재검토
         //if (startFallMotion)
         //{
         //    StartFallingAnimation();
@@ -68,11 +67,6 @@ public class PlayerFallState : PlayerBaseState
         }
     }
 
-    private bool IsHighFall()
-    {
-        return fallTimer >= HighFallTime && lowYSpeed <= HighFallSpeed;
-    }
-
     private void StartFallingAnimation()
     {
         hasPlayedFalling = true;
@@ -91,6 +85,8 @@ public class PlayerFallState : PlayerBaseState
     {
         if (fallTimer < FallMotionDelay) return false;
 
+        // TODO: HasGroundHit 기준이 넓으면 높은 낙하 중 Falling 모션이 막힐 수 있음
+        // 추후 DistanceToGround 기준으로 교체 검토
         if (playerController.GroundDetector.HasGroundHit) return false;
 
         return lowYSpeed <= FallMotionSpeed;

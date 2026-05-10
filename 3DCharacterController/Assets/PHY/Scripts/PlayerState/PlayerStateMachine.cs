@@ -7,7 +7,9 @@ public class PlayerStateMachine : MonoBehaviour
     {
         if (newState == null) return;
 
-        if(CurrentState != null && CurrentState.GetType() == newState.GetType())
+        // 같은 상태로 반복 전환되는 것을 방지
+        // Enter / Exit가 매 프레임 다시 호출되는 문제를 막기 위한 방어 코드
+        if (CurrentState != null && CurrentState.GetType() == newState.GetType())
         {
             return;
         }

@@ -8,7 +8,7 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 1080f;
 
     [SerializeField] private float moveResponse = 10f;
-    [SerializeField] private float stopResponse = 20f;      // 입력을 멈췄을 때 수평 속도를 빠르게 줄이기 위한 감속 반응값
+    //[SerializeField] private float stopResponse = 20f;      // 입력을 멈췄을 때 수평 속도를 빠르게 줄이기 위한 감속 반응값
     [SerializeField] private float runToWalkResponse = 4f;
 
     [SerializeField] private float airControl = 0.5f;
@@ -43,6 +43,8 @@ public class MovementController : MonoBehaviour
         cameraForward.y = 0f;
         cameraRight.y = 0f;
 
+
+
         cameraForward.Normalize();
         cameraRight.Normalize();
 
@@ -61,6 +63,15 @@ public class MovementController : MonoBehaviour
 
         CurrentMoveSpeed = hasMoveInput ? (IsRunning ? runSpeed : walkSpeed) : 0f;
 
+        // 지상에서 입력이 없을 때는 수평 속도를 즉시 제거한다.
+        // 감속 보간만 사용할 경우 키를 뗀 뒤 바닥에서 미끄러짐이 강해
+        // 지상 정지는 조작감을 위해 즉시 정지 방식으로 처리한다.
+        if (isGrounded && !hasMoveInput)
+        {
+            currentHorizontalVelocity = Vector3.zero;
+            return Vector3.zero;
+        }
+
         float speedMultiplier = isGrounded ? 1f : airControl;
 
         Vector3 targetVelocity = moveDirection * CurrentMoveSpeed * speedMultiplier;
@@ -69,28 +80,23 @@ public class MovementController : MonoBehaviour
 
         if (isGrounded)
         {
-            if (!hasMoveInput)
-            {
-                response = stopResponse;
-            }
-            else
-            {
-                float currentSpeed = currentHorizontalVelocity.magnitude;
-                float targetSpeed = targetVelocity.magnitude;
+            float currentSpeed = currentHorizontalVelocity.magnitude;
+            float targetSpeed = targetVelocity.magnitude;
 
-                bool isSlowingDown = currentSpeed > targetSpeed;
+            bool isSlowingDown = currentSpeed > targetSpeed;
 
-                response = isSlowingDown ? runToWalkResponse : moveResponse;
-            }
-                
+            response = isSlowingDown ? runToWalkResponse : moveResponse;
         }
         else
         {
             response = hasMoveInput ? airMoveResponse : airStopResponse;
         }
 
-        currentHorizontalVelocity = Vector3.MoveTowards(currentHorizontalVelocity, targetVelocity, response * deltaTime);
-
+        currentHorizontalVelocity = Vector3.MoveTowards(
+            currentHorizontalVelocity,
+            targetVelocity,
+            response * deltaTime
+        );
 
         return currentHorizontalVelocity;
     }
