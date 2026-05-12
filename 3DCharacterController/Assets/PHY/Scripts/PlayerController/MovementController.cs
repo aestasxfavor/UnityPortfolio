@@ -1,5 +1,9 @@
 using UnityEngine;
 
+/// <summary>
+/// 플레이어의 수평 이동과 회전을 계산하는 컨트롤러
+/// 카메라 기준 이동 방향, 걷기 / 달리기 속도, 지상 / 공중 이동 반응을 처리
+/// </summary>
 public class MovementController : MonoBehaviour
 {
     [SerializeField] private float walkSpeed = 4f;
@@ -8,7 +12,6 @@ public class MovementController : MonoBehaviour
     [SerializeField] private float rotationSpeed = 1080f;
 
     [SerializeField] private float moveResponse = 10f;
-    //[SerializeField] private float stopResponse = 20f;      // 입력을 멈췄을 때 수평 속도를 빠르게 줄이기 위한 감속 반응값
     [SerializeField] private float runToWalkResponse = 4f;
 
     [SerializeField] private float airControl = 0.5f;
@@ -24,7 +27,10 @@ public class MovementController : MonoBehaviour
 
     public bool IsRunning { get; private set; }
 
-    // 카메라 기준 방향 이동 계산 로직
+    /// <summary>
+    /// 입력 방향을 카메라 기준 월드 이동 방향으로 변환
+    /// 카메라가 없을 경우 입력값 기준 기본 방향 반환
+    /// </summary>
     public Vector3 GetMoveDirection(Vector2 movement, Transform cameraTransform)
     {
         if (movement.sqrMagnitude < 0.01f) return Vector3.zero;
@@ -54,7 +60,9 @@ public class MovementController : MonoBehaviour
         return moveDirection;
     }
 
-    // 캐릭터 컨트롤러 기반 이동 로직
+    /// <summary>
+    /// 지상 / 공중 상태와 달리기 입력에 따라 최종 수평 이동 속도를 계산
+    /// </summary>
     public Vector3 GetHorizontalMove(Vector3 moveDirection, float deltaTime, bool isGrounded, bool isRunPressed)
     {
         bool hasMoveInput = moveDirection.sqrMagnitude > 0.01f;
@@ -63,9 +71,9 @@ public class MovementController : MonoBehaviour
 
         CurrentMoveSpeed = hasMoveInput ? (IsRunning ? runSpeed : walkSpeed) : 0f;
 
-        // 지상에서 입력이 없을 때는 수평 속도를 즉시 제거한다.
-        // 감속 보간만 사용할 경우 키를 뗀 뒤 바닥에서 미끄러짐이 강해
-        // 지상 정지는 조작감을 위해 즉시 정지 방식으로 처리한다.
+        // 지상에서 이동 입력이 없을 경우 남아 있는 수평 속도 제거
+        // 감속 보간만 사용할 경우 키를 뗀 뒤 미끄러지는 느낌이 남을 수 있어
+        // 정지 안정성을 우선하는 방식으로 처리
         if (isGrounded && !hasMoveInput)
         {
             currentHorizontalVelocity = Vector3.zero;
@@ -102,14 +110,11 @@ public class MovementController : MonoBehaviour
     }
 
     /// <summary>
-    /// 경사면에서 방향키 조작하면 캐릭터가 빙그르르 도는 현상 발견함
-    /// Slerp 함수를 사용하려고 했으나 게임 캐릭터 컨트롤러 구현 목표인 것을 감안하여 
-    /// 좀 더 게임 느낌이 나도록하기위해RotateTowards 함수를 사용함
+    /// 이동 방향을 기준으로 캐릭터 회전을 처리
+    /// 경사면 이동 중 불필요한 회전 흔들림을 줄이기 위해
+    /// 목표 회전까지 일정 각속도로 회전하는 RotateTowards 방식 사용
     /// </summary>
-    /// <param name="target"></param>
-    /// <param name="moveDirection"></param>
 
-    // 이동 방향 기준 회전 로직
     public void Rotate(Transform target, Vector3 moveDirection, float deltaTime)
     {
         Vector3 flatDirection = new Vector3(moveDirection.x, 0f, moveDirection.z);
