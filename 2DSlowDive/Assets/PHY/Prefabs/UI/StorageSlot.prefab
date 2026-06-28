@@ -88,7 +88,7 @@ GameObject:
   - component: {fileID: 1278217885300981753}
   - component: {fileID: 2307316766338853762}
   m_Layer: 5
-  m_Name: SlotPrefab
+  m_Name: StorageSlot
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -137,7 +137,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.75686276, g: 0.83719563, b: 0.972549, a: 1}
+  m_Color: {r: 0.740566, g: 0.91337526, b: 1, a: 1}
   m_RaycastTarget: 1
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
@@ -202,8 +202,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -10, y: 0}
+  m_SizeDelta: {x: 50, y: 50}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &8630759796578915139
 CanvasRenderer:
@@ -243,7 +243,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4282532424
-  m_fontColor: {r: 0.2830189, g: 0.25765398, b: 0.25765398, a: 1}
+  m_fontColor: {r: 0.254717, g: 0.254717, b: 0.254717, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -370,7 +370,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8899316874136437917, guid: a41c4288e3a885e4480f2728fc492a1a, type: 3}
+  m_Sprite: {fileID: -6433847079836243096, guid: 84aa89dd8a759c24f937cd049e105858, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
