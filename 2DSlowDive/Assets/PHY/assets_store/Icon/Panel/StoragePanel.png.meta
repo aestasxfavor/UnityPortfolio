@@ -1,31 +1,31 @@
 fileFormatVersion: 2
-guid: c72691eb00a4f1b47ad6495f813ad028
+guid: 858959918ba86054c8b7f1b2c2c55dd6
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -6750316414850278111
-    second: ExitIcon_0
+      213: -3733011999398517997
+    second: StoragePanel_0
   - first:
-      213: -5108416736778714061
-    second: ExitIcon_1
+      213: 4196384354452493856
+    second: StoragePanel_1
   - first:
-      213: 5980701470213731838
-    second: ExitIcon_2
+      213: 468225902218708563
+    second: StoragePanel_2
   - first:
-      213: -3305005883933503738
-    second: ExitIcon_3
+      213: -8910892915945069812
+    second: StoragePanel_3
   - first:
-      213: 7986734566920201550
-    second: ExitIcon_4
+      213: -3131656856522015597
+    second: StoragePanel_4
   - first:
-      213: 426803523229298388
-    second: ExitIcon_5
+      213: 7808047613535257681
+    second: StoragePanel_5
   - first:
-      213: -8989300405945216287
-    second: ExitIcon_6
+      213: 5387235632417534946
+    second: StoragePanel_6
   - first:
-      213: -6084747728496253089
-    second: ExitIcon_7
+      213: -476787730761118924
+    second: StoragePanel_7
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -121,13 +121,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ExitIcon_0
+      name: StoragePanel_0
       rect:
         serializedVersion: 2
-        x: 97
-        y: 589
-        width: 281
-        height: 308
+        x: 38
+        y: 577
+        width: 470
+        height: 464
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -136,20 +136,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 12d5c534cfe0252a0800000000000000
-      internalID: -6750316414850278111
+      spriteID: 313a4996d5da13cc0800000000000000
+      internalID: -3733011999398517997
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExitIcon_1
+      name: StoragePanel_1
       rect:
         serializedVersion: 2
-        x: 422
-        y: 589
-        width: 281
-        height: 306
+        x: 529
+        y: 796
+        width: 244
+        height: 245
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -158,20 +158,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 33405af1b024b19b0800000000000000
-      internalID: -5108416736778714061
+      spriteID: 026d524465d8c3a30800000000000000
+      internalID: 4196384354452493856
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExitIcon_2
+      name: StoragePanel_2
       rect:
         serializedVersion: 2
-        x: 744
-        y: 589
-        width: 280
-        height: 306
+        x: 798
+        y: 839
+        width: 611
+        height: 203
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -180,20 +180,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ef5febfcc48bff250800000000000000
-      internalID: 5980701470213731838
+      spriteID: 35602603af87f7600800000000000000
+      internalID: 468225902218708563
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExitIcon_3
+      name: StoragePanel_3
       rect:
         serializedVersion: 2
-        x: 1069
-        y: 589
-        width: 277
-        height: 306
+        x: 529
+        y: 577
+        width: 181
+        height: 186
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -202,20 +202,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 60f4193c8a24222d0800000000000000
-      internalID: -3305005883933503738
+      spriteID: c03ac89da16265480800000000000000
+      internalID: -8910892915945069812
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExitIcon_4
+      name: StoragePanel_4
       rect:
         serializedVersion: 2
-        x: 97
-        y: 209
-        width: 281
-        height: 308
+        x: 798
+        y: 685
+        width: 583
+        height: 132
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -224,20 +224,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: e45ac98e5c496de60800000000000000
-      internalID: 7986734566920201550
+      spriteID: 39cb6946eae1a84d0800000000000000
+      internalID: -3131656856522015597
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExitIcon_5
+      name: StoragePanel_5
       rect:
         serializedVersion: 2
-        x: 422
-        y: 210
-        width: 281
-        height: 307
+        x: 39
+        y: 57
+        width: 304
+        height: 485
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -246,20 +246,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 4dea7f60b8f4ce500800000000000000
-      internalID: 426803523229298388
+      spriteID: 1540b1a8fe1cb5c60800000000000000
+      internalID: 7808047613535257681
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExitIcon_6
+      name: StoragePanel_6
       rect:
         serializedVersion: 2
-        x: 744
-        y: 210
-        width: 280
-        height: 307
+        x: 367
+        y: 57
+        width: 224
+        height: 485
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -268,20 +268,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 1e25c5c78e69f3380800000000000000
-      internalID: -8989300405945216287
+      spriteID: 2e3f29fc34e43ca40800000000000000
+      internalID: 5387235632417534946
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: ExitIcon_7
+      name: StoragePanel_7
       rect:
         serializedVersion: 2
-        x: 1069
-        y: 210
-        width: 278
-        height: 307
+        x: 622
+        y: 57
+        width: 131
+        height: 485
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -290,8 +290,30 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f57ad17ed22ae8ba0800000000000000
-      internalID: -6084747728496253089
+      spriteID: 43b08b2c51c1269f0800000000000000
+      internalID: -476787730761118924
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: StoragePanel_8
+      rect:
+        serializedVersion: 2
+        x: 797
+        y: 577
+        width: 488
+        height: 87
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 120d2e96154e751489f27f2c759deff3
+      internalID: -1614703213
       vertices: []
       indices: 
       edges: []
@@ -300,7 +322,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 8570a1483d6258341bea59d3a9bb519f
+    spriteID: 5fd8055a7d9aee3408e1b26c6de7edef
     internalID: 0
     vertices: []
     indices: 
@@ -310,14 +332,15 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ExitIcon_0: -6750316414850278111
-      ExitIcon_1: -5108416736778714061
-      ExitIcon_2: 5980701470213731838
-      ExitIcon_3: -3305005883933503738
-      ExitIcon_4: 7986734566920201550
-      ExitIcon_5: 426803523229298388
-      ExitIcon_6: -8989300405945216287
-      ExitIcon_7: -6084747728496253089
+      StoragePanel_0: -3733011999398517997
+      StoragePanel_1: 4196384354452493856
+      StoragePanel_2: 468225902218708563
+      StoragePanel_3: -8910892915945069812
+      StoragePanel_4: -3131656856522015597
+      StoragePanel_5: 7808047613535257681
+      StoragePanel_6: 5387235632417534946
+      StoragePanel_7: -476787730761118924
+      StoragePanel_8: -1614703213
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
