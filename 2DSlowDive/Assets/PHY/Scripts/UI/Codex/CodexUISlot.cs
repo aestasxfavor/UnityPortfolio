@@ -1,35 +1,98 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-/// <summary>
-/// UISlot을 상속받을까라는 생각을 왜 리팩토링할때 떠올린거지 근데 가능한가..?
-/// 일단 보류
-/// </summary>
-public class CodexUISlot : MonoBehaviour
+public class CodexUISlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    [SerializeField] private Image icon;
+    [Header("Images")]
+    [SerializeField] private Image frameImage;
+    [SerializeField] private Image unknownImage;
+    [SerializeField] private Image hoverOverlayImage;
+    [SerializeField] private Image fishIcon;
+
+    [Header("Texts")]
     [SerializeField] private TMP_Text numberText;
-    [SerializeField] private TMP_Text qeustionText;
 
-    public void SetDiscovered(Sprite sprite, int number)
+    private bool isDiscovered;
+    private int codexNumber;
+
+    private void Awake()
     {
-        icon.enabled = true;
-        icon.sprite = sprite;
-        icon.color = Color.white;
-
-        qeustionText.gameObject.SetActive(false);
-        numberText.text = $"No.{number}";
+        if (hoverOverlayImage != null)
+            hoverOverlayImage.gameObject.SetActive(false);
     }
 
-    public void SetUndiscovered(Sprite unknownIcon, int number)
+    public void SetDiscovered(Sprite fishSprite, int number)
     {
-        icon.enabled = false;
-        icon.color = new Color(1, 1, 1, 0.15f); // 흐린 배경 느낌
+        isDiscovered = true;
+        codexNumber = number;
 
-        qeustionText.gameObject.SetActive(true);
-        numberText.text = "No.000";
-        numberText.gameObject.SetActive(true);
+        if (frameImage != null)
+            frameImage.gameObject.SetActive(true);
 
+        if (unknownImage != null)
+            unknownImage.gameObject.SetActive(false);
+
+        if (fishIcon != null)
+        {
+            fishIcon.gameObject.SetActive(true);
+            fishIcon.sprite = fishSprite;
+            fishIcon.color = Color.white;
+        }
+
+        if (numberText != null)
+        {
+            numberText.gameObject.SetActive(true);
+            numberText.text = $"No.{number:000}";
+        }
+    }
+
+    public void SetUndiscovered(Sprite unknownSprite, int number)
+    {
+        isDiscovered = false;
+        codexNumber = number;
+
+        if (frameImage != null)
+            frameImage.gameObject.SetActive(false);
+
+        if (unknownImage != null)
+        {
+            unknownImage.gameObject.SetActive(true);
+            unknownImage.sprite = unknownSprite;
+            unknownImage.color = Color.white;
+        }
+
+        if (fishIcon != null)
+            fishIcon.gameObject.SetActive(false);
+
+        if (numberText != null)
+        {
+            numberText.gameObject.SetActive(true);
+            numberText.text = $"No.{number:000}";
+        }
+    }
+
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (hoverOverlayImage != null)
+            hoverOverlayImage.gameObject.SetActive(true);
+
+        if (isDiscovered)
+        {
+            // 발견된 물고기 툴팁 표시
+        }
+        else
+        {
+            // 미발견 생물 툴팁 표시
+        }
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        if (hoverOverlayImage != null)
+            hoverOverlayImage.gameObject.SetActive(false);
+
+        // 툴팁 숨김
     }
 }

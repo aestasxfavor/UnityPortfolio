@@ -17,6 +17,7 @@ public class SoundSettingUI : MonoBehaviour
     [Header("Buttons")]
     [SerializeField] private Button defaultButton;
     [SerializeField] private Button confirmButton;
+    [SerializeField] private Button closemButton;
 
     [SerializeField] private GameObject panelRoot;
     private void Awake()
@@ -46,6 +47,10 @@ public class SoundSettingUI : MonoBehaviour
             confirmButton.onClick.AddListener(OnClickConfirm);
         }
 
+        if(closemButton != null)
+        {
+            closemButton.onClick.AddListener(OnClickClose);
+        }
 
     }
 
@@ -148,6 +153,18 @@ public class SoundSettingUI : MonoBehaviour
         if (SoundManager.Instance == null) return;
 
         SoundManager.Instance.SaveVolumeSettings();
+        if (panelRoot != null)
+        {
+            panelRoot.SetActive(false);
+        }
+    }
+
+    private void OnClickClose()
+    {
+        if (SoundManager.Instance == null) { return; }
+
+        SoundManager.Instance.SaveVolumeSettings();
+
         if (panelRoot != null)
         {
             panelRoot.SetActive(false);

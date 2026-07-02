@@ -48,7 +48,7 @@ public class CodexUI : MonoBehaviour
         slots.Clear();
 
         var codexViewList = codexService.GetCodexViewList();
-        int totalSlotCount = 18;     // Todo: 리팩토링할 때 SO로 분리가능
+        int totalSlotCount = 24;     // Todo: 리팩토링할 때 SO로 분리가능
 
         for (int i = 0; i < totalSlotCount; i++)
         {
@@ -71,7 +71,7 @@ public class CodexUI : MonoBehaviour
             }
             else
             {
-                slot.SetUndiscovered(unknownIcon, i);
+                slot.SetUndiscovered(unknownIcon, i + 1);
             }
 
         }
