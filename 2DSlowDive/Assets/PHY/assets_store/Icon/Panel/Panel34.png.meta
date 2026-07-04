@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b04f79939cb6abe4bb5ec782687e575d
+guid: 77d11409bc0f99145a6c7ffbd74bb442
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: 4573129112881202984
-    second: ShopPanel6 (2)_0
+      213: -6253459646908123216
+    second: Panel34_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -100,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: ShopPanel6 (2)_0
+      name: Panel34_0
       rect:
         serializedVersion: 2
-        x: 29
-        y: 34
-        width: 1378
-        height: 1011
+        x: 43
+        y: 108
+        width: 1361
+        height: 872
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -115,8 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 827084dd2b4077f30800000000000000
-      internalID: 4573129112881202984
+      spriteID: 0b73dc8559f3739a0800000000000000
+      internalID: -6253459646908123216
       vertices: []
       indices: 
       edges: []
@@ -135,7 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      ShopPanel6 (2)_0: 4573129112881202984
+      Panel34_0: -6253459646908123216
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
