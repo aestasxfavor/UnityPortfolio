@@ -50,16 +50,15 @@ public class SceneFlowManager : MonoBehaviour
 
     private void CloseAllOceanUI()
     {
-        for (int i = oceanClosables.Count - 1; i >= 0; i--)
+        List<UIClosable> targets = new(oceanClosables);
+        oceanClosables.Clear();
+
+        foreach (UIClosable closable in targets)
         {
-            if (oceanClosables[i] == null)
-            {
-                oceanClosables.RemoveAt(i);
-
+            if (closable == null)
                 continue;
-            }
 
-            oceanClosables[i].Close();
+            closable.Close();
         }
     }
     #endregion
@@ -77,10 +76,21 @@ public class SceneFlowManager : MonoBehaviour
 
     private IEnumerator ChangeSceneRoutine(SceneType type)
     {
-        CloseAllOceanUI();
+        HideOceanUIForTransitionIfNeeded();
+
         yield return null;
 
         GameManager.Instance?.GoToFadeScene(type);
+    }
+
+    private void HideOceanUIForTransitionIfNeeded()
+    {
+        OceanManager oceanManager = FindFirstObjectByType<OceanManager>();
+
+        if (oceanManager != null)
+        {
+            oceanManager.HideOceanUIForTransition();
+        }
     }
     #endregion
 }

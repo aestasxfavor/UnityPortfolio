@@ -29,6 +29,8 @@ public class OceanManager : MonoBehaviour
     private GameObject playerInstance;
     private GameObject oceanMapInstance;
     private GameObject inventoryUIInstance;
+    private GameObject oxygenUIInstance;
+    private GameObject harpoonUIInstance;
     #endregion
 
     #region Ocean Setup (바다 씬 초기 세팅)
@@ -84,7 +86,8 @@ public class OceanManager : MonoBehaviour
     {
         if (oxygenUIPrefab != null)
         {
-            oxygenManager = Instantiate(oxygenUIPrefab).GetComponent<OxygenManager>();
+            oxygenUIInstance = Instantiate(oxygenUIPrefab);
+            oxygenManager = oxygenUIInstance.GetComponentInChildren<OxygenManager>(true);
         }
     }
 
@@ -102,7 +105,8 @@ public class OceanManager : MonoBehaviour
     {
         if (harpoonUIPrefab != null)
         {
-            harpoonUI = Instantiate(harpoonUIPrefab).GetComponent<HarpoonUI>();
+            harpoonUIInstance = Instantiate(harpoonUIPrefab);
+            harpoonUI = harpoonUIInstance.GetComponentInChildren<HarpoonUI>(true);
         }
     }
 
@@ -118,6 +122,26 @@ public class OceanManager : MonoBehaviour
     {
         yield return null;
         fishSpawner?.FishSpawn();
+    }
+    #endregion
+
+    #region Ocean UI Transition Control (바다 UI 전환 제어)
+    public void HideOceanUIForTransition()
+    {
+        if (oxygenUIInstance != null)
+        {
+            oxygenUIInstance.SetActive(false);
+        }
+
+        if (inventoryUIInstance != null)
+        {
+            inventoryUIInstance.SetActive(false);
+        }
+
+        if (harpoonUIInstance != null)
+        {
+            harpoonUIInstance.SetActive(false);
+        }
     }
     #endregion
 
@@ -151,9 +175,9 @@ public class OceanManager : MonoBehaviour
             Destroy(fishSpawner.gameObject);
         }
 
-        if (oxygenManager != null)
+        if (oxygenUIInstance != null)
         {
-            Destroy(oxygenManager.gameObject);
+            Destroy(oxygenUIInstance);
         }
 
         if (inventoryUIInstance != null)
@@ -161,14 +185,16 @@ public class OceanManager : MonoBehaviour
             Destroy(inventoryUIInstance);
         }
 
-        if (harpoonUI != null)
+        if (harpoonUIInstance != null)
         {
-            Destroy(harpoonUI.gameObject);
+            Destroy(harpoonUIInstance);
         }
 
         playerInstance = null;
         oceanMapInstance = null;
         inventoryUIInstance = null;
+        oxygenUIInstance = null;
+        harpoonUIInstance = null;
 
         fishSpawner = null;
         oxygenManager = null;

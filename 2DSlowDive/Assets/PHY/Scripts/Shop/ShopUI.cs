@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.Build.Content;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -166,7 +165,7 @@ public class ShopUI : MonoBehaviour
     public void UpdateCoinUI()
     {
         int current = CoinService.Instance.CurrentCoin;
-        harpoonCoinText.text = $"{current} / {RequiredCoin}";
+        harpoonCoinText.text = $"{current} / {RequiredCoin} °³";
     }
 
     public void BuyHarpoonUpgrade()

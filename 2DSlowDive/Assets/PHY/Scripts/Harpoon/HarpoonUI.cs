@@ -4,12 +4,12 @@ using UnityEngine.UI;
 public class HarpoonUI : MonoBehaviour, UIClosable
 {
     [SerializeField] private PlayerAim playerAim;
-    [SerializeField] private Outline normalHighlight;
-    [SerializeField] private Outline tripleHighlight;
+    [SerializeField] private Image normalHighlight;
+    [SerializeField] private Image tripleHighlight;
 
     [SerializeField] private GameObject tripleSlot;
 
-    private void Start()
+    private void OnEnable()
     {
         UpdateUI();
     }

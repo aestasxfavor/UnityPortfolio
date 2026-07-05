@@ -2,30 +2,55 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class FishToCoinSlot : MonoBehaviour 
-{ 
-    [SerializeField] private Image icon; 
-    [SerializeField] private TMP_Text countText; 
+public class FishToCoinSlot : MonoBehaviour
+{
+    [Header("Images")]
+    [SerializeField] private Image frame;
+    [SerializeField] private Image icon;
 
-    private FishType fishType; 
-    private bool hasItem; 
-    public void Set(Sprite sprite, int count, FishType type) 
-    { 
-        fishType = type; 
-        hasItem = true; 
-        icon.sprite = sprite; 
-        icon.enabled = true; 
-        icon.color = Color.white; 
-        countText.text = count.ToString(); 
-        countText.enabled = true; 
-    } 
-    public void SetEmpty(Sprite emptySprite) 
+    [Header("Sprites")]
+    [SerializeField] private Sprite normalFrameSprite;
+
+    [Header("Texts")]
+    [SerializeField] private TMP_Text countText;
+
+    private FishType fishType;
+    private bool hasItem;
+
+    public void Set(Sprite sprite, int count, FishType type)
     {
-        hasItem = false; 
-        fishType = default; 
-        icon.sprite = emptySprite; 
-        icon.enabled = true; 
-        icon.color = Color.gray; 
-        countText.enabled = false; 
-    } 
+        fishType = type;
+        hasItem = true;
+
+        if (frame != null && normalFrameSprite != null)
+        {
+            frame.sprite = normalFrameSprite;
+            frame.color = Color.white;
+        }
+
+        icon.sprite = sprite;
+        icon.enabled = true;
+        icon.color = Color.white;
+
+        countText.text = count.ToString();
+        countText.enabled = true;
+    }
+
+    public void SetEmpty(Sprite emptyFrameSprite)
+    {
+        hasItem = false;
+        fishType = default;
+
+        if (frame != null && emptyFrameSprite != null)
+        {
+            frame.sprite = emptyFrameSprite;
+            frame.color = Color.white;
+        }
+
+        icon.sprite = null;
+        icon.enabled = false;
+
+        countText.text = "";
+        countText.enabled = false;
+    }
 }
