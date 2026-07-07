@@ -1483,6 +1483,9 @@ MonoBehaviour:
   masterSlider: {fileID: 8605470749120776803}
   bgmSlider: {fileID: 6206944721204210977}
   sfxSlider: {fileID: 4791221469348441958}
+  masterClickArea: {fileID: 6542423326795875437}
+  bgmClickArea: {fileID: 2922266232114691186}
+  sfxClickArea: {fileID: 8797772264421466488}
   masterValueText: {fileID: 7965417686586062295}
   bgmValueText: {fileID: 4995983098215195152}
   sfxValueText: {fileID: 8182398930062538563}
