@@ -330,6 +330,7 @@ GameObject:
   - component: {fileID: 1556652434989660921}
   - component: {fileID: 5021045956366574863}
   - component: {fileID: 2094817274293637093}
+  - component: {fileID: 7513383544207353468}
   m_Layer: 5
   m_Name: Setting Button
   m_TagString: Untagged
@@ -354,7 +355,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -110, y: 0}
+  m_AnchoredPosition: {x: -120, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &6035732117672086578
@@ -479,6 +480,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &7513383544207353468
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3529807313744228324}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7da58acc39e0645829886533cf2700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: "\uC124\uC815"
+  placement: 1
 --- !u!1 &3552046488188827760
 GameObject:
   m_ObjectHideFlags: 0
@@ -631,6 +646,7 @@ GameObject:
   - component: {fileID: 2809044722581740046}
   - component: {fileID: 2869180234726550460}
   - component: {fileID: 931436455114340196}
+  - component: {fileID: 2765522042344406982}
   m_Layer: 5
   m_Name: End Button
   m_TagString: Untagged
@@ -655,7 +671,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -10, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &5333155783701363790
@@ -792,6 +808,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &2765522042344406982
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4245568031794898422}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7da58acc39e0645829886533cf2700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: "\uC885\uB8CC"
+  placement: 1
 --- !u!1 &4893184839246907797
 GameObject:
   m_ObjectHideFlags: 0
@@ -807,6 +837,7 @@ GameObject:
   - component: {fileID: 4706447447553628979}
   - component: {fileID: 2590754923183688000}
   - component: {fileID: 7129856412735663667}
+  - component: {fileID: 5403530752766575980}
   m_Layer: 5
   m_Name: Play Button
   m_TagString: Untagged
@@ -957,6 +988,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.69803923}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &5403530752766575980
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4893184839246907797}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7da58acc39e0645829886533cf2700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: "\uD0D0\uD5D8\uD558\uAE30"
+  placement: 1
 --- !u!1 &5124189731193022110
 GameObject:
   m_ObjectHideFlags: 0
@@ -1108,6 +1153,7 @@ GameObject:
   - component: {fileID: 5744750514363816674}
   - component: {fileID: 3174805588764103400}
   - component: {fileID: 8399896384888936564}
+  - component: {fileID: 1586518289924626274}
   m_Layer: 5
   m_Name: Codex Button
   m_TagString: Untagged
@@ -1133,7 +1179,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -220, y: 0}
+  m_AnchoredPosition: {x: -230, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 1}
 --- !u!222 &9022050508470976357
@@ -1258,6 +1304,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &1586518289924626274
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5380120434098454247}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7da58acc39e0645829886533cf2700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: "\uB3C4\uAC10"
+  placement: 1
 --- !u!1 &5595743994098334554
 GameObject:
   m_ObjectHideFlags: 0
@@ -1474,6 +1534,7 @@ GameObject:
   - component: {fileID: 9005494746283780673}
   - component: {fileID: 125183325227232996}
   - component: {fileID: 1093565087220854169}
+  - component: {fileID: 8548892401598190919}
   m_Layer: 5
   m_Name: Mail Button
   m_TagString: Untagged
@@ -1499,7 +1560,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -10, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &1192314623407120283
@@ -1624,6 +1685,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &8548892401598190919
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6591214345889720049}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7da58acc39e0645829886533cf2700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: "\uC6B0\uD3B8\uD568"
+  placement: 0
 --- !u!1 &7442058257122983876
 GameObject:
   m_ObjectHideFlags: 0
@@ -1639,6 +1714,7 @@ GameObject:
   - component: {fileID: 6650982346774036331}
   - component: {fileID: 1775987183992002179}
   - component: {fileID: 489782903656797269}
+  - component: {fileID: 8736775345989297639}
   m_Layer: 5
   m_Name: Storage Button
   m_TagString: Untagged
@@ -1663,7 +1739,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -220, y: 0}
+  m_AnchoredPosition: {x: -230, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &3592745970086202188
@@ -1800,6 +1876,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &8736775345989297639
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7442058257122983876}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7da58acc39e0645829886533cf2700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: "\uBCF4\uAD00\uD568"
+  placement: 0
 --- !u!1 &7908732777788124553
 GameObject:
   m_ObjectHideFlags: 0
@@ -1889,6 +1979,7 @@ GameObject:
   - component: {fileID: 5133525844629721309}
   - component: {fileID: 8349698409151527346}
   - component: {fileID: 8980731914792259774}
+  - component: {fileID: 2888418611803456405}
   m_Layer: 5
   m_Name: Shop Button
   m_TagString: Untagged
@@ -1913,7 +2004,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0}
   m_AnchorMax: {x: 1, y: 0}
-  m_AnchoredPosition: {x: -110, y: 0}
+  m_AnchoredPosition: {x: -120, y: 0}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 1, y: 0}
 --- !u!222 &1452697064246552523
@@ -2038,6 +2129,20 @@ MonoBehaviour:
   m_EffectColor: {r: 0, g: 0, b: 0, a: 0.5}
   m_EffectDistance: {x: 3, y: -3}
   m_UseGraphicAlpha: 1
+--- !u!114 &2888418611803456405
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8104762656238321457}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1b7da58acc39e0645829886533cf2700, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
+  tooltipText: "\uAD50\uD658\uC0C1\uC810"
+  placement: 0
 --- !u!1 &8235360444876592071
 GameObject:
   m_ObjectHideFlags: 0
