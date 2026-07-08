@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 15601c0ac447fb94bb862f57de07e008, type: 3}
   m_Name: FishConfigSO_SwordFish
   m_EditorClassIdentifier: 
-  moveSpeed: 2.5
+  moveSpeed: 9
   moveDistance: 5

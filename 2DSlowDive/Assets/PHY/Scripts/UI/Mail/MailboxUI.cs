@@ -62,7 +62,7 @@ public sealed class MailboxUI : MonoBehaviour
         firstMailButton.interactable = mail.unlocked;
 
         firstMailTitleText.text = mail.unlocked
-            ? mail.listTitle : "새 편지가 없습니다";
+            ? mail.listTitle : "편지가 없습니다";
 
 
         if (newBadge != null)
