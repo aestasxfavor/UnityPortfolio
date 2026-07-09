@@ -3,8 +3,18 @@ using UnityEngine;
 
 public enum FishType
 {
-    Blue, Orange, Red, Green, Shark, Grey,
-    JellyFish, Octopus, Shrimp, SwordFish, Squid  // 심해어 2종은 2차 리팩하고 상점이랑 도감 만들때 하지뭐
+    Blue,   // 0, 파도꼬리
+    Orange, // 1, 보거
+    Red,    // 2, 빨강눈치
+    Green,  // 3, 초록멍치
+    Shark,  // 4, 아기상어
+    Grey,   // 5, 출근고등어
+    JellyFish,  // 6, 멍파리
+    Octopus,    // 7, 팔동문어
+    Shrimp,     // 8, 등짝새우
+    SwordFish,  // 9, 질주청새치
+    Squid,     // 10, 수줍오징어
+        // 심해어 2종은 2차 리팩하고 상점이랑 도감 만들때 하지뭐
 }
 
 [RequireComponent(typeof(Rigidbody2D), typeof(SpriteRenderer))]

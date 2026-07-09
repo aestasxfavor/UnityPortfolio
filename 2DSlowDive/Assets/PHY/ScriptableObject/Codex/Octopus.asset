@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8defeae2ceba5b547894a384b9bfea24, type: 3}
+  m_Name: Octopus
+  m_EditorClassIdentifier: Assembly-CSharp::FishCodexSO
+  fishName: "\uD314\uB3D9\uBB38\uC5B4"
+  description: "\uD314\uC774 \uB9CE\uC544 \uB298 \uBC14\uC05C\uB4EF\uD55C \uBB38\uC5B4.
+    \uADF8\uB7EC\uB098 \uC815\uC791 \uD558\uB294 \uC77C\uC740 \uBCC4\uB85C \uC5C6\uC5B4
+    \uBCF4\uC778\uB2E4."

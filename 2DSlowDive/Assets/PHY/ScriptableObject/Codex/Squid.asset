@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8defeae2ceba5b547894a384b9bfea24, type: 3}
+  m_Name: Squid
+  m_EditorClassIdentifier: Assembly-CSharp::FishCodexSO
+  fishName: "\uC218\uC90D\uC624\uC9D5\uC5B4"
+  description: "\uBD89\uC740\uBE5B \uBAB8\uD1B5\uC744 \uAC00\uC9C4 \uC624\uC9D5\uC5B4.
+    \uC218\uC90D\uC5B4\uC11C \uBD89\uC5B4\uC9C4 \uAC83\uCC98\uB7FC \uBCF4\uC774\uC9C0\uB9CC,
+    \uAD00\uCC30 \uACB0\uACFC \uC6D0\uB798 \uADF8\uB7F0 \uC0C9\uC5D0 \uAC00\uAE4C\uC6B4
+    \uAC83 \uAC19\uB2E4."

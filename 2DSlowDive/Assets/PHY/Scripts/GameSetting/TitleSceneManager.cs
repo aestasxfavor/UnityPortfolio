@@ -1,17 +1,21 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class TitleSceneManager : MonoBehaviour
 {
+    [SerializeField] private string nextSceneName = "Land";
+
     private bool isLoading = false;
-    void Update()
+
+    private void Update()
     {
         if (isLoading) return;
 
-        if(Input.GetMouseButtonDown(0) || Input.touchCount > 0)
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
         {
             isLoading = true;
-            // 터치 또는 클릭이 감지되면 게임 씬으로 전환
-            UnityEngine.SceneManagement.SceneManager.LoadScene("Land");
+            SceneManager.LoadScene(nextSceneName);
         }
     }
 }

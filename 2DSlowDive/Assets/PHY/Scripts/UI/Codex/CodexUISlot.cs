@@ -17,16 +17,19 @@ public class CodexUISlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     private bool isDiscovered;
     private int codexNumber;
 
+    private FishCodexSO fishCodexData;
+
     private void Awake()
     {
         if (hoverOverlayImage != null)
             hoverOverlayImage.gameObject.SetActive(false);
     }
 
-    public void SetDiscovered(Sprite fishSprite, int number)
+    public void SetDiscovered(Sprite fishSprite, int number, FishCodexSO codexData)
     {
         isDiscovered = true;
         codexNumber = number;
+        fishCodexData = codexData;
 
         if (frameImage != null)
             frameImage.gameObject.SetActive(true);
@@ -52,6 +55,7 @@ public class CodexUISlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
     {
         isDiscovered = false;
         codexNumber = number;
+        fishCodexData = null;
 
         if (frameImage != null)
             frameImage.gameObject.SetActive(false);
@@ -75,24 +79,37 @@ public class CodexUISlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHand
 
     public void OnPointerEnter(PointerEventData eventData)
     {
-        if (hoverOverlayImage != null)
-            hoverOverlayImage.gameObject.SetActive(true);
+        //Debug.Log("[CodexUISlot] Pointer Enter 호출됨");
 
-        if (isDiscovered)
+        if (hoverOverlayImage != null)
         {
-            // 발견된 물고기 툴팁 표시
+            hoverOverlayImage.gameObject.SetActive(true);
         }
-        else
+
+        if (CodexTooltipUI.Instance == null)
         {
-            // 미발견 생물 툴팁 표시
+            //Debug.LogWarning("[CodexUISlot] CodexTooltipUI.Instance 없음");
+            return;
         }
+
+        // 발견된 물고기 툴팁 표시
+        if (!isDiscovered || fishCodexData == null) return;
+        
+        RectTransform slotRect = transform as RectTransform;
+        CodexTooltipUI.Instance.Show(fishCodexData, slotRect);
+
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
+
+        Debug.Log("[CodexUISlot] Pointer Exit 호출됨");
+
         if (hoverOverlayImage != null)
             hoverOverlayImage.gameObject.SetActive(false);
 
         // 툴팁 숨김
+        if(CodexTooltipUI.Instance != null)
+            CodexTooltipUI.Instance.Hide();
     }
 }

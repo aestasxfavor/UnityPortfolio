@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8defeae2ceba5b547894a384b9bfea24, type: 3}
+  m_Name: GotoworkMackerel
+  m_EditorClassIdentifier: Assembly-CSharp::FishCodexSO
+  fishName: "\uCD9C\uADFC\uACE0\uB4F1\uC5B4"
+  description: "\uB298 \uC5B4\uB518\uAC00 \uAE09\uD574 \uBCF4\uC774\uB294 \uACE0\uB4F1\uC5B4.
+    \uC5B4\uB514\uB97C \uADF8\uB807\uAC8C \uBC14\uC058\uAC8C \uC774\uB3D9\uD558\uB294\uC9C0\uB294
+    \uC54C \uC218 \uC5C6\uB514."

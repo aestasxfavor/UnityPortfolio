@@ -1,0 +1,17 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8defeae2ceba5b547894a384b9bfea24, type: 3}
+  m_Name: BabyShark
+  m_EditorClassIdentifier: Assembly-CSharp::FishCodexSO
+  fishName: "\uC544\uAE30\uC0C1\uC5B4"
+  description: "\uC544\uC9C1 \uC5B4\uB9B0 \uC0C1\uC5B4. \uC774\uB984\uACFC \uB2E4\uB974\uAC8C
+    \uC774\uBE68\uC740 \uAF64 \uC9C4\uC9C0\uD558\uB2E4."

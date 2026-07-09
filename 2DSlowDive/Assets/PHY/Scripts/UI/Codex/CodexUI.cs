@@ -9,6 +9,9 @@ public class CodexUI : MonoBehaviour
     [SerializeField] private GameObject slotPrefab;
     [SerializeField] private Sprite unknownIcon;
 
+    [Header("Codex Data")]
+    [SerializeField] private List<FishCodexSO> codexDataList = new();
+
 
     private List<CodexUISlot> slots = new();
     private CodexService codexService;
@@ -48,7 +51,7 @@ public class CodexUI : MonoBehaviour
         slots.Clear();
 
         var codexViewList = codexService.GetCodexViewList();
-        int totalSlotCount = 24;     // Todo: 리팩토링할 때 SO로 분리가능
+        int totalSlotCount = 24;     // Todo: 도감 확장 시 설정값으로 분리
 
         for (int i = 0; i < totalSlotCount; i++)
         {
@@ -62,7 +65,8 @@ public class CodexUI : MonoBehaviour
 
                 if (codexViewData.discovered)
                 {
-                    slot.SetDiscovered(codexViewData.icon, codexViewData.index);
+                    FishCodexSO codexData = GetFishCodexData(codexViewData.index);
+                    slot.SetDiscovered(codexViewData.icon, codexViewData.index, codexData);
                 }
                 else
                 {
@@ -75,6 +79,15 @@ public class CodexUI : MonoBehaviour
             }
 
         }
+    }
+
+    private FishCodexSO GetFishCodexData(int index)
+    {
+        int listIndex = index - 1;
+
+        if (listIndex < 0 || listIndex >= codexDataList.Count) return null;
+
+        return codexDataList[listIndex];
     }
 
 }
