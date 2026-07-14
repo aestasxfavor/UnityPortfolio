@@ -155,7 +155,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 120, y: 60}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &131990286
 MonoBehaviour:
@@ -602,7 +602,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 120, y: 60}
+  m_SizeDelta: {x: 100, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &507305726
 MonoBehaviour:
@@ -912,12 +912,12 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1106995733}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -960, y: -540, z: 0}
   m_LocalScale: {x: 1.1, y: 1.1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 1246393902}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1121589077
 GameObject:
@@ -1062,6 +1062,7 @@ RectTransform:
   m_Children:
   - {fileID: 507305724}
   - {fileID: 1500344051}
+  - {fileID: 1106995735}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1233,9 +1234,9 @@ MonoBehaviour:
   aboveTextPosition: {x: 0, y: 6}
   belowTextPosition: {x: 0, y: -6}
   tooltipCanvas: {fileID: 1246393901}
-  aboveOffsetY: 45
-  belowOffsetY: -45
-  screenPadding: -35
+  aboveOffsetY: 25
+  belowOffsetY: -25
+  screenPadding: -30
 --- !u!1001 &1562446289
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1760,4 +1761,3 @@ SceneRoots:
   - {fileID: 337656417}
   - {fileID: 2079936544}
   - {fileID: 1246393902}
-  - {fileID: 1106995735}
