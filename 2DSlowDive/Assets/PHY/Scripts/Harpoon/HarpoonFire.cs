@@ -71,7 +71,7 @@ public class HarpoonFire : MonoBehaviour
 
         SpriteRenderer sr = harpoon.GetComponent<SpriteRenderer>();
         if (sr != null)
-            sr.flipX = dir.x < 0;
+            sr.flipX = false;
 
         HarpoonTip tip = harpoon.GetComponent<HarpoonTip>();
         if (tip != null)

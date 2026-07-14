@@ -12,7 +12,7 @@ public class TitleSceneManager : MonoBehaviour
     {
         if (isLoading) return;
 
-        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+        if (Mouse.current.leftButton.wasPressedThisFrame || Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
         {
             isLoading = true;
             SceneManager.LoadScene(nextSceneName);

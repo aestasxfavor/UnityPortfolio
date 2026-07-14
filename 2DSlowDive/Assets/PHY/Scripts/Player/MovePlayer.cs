@@ -42,7 +42,7 @@ public class MovePlayer : MonoBehaviour
         {
             rb.linearVelocity = Vector2.zero;
 
-            if(isSwimming)
+            if (isSwimming)
             {
                 SoundManager.Instance?.StopSwimSFX();
                 isSwimming = false;
@@ -118,4 +118,16 @@ public class MovePlayer : MonoBehaviour
         }
     }
 
+    public void SetHarpoonReady(bool ready)
+    {
+        IsHarpoonReady = ready;
+        if (!ready) return;
+
+        inputDirection = Vector2.zero;
+        rb.linearVelocity = Vector2.zero;
+
+        playerVisual.localRotation = Quaternion.identity;
+        playerSR.flipY = false;
+        playerSR.flipX = lastMoveDir.x < 0f;
+    }
 }

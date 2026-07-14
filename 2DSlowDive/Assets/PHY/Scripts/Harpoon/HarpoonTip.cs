@@ -24,7 +24,7 @@ public class HarpoonTip : MonoBehaviour
 
     void Update()
     {
-        transform.position += direction * tipConfig.speed * Time.deltaTime;
+        //transform.position += direction * tipConfig.speed * Time.deltaTime;
 
         if (Vector3.Distance(startPos, transform.position) >= tipConfig.maxDistance)
         {

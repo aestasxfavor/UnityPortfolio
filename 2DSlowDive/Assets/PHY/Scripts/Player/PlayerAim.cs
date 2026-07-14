@@ -101,7 +101,7 @@ public class PlayerAim : MonoBehaviour
     private void OnHold(InputAction.CallbackContext _)
     {
         IsHarpoonReady = true;
-        movePlayer.IsHarpoonReady = true;
+        movePlayer.SetHarpoonReady(true);
         harpoon.gameObject.SetActive(true);
         wantToFire = false;
 
@@ -111,7 +111,7 @@ public class PlayerAim : MonoBehaviour
     private void OnRelease(InputAction.CallbackContext _)
     {
         IsHarpoonReady = false;
-        movePlayer.IsHarpoonReady = false;
+        movePlayer.SetHarpoonReady(false);
         harpoon.gameObject.SetActive(false);
         wantToFire = false;
 
