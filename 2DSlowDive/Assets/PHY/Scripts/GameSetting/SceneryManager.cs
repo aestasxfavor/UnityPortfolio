@@ -9,6 +9,7 @@ public class SceneryManager : MonoBehaviour
     [Header("UI References")]
     [SerializeField] private GameObject loadingScreen;
     [SerializeField] private LoadingText loadingTextWave;
+    [SerializeField] private DiveResultUI diveResultUI;
 
     [Header("Loading Option")]
     [SerializeField] private float minimumLoadingTime = 1.2f;
@@ -44,11 +45,22 @@ public class SceneryManager : MonoBehaviour
     {
         isLoading = true;
 
+        bool isReturningToLand = SceneManager.GetActiveScene().name == "Ocean" && sceneName == "Land";
+
         DisableLandButtonsIfNeeded();
         HideOceanUIForTransitionIfNeeded();
         ShowLoadingScreen();
 
-        float elapsedTime = 0f;
+        if(isReturningToLand)
+        {
+            ShowDiveResult();
+        }
+        else
+        {
+            HideDiveResult();
+        }
+
+            float elapsedTime = 0f;
 
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneName);
         loadOperation.allowSceneActivation = false;
@@ -72,6 +84,23 @@ public class SceneryManager : MonoBehaviour
 
         isLoading = false;
         sceneTransitionRoutine = null;
+    }
+
+    private void ShowDiveResult()
+    {
+        if (diveResultUI == null) return;
+
+        int caughtCount = FishInventoryService.Instance?.CurrentDiveCaughtCount ?? 0;
+        int newDiscoveryCount = FishInventoryService.Instance?.CurrentDiveNewDiscoveryCount ?? 0;
+
+        diveResultUI.ShowResult(caughtCount, newDiscoveryCount);
+    }
+
+    private void HideDiveResult()
+    {
+        if (diveResultUI == null) return;
+
+        diveResultUI.HideResult();
     }
 
     private bool HasPlayedMinimumLoadingWave()

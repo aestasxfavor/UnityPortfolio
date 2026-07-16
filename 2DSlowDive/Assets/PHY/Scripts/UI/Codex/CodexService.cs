@@ -60,49 +60,54 @@ public class CodexService : MonoBehaviour
         Debug.Log("[CodexService] 도감 신규 알림 해제");
     }
 
-    //public void RegisterFish(FishType type)
-    //{
-    //    //Debug.Log($"[CodexService] RegisterFish CALLED : {type}, initialized={IsInitialized}");
-
-    //   
-    //    if(discoveredFish.Contains(type))
-    //    {
-    //        Debug.Log($"[CodexService] 이미 등록된 어종:{type}");
-    //        return;
-    //    }
-    //    if (!IsInitialized) return;
-    //    
-    //    if (!discoveredFish.Add(type)) return;
-
-    //    
-    //    codexSaveData.codexFishID.Add(type.ToString());
-
-    //   
-    //    SaveManager.Instance.RequestSave();
-    //}
-
-    public void RegisterFish(FishType type)
+    public bool Registerfish(FishType type)
     {
-        if (!IsInitialized) return;
+        if(!IsInitialized) return false;
 
-        // 1. 이미 등록됐는지 체크
-        if (discoveredFish.Contains(type))
+        // 이미 등록된 어종이면 신규 발견 x
+        if(discoveredFish.Contains(type))
         {
-            Debug.Log("이미 등록된 어종");
-            return;
+            Debug.Log($"[CodexService] 이미 등록된 어종: {type}");
+            return false;
         }
 
-        // 2. 새로 발견이면 상태 추가
-        if (!discoveredFish.Add(type)) return;
+        // 신규 어종 등록 실패했을 때
+        if (!discoveredFish.Add(type)) return false;
 
-        // 3. CodexSaveData에 반영
         codexSaveData.codexFishID.Add(type.ToString());
         codexSaveData.hasUnViewedNewFish = true;
-        // 4. SaveManager에 저장
+
         SaveManager.Instance.SaveCodex();
 
-        Debug.Log($"[CodexService] 신규 어종 등록: {type}, hasUnViewNewFish ={codexSaveData.hasUnViewedNewFish}");
+        Debug.Log(
+       $"[CodexService] 신규 어종 등록: {type}, " +
+       $"hasUnViewedNewFish = {codexSaveData.hasUnViewedNewFish}"
+   );
+        return true;
     }
+
+    //public void RegisterFish(FishType type)
+    //{
+    //    if (!IsInitialized) return;
+
+    //    // 1. 이미 등록됐는지 체크
+    //    if (discoveredFish.Contains(type))
+    //    {
+    //        Debug.Log("이미 등록된 어종");
+    //        return;
+    //    }
+
+    //    // 2. 새로 발견이면 상태 추가
+    //    if (!discoveredFish.Add(type)) return;
+
+    //    // 3. CodexSaveData에 반영
+    //    codexSaveData.codexFishID.Add(type.ToString());
+    //    codexSaveData.hasUnViewedNewFish = true;
+    //    // 4. SaveManager에 저장
+    //    SaveManager.Instance.SaveCodex();
+
+    //    Debug.Log($"[CodexService] 신규 어종 등록: {type}, hasUnViewNewFish ={codexSaveData.hasUnViewedNewFish}");
+    //}
 
     public List<CodexViewData> GetCodexViewList()
     {

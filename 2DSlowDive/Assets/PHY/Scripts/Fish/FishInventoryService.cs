@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 
 public class FishInventoryService : MonoBehaviour
@@ -10,6 +11,9 @@ public class FishInventoryService : MonoBehaviour
 
     private FishInventoryData inventoryData;
     private CodexService codexService;
+
+    public int CurrentDiveCaughtCount { get; private set; }
+    public int CurrentDiveNewDiscoveryCount {  get; private set; }
 
     private readonly Dictionary<FishType, Sprite> fishSpriteCache = new(128);
 
@@ -58,9 +62,23 @@ public class FishInventoryService : MonoBehaviour
 
         storageData.AddFish(fishType);
 
-        codexService?.RegisterFish(fishType);
+        // 이번 잠수에서 회수한 전체 물고기 수
+        CurrentDiveCaughtCount++;
+
+        // 신규어종이면 true, 이미 발견한 어종이면 false
+        bool isNewDiscovery = codexService?.Registerfish(fishType) ?? false;
+
+        if (isNewDiscovery) CurrentDiveNewDiscoveryCount++;
+
+        //codexService?.RegisterFish(fishType);
 
         OnInventoryChanged?.Invoke();
+    }
+
+    public void ResetDiveResult()
+    {
+        CurrentDiveCaughtCount = 0;
+        CurrentDiveNewDiscoveryCount = 0;
     }
 
     public Sprite GetFishSprite(FishType fishType)

@@ -1069,6 +1069,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0, y: 0}
+--- !u!114 &1262508658 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2698438247584580518, guid: ea4d798c0483d994689281f63b109df5, type: 3}
+  m_PrefabInstance: {fileID: 1562446289}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1bdf2b79e3a585e4a9fb018563c7a544, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::DiveResultUI
 --- !u!1 &1335783544 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5608336713874121973, guid: ea4d798c0483d994689281f63b109df5, type: 3}
@@ -1272,6 +1283,10 @@ PrefabInstance:
       propertyPath: letterPrefab
       value: 
       objectReference: {fileID: 8262054965575322462, guid: d2b38a61803014042823311cc9762006, type: 3}
+    - target: {fileID: 5149589815520290936, guid: ea4d798c0483d994689281f63b109df5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8309846130622778380, guid: ea4d798c0483d994689281f63b109df5, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1656,6 +1671,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   loadingScreen: {fileID: 1335783544}
   loadingTextWave: {fileID: 1335783545}
+  diveResultUI: {fileID: 1262508658}
   minimumLoadingTime: 1.2
   minimumLoadingWaveCycles: 3
 --- !u!114 &6595017640180768011

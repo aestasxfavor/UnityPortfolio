@@ -98,6 +98,9 @@ public class GameManager : MonoBehaviour
 
         currentSeaInventoryData.Clear();
 
+        // 새 잠수 시작 시 이전 잠수의 결과 기록 초기화
+        FishInventoryService.Instance?.ResetDiveResult();
+
         FishInventoryService.Instance?.SetInventoryData(currentSeaInventoryData);
 
         var oceanManager = FindFirstObjectByType<OceanManager>();
