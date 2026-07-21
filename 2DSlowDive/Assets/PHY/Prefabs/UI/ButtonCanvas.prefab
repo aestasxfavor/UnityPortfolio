@@ -1316,7 +1316,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b7da58acc39e0645829886533cf2700, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::TooltipTrigger
-  tooltipText: "\uB3C4\uAC10"
+  tooltipText: "\uC0DD\uBB3C\uB3C4\uAC10"
   placement: 0
 --- !u!1 &5595743994098334554
 GameObject:
